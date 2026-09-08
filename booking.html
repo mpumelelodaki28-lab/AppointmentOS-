@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Book an Appointment | AppointmentOS</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: #f5f7fb;
+            color: #172033;
+        }
+
+        header {
+            height: 70px;
+            background: #071a3d;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 7%;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .logo span {
+            color: #4da3ff;
+        }
+
+        .home {
+            color: white;
+            text-decoration: none;
+            font-size: 15px;
+        }
+
+        main {
+            max-width: 850px;
+            margin: 45px auto;
+            padding: 0 20px;
+        }
+
+        .title {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .title h1 {
+            font-size: 34px;
+            margin-bottom: 10px;
+        }
+
+        .title p {
+            color: #667085;
+        }
+
+        .card {
+            background: white;
+            padding: 35px;
+            border-radius: 16px;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.06);
+        }
+
+        .business {
+            background: #eef4ff;
+            padding: 18px;
+            border-radius: 10px;
+            margin-bottom: 25px;
+        }
+
+        .business h2 {
+            font-size: 20px;
+            margin-bottom: 5px;
+        }
+
+        .business p {
+            color: #667085;
+            font-size: 14px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+
+        input,
+        select,
+        textarea {
+            width: 100%;
+            padding: 13px;
+            border: 1px solid #d8dee9;
+            border-radius: 8px;
+            font-size: 15px;
+            background: white;
+            outline: none;
+        }
+
+        input:focus,
+        select:focus,
+        textarea:focus {
+            border-color: #2779ff;
+        }
+
+        .row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        button {
+            width: 100%;
+            padding: 15px;
+            border: none;
+            border-radius: 9px;
+            background: #0b2a63;
+            color: white;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 5px;
+        }
+
+        button:hover {
+            background: #123b82;
+        }
+
+        .success {
+            display: none;
+            text-align: center;
+            padding: 25px;
+        }
+
+        .success-icon {
+            font-size: 45px;
+            margin-bottom: 15px;
+        }
+
+        .success h2 {
+            margin-bottom: 10px;
+        }
+
+        .success p {
+            color: #667085;
+            line-height: 1.6;
+        }
+
+        .booking-details {
+            background: #f5f7fb;
+            padding: 18px;
+            border-radius: 10px;
+            margin-top: 20px;
+            text-align: left;
+        }
+
+        .booking-details div {
+            margin-bottom: 8px;
+        }
+
+        .booking-details div:last-child {
+            margin-bottom: 0;
+        }
+
+        @media (max-width: 650px) {
+
+            header {
+                padding: 0 5%;
+            }
+
+            main {
+                margin-top: 30px;
+            }
+
+            .title h1 {
+                font-size: 28px;
+            }
+
+            .card {
+                padding: 25px 20px;
+            }
+
+            .row {
+                grid-template-columns: 1fr;
+                gap: 0;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+
+    <div class="logo">
+        Appointment<span>OS</span>
+    </div>
+
+    <a href="index.html" class="home">
+        ← Home
+    </a>
+
+</header>
+
+
+<main>
+
+    <div class="title">
+
+        <h1>Book an Appointment</h1>
+
+        <p>
+            Choose a service and a time that works for you.
+        </p>
+
+    </div>
+
+
+    <div class="card">
+
+        <div class="business">
+
+            <h2>AppointmentOS Demo Business</h2>
+
+            <p>
+                Select your service and appointment time below.
+            </p>
+
+        </div>
+
+
+        <form id="bookingForm">
+
+            <div class="form-group">
+
+                <label for="customerName">
+                    Your Name
+                </label>
+
+                <input
+                    type="text"
+                    id="customerName"
+                    placeholder="Enter your full name"
+                    required
+                >
+
+            </div>
+
+
+            <div class="row">
+
+                <div class="form-group">
+
+                    <label for="phone">
+                        Phone Number
+                    </label>
+
+                    <input
+                        type="tel"
+                        id="phone"
+                        placeholder="071 123 4567"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="email">
+                        Email
+                    </label>
+
+                    <input
+                        type="email"
+                        id="email"
+                        placeholder="you@example.com"
+                    >
+
+                </div>
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label for="service">
+                    Choose a Service
+                </label>
+
+                <select id="service" required>
+
+                    <option value="">
+                        Select a service
+                    </option>
+
+                    <option value="Haircut">
+                        Haircut
+                    </option>
+
+                    <option value="Haircut & Beard">
+                        Haircut & Beard
+                    </option>
+
+                    <option value="Consultation">
+                        Consultation
+                    </option>
+
+                    <option value="General Appointment">
+                        General Appointment
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <div class="row">
+
+                <div class="form-group">
+
+                    <label for="date">
+                        Appointment Date
+                    </label>
+
+                    <input
+                        type="date"
+                        id="date"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="time">
+                        Appointment Time
+                    </label>
+
+                    <input
+                        type="time"
+                        id="time"
+                        required
+                    >
+
+                </div>
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label for="notes">
+                    Additional Notes
+                </label>
+
+                <textarea
+                    id="notes"
+                    placeholder="Anything the business should know?"
+                ></textarea>
+
+            </div>
+
+
+            <button type="submit">
+                Book Appointment
+            </button>
+
+        </form>
+
+
+        <div class="success" id="success">
+
+            <div class="success-icon">
+                ✓
+            </div>
+
+            <h2>Appointment Request Created</h2>
+
+            <p>
+                Your appointment details have been recorded for this demo.
+            </p>
+
+
+            <div class="booking-details">
+
+                <div>
+                    <strong>Name:</strong>
+                    <span id="showName"></span>
+                </div>
+
+                <div>
+                    <strong>Service:</strong>
+                    <span id="showService"></span>
+                </div>
+
+                <div>
+                    <strong>Date:</strong>
+                    <span id="showDate"></span>
+                </div>
+
+                <div>
+                    <strong>Time:</strong>
+                    <span id="showTime"></span>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</main>
+
+
+<script>
+
+    const form = document.getElementById("bookingForm");
+
+    const success = document.getElementById("success");
+
+
+    form.addEventListener("submit", function(event) {
+
+        event.preventDefault();
+
+
+        const name =
+            document.getElementById("customerName").value;
+
+        const service =
+            document.getElementById("service").value;
+
+        const date =
+            document.getElementById("date").value;
+
+        const time =
+            document.getElementById("time").value;
+
+
+        document.getElementById("showName").textContent = name;
+
+        document.getElementById("showService").textContent = service;
+
+        document.getElementById("showDate").textContent = date;
+
+        document.getElementById("showTime").textContent = time;
+
+
+        form.style.display = "none";
+
+        success.style.display = "block";
+
+    });
+
+</script>
+
+</body>
+</html>
