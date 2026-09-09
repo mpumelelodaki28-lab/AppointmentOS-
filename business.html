@@ -286,11 +286,9 @@
     // SEND BUSINESS TO SUPABASE
     // ==========================================
 
-    const { data, error } = await db
+    const { error } = await db
       .from("businesses")
-      .insert([business])
-      .select()
-      .single();
+      .insert([business]);
 
 
     if (error) {
