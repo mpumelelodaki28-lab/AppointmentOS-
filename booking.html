@@ -6,6 +6,9 @@
 
     <title>Book an Appointment | AppointmentOS</title>
 
+    <!-- Supabase -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
     <style>
         * {
             box-sizing: border-box;
@@ -88,6 +91,21 @@
             font-size: 14px;
         }
 
+        .loading {
+            text-align: center;
+            padding: 30px;
+            color: #667085;
+        }
+
+        .error {
+            display: none;
+            background: #fff0f0;
+            color: #b42318;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
         .form-group {
             margin-bottom: 20px;
         }
@@ -138,6 +156,11 @@
 
         button:hover {
             background: #123b82;
+        }
+
+        button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
         }
 
         .success {
@@ -234,16 +257,25 @@
 
         <div class="business">
 
-            <h2>AppointmentOS Demo Business</h2>
+            <div id="loadingBusiness" class="loading">
+                Loading business...
+            </div>
 
-            <p>
-                Select your service and appointment time below.
-            </p>
+            <div id="businessInfo" style="display: none;">
+
+                <h2 id="businessName"></h2>
+
+                <p id="businessDescription"></p>
+
+            </div>
 
         </div>
 
 
-        <form id="bookingForm">
+        <div id="errorMessage" class="error"></div>
+
+
+        <form id="bookingForm" style="display: none;">
 
             <div class="form-group">
 
@@ -377,7 +409,7 @@
             </div>
 
 
-            <button type="submit">
+            <button type="submit" id="bookButton">
                 Book Appointment
             </button>
 
@@ -393,7 +425,7 @@
             <h2>Appointment Request Created</h2>
 
             <p>
-                Your appointment details have been recorded for this demo.
+                Your appointment has been sent to the business.
             </p>
 
 
@@ -430,43 +462,304 @@
 
 <script>
 
-    const form = document.getElementById("bookingForm");
+    // ==========================================
+    // SUPABASE CONNECTION
+    // ==========================================
 
-    const success = document.getElementById("success");
+    const SUPABASE_URL =
+        "https://jnkfzfmijjdmtebrzrux.supabase.co";
 
+    const SUPABASE_KEY =
+        "YOUR_SUPABASE_PUBLISHABLE_KEY";
 
-    form.addEventListener("submit", function(event) {
+    const { createClient } = supabase;
 
-        event.preventDefault();
-
-
-        const name =
-            document.getElementById("customerName").value;
-
-        const service =
-            document.getElementById("service").value;
-
-        const date =
-            document.getElementById("date").value;
-
-        const time =
-            document.getElementById("time").value;
+    const db = createClient(
+        SUPABASE_URL,
+        SUPABASE_KEY
+    );
 
 
-        document.getElementById("showName").textContent = name;
+    // ==========================================
+    // GET BUSINESS SLUG
+    // ==========================================
 
-        document.getElementById("showService").textContent = service;
+    const urlParams = new URLSearchParams(
+        window.location.search
+    );
 
-        document.getElementById("showDate").textContent = date;
+    const businessSlug =
+        urlParams.get("business");
 
-        document.getElementById("showTime").textContent = time;
+
+    // ==========================================
+    // PAGE ELEMENTS
+    // ==========================================
+
+    const loadingBusiness =
+        document.getElementById("loadingBusiness");
+
+    const businessInfo =
+        document.getElementById("businessInfo");
+
+    const businessName =
+        document.getElementById("businessName");
+
+    const businessDescription =
+        document.getElementById("businessDescription");
+
+    const bookingForm =
+        document.getElementById("bookingForm");
+
+    const errorMessage =
+        document.getElementById("errorMessage");
 
 
-        form.style.display = "none";
+    let currentBusiness = null;
 
-        success.style.display = "block";
 
-    });
+    // ==========================================
+    // SHOW ERROR
+    // ==========================================
+
+    function showError(message) {
+
+        loadingBusiness.style.display = "none";
+
+        errorMessage.textContent = message;
+
+        errorMessage.style.display = "block";
+    }
+
+
+    // ==========================================
+    // LOAD BUSINESS
+    // ==========================================
+
+    async function loadBusiness() {
+
+        if (!businessSlug) {
+
+            showError(
+                "No business was specified."
+            );
+
+            return;
+        }
+
+
+        const { data, error } = await db
+            .from("businesses")
+            .select("*")
+            .eq("slug", businessSlug)
+            .single();
+
+
+        if (error) {
+
+            console.error(
+                "Business loading error:",
+                error
+            );
+
+            showError(
+                "We could not find this business."
+            );
+
+            return;
+        }
+
+
+        if (!data) {
+
+            showError(
+                "Business not found."
+            );
+
+            return;
+        }
+
+
+        currentBusiness = data;
+
+
+        businessName.textContent =
+            data.name;
+
+        businessDescription.textContent =
+            data.description ||
+            "Select your service and appointment time below.";
+
+
+        loadingBusiness.style.display =
+            "none";
+
+        businessInfo.style.display =
+            "block";
+
+        bookingForm.style.display =
+            "block";
+    }
+
+
+    // ==========================================
+    // BOOK APPOINTMENT
+    // ==========================================
+
+    bookingForm.addEventListener(
+        "submit",
+        async function(event) {
+
+            event.preventDefault();
+
+
+            const bookButton =
+                document.getElementById(
+                    "bookButton"
+                );
+
+            bookButton.disabled = true;
+
+            bookButton.textContent =
+                "Booking...";
+
+
+            const name =
+                document.getElementById(
+                    "customerName"
+                ).value.trim();
+
+            const phone =
+                document.getElementById(
+                    "phone"
+                ).value.trim();
+
+            const email =
+                document.getElementById(
+                    "email"
+                ).value.trim();
+
+            const service =
+                document.getElementById(
+                    "service"
+                ).value;
+
+            const date =
+                document.getElementById(
+                    "date"
+                ).value;
+
+            const time =
+                document.getElementById(
+                    "time"
+                ).value;
+
+            const notes =
+                document.getElementById(
+                    "notes"
+                ).value.trim();
+
+
+            console.log(
+                "Booking for business:",
+                currentBusiness
+            );
+
+
+            // ==================================
+            // SAVE APPOINTMENT
+            // ==================================
+
+            const { data, error } = await db
+                .from("appointments")
+                .insert([
+                    {
+                        business_id:
+                            currentBusiness.id,
+
+                        customer:
+                            name,
+
+                        phone:
+                            phone,
+
+                        email:
+                            email || null,
+
+                        service:
+                            service,
+
+                        date:
+                            date,
+
+                        time:
+                            time,
+
+                        notes:
+                            notes || null
+                    }
+                ]);
+
+
+            if (error) {
+
+                console.error(
+                    "Booking error:",
+                    error
+                );
+
+                alert(
+                    "Something went wrong: " +
+                    error.message
+                );
+
+                bookButton.disabled = false;
+
+                bookButton.textContent =
+                    "Book Appointment";
+
+                return;
+            }
+
+
+            // ==================================
+            // SHOW SUCCESS
+            // ==================================
+
+            document.getElementById(
+                "showName"
+            ).textContent = name;
+
+            document.getElementById(
+                "showService"
+            ).textContent = service;
+
+            document.getElementById(
+                "showDate"
+            ).textContent = date;
+
+            document.getElementById(
+                "showTime"
+            ).textContent = time;
+
+
+            bookingForm.style.display =
+                "none";
+
+            document.getElementById(
+                "success"
+            ).style.display =
+                "block";
+
+        }
+    );
+
+
+    // ==========================================
+    // START
+    // ==========================================
+
+    loadBusiness();
 
 </script>
 
