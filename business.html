@@ -1,485 +1,332 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AppointmentOS - Create Business</title>
 
-    <title>Business Setup | AppointmentOS</title>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
 
-    <style>
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: Arial, sans-serif;
-        }
+    body {
+      font-family: Arial, sans-serif;
+      background: #f5f7fb;
+      color: #172033;
+    }
 
-        body {
-            background: #f5f7fb;
-            color: #172033;
-        }
+    header {
+      background: #0b1f3a;
+      color: white;
+      padding: 20px 7%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
 
-        header {
-            height: 70px;
-            background: #071a3d;
-            color: white;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 0 7%;
-        }
+    .logo {
+      font-size: 24px;
+      font-weight: bold;
+    }
 
-        .logo {
-            font-size: 24px;
-            font-weight: bold;
-        }
+    header a {
+      color: white;
+      text-decoration: none;
+    }
 
-        .logo span {
-            color: #4da3ff;
-        }
+    .container {
+      max-width: 700px;
+      margin: 50px auto;
+      padding: 0 20px;
+    }
 
-        .back {
-            color: white;
-            text-decoration: none;
-        }
+    .card {
+      background: white;
+      padding: 35px;
+      border-radius: 18px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+    }
 
-        main {
-            max-width: 850px;
-            margin: 50px auto;
-            padding: 0 20px;
-        }
+    h1 {
+      margin-bottom: 10px;
+      font-size: 32px;
+    }
 
-        .title {
-            text-align: center;
-            margin-bottom: 35px;
-        }
+    .subtitle {
+      color: #667085;
+      margin-bottom: 30px;
+      line-height: 1.5;
+    }
 
-        .title h1 {
-            font-size: 34px;
-            margin-bottom: 10px;
-        }
+    label {
+      display: block;
+      font-weight: bold;
+      margin: 18px 0 8px;
+    }
 
-        .title p {
-            color: #667085;
-        }
+    input,
+    select,
+    textarea {
+      width: 100%;
+      padding: 14px;
+      border: 1px solid #d5d9e2;
+      border-radius: 10px;
+      font-size: 16px;
+      outline: none;
+    }
 
-        .card {
-            background: white;
-            border-radius: 16px;
-            padding: 35px;
-            box-shadow: 0 8px 30px rgba(0,0,0,0.06);
-        }
+    input:focus,
+    select:focus,
+    textarea:focus {
+      border-color: #0b1f3a;
+    }
 
-        .section-title {
-            font-size: 20px;
-            font-weight: bold;
-            margin-bottom: 25px;
-        }
+    textarea {
+      min-height: 110px;
+      resize: vertical;
+    }
 
-        .form-group {
-            margin-bottom: 20px;
-        }
+    button {
+      width: 100%;
+      margin-top: 25px;
+      padding: 15px;
+      border: none;
+      border-radius: 10px;
+      background: #0b1f3a;
+      color: white;
+      font-size: 17px;
+      font-weight: bold;
+      cursor: pointer;
+    }
 
-        label {
-            display: block;
-            font-weight: bold;
-            margin-bottom: 8px;
-            font-size: 14px;
-        }
+    button:hover {
+      background: #16365f;
+    }
 
-        input,
-        select,
-        textarea {
-            width: 100%;
-            padding: 13px;
-            border: 1px solid #d8dee9;
-            border-radius: 8px;
-            font-size: 15px;
-            outline: none;
-            background: white;
-        }
+    button:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
 
-        input:focus,
-        select:focus,
-        textarea:focus {
-            border-color: #2779ff;
-        }
+    .message {
+      margin-top: 20px;
+      padding: 15px;
+      border-radius: 10px;
+      display: none;
+      line-height: 1.5;
+    }
 
-        textarea {
-            min-height: 100px;
-            resize: vertical;
-        }
+    .success {
+      background: #e8f7ee;
+      color: #176b3a;
+    }
 
-        .row {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 20px;
-        }
+    .error {
+      background: #fdecec;
+      color: #a32626;
+    }
 
-        button {
-            width: 100%;
-            padding: 15px;
-            border: none;
-            border-radius: 9px;
-            background: #0b2a63;
-            color: white;
-            font-size: 16px;
-            font-weight: bold;
-            cursor: pointer;
-        }
+    .back {
+      display: inline-block;
+      margin-bottom: 25px;
+      color: #0b1f3a;
+      text-decoration: none;
+      font-weight: bold;
+    }
 
-        button:hover {
-            background: #123b82;
-        }
+    @media (max-width: 600px) {
+      .container {
+        margin: 25px auto;
+      }
 
-        button:disabled {
-            opacity: 0.6;
-            cursor: not-allowed;
-        }
+      .card {
+        padding: 25px 20px;
+      }
 
-        .message {
-            display: none;
-            margin-top: 20px;
-            padding: 16px;
-            border-radius: 9px;
-        }
-
-        .success {
-            background: #eef8f0;
-            border: 1px solid #b7dfbd;
-            color: #246b2d;
-        }
-
-        .error {
-            background: #fff1f1;
-            border: 1px solid #e0b5b5;
-            color: #a12626;
-        }
-
-        @media (max-width: 650px) {
-            header {
-                padding: 0 5%;
-            }
-
-            .title h1 {
-                font-size: 28px;
-            }
-
-            .card {
-                padding: 25px 20px;
-            }
-
-            .row {
-                grid-template-columns: 1fr;
-                gap: 0;
-            }
-        }
-    </style>
+      h1 {
+        font-size: 27px;
+      }
+    }
+  </style>
 </head>
 
 <body>
 
 <header>
-
-    <div class="logo">
-        Appointment<span>OS</span>
-    </div>
-
-    <a href="index.html" class="back">
-        ← Back Home
-    </a>
-
+  <div class="logo">AppointmentOS</div>
+  <a href="index.html">Home</a>
 </header>
 
+<div class="container">
 
-<main>
+  <a class="back" href="index.html">← Back to home</a>
 
-    <div class="title">
+  <div class="card">
 
-        <h1>Set Up Your Business</h1>
+    <h1>Create your business</h1>
 
-        <p>
-            Create your business profile so customers can book appointments.
-        </p>
+    <p class="subtitle">
+      Set up your business on AppointmentOS and prepare to start receiving
+      online appointments.
+    </p>
 
-    </div>
+    <form id="businessForm">
 
+      <label for="name">Business name</label>
+      <input
+        type="text"
+        id="name"
+        placeholder="e.g. Mpumelelo Barber Shop"
+        required
+      >
 
-    <div class="card">
+      <label for="business_type">Business type</label>
+      <select id="business_type" required>
+        <option value="">Choose a business type</option>
+        <option value="Barber">Barber</option>
+        <option value="Salon">Salon</option>
+        <option value="Doctor">Doctor</option>
+        <option value="Dentist">Dentist</option>
+        <option value="Restaurant">Restaurant</option>
+        <option value="Fitness">Fitness</option>
+        <option value="Beauty">Beauty</option>
+        <option value="Consulting">Consulting</option>
+        <option value="Other">Other</option>
+      </select>
 
-        <div class="section-title">
-            Business Information
-        </div>
+      <label for="phone">Phone number</label>
+      <input
+        type="tel"
+        id="phone"
+        placeholder="e.g. 0712345678"
+      >
 
+      <label for="email">Business email</label>
+      <input
+        type="email"
+        id="email"
+        placeholder="e.g. business@example.com"
+      >
 
-        <form id="businessForm">
+      <label for="address">Business address</label>
+      <input
+        type="text"
+        id="address"
+        placeholder="e.g. Johannesburg, Gauteng"
+      >
 
-            <div class="form-group">
+      <label for="description">Business description</label>
+      <textarea
+        id="description"
+        placeholder="Tell customers about your business..."
+      ></textarea>
 
-                <label for="businessName">
-                    Business Name
-                </label>
+      <button type="submit" id="submitButton">
+        Create Business
+      </button>
 
-                <input
-                    type="text"
-                    id="businessName"
-                    placeholder="e.g. Fresh Cuts Barber"
-                    required
-                >
+      <div id="message" class="message"></div>
 
-            </div>
+    </form>
 
-
-            <div class="form-group">
-
-                <label for="businessType">
-                    Business Type
-                </label>
-
-                <select id="businessType" required>
-
-                    <option value="">
-                        Select business type
-                    </option>
-
-                    <option value="Barber & Salon">
-                        Barber & Salon
-                    </option>
-
-                    <option value="Medical / Clinic">
-                        Medical / Clinic
-                    </option>
-
-                    <option value="Dentist">
-                        Dentist
-                    </option>
-
-                    <option value="Fitness / Gym">
-                        Fitness / Gym
-                    </option>
-
-                    <option value="Consulting">
-                        Consulting
-                    </option>
-
-                    <option value="Beauty">
-                        Beauty
-                    </option>
-
-                    <option value="Other">
-                        Other
-                    </option>
-
-                </select>
-
-            </div>
-
-
-            <div class="row">
-
-                <div class="form-group">
-
-                    <label for="phone">
-                        Phone Number
-                    </label>
-
-                    <input
-                        type="tel"
-                        id="phone"
-                        placeholder="071 123 4567"
-                    >
-
-                </div>
-
-
-                <div class="form-group">
-
-                    <label for="email">
-                        Business Email
-                    </label>
-
-                    <input
-                        type="email"
-                        id="email"
-                        placeholder="business@example.com"
-                    >
-
-                </div>
-
-            </div>
-
-
-            <div class="form-group">
-
-                <label for="address">
-                    Business Address
-                </label>
-
-                <input
-                    type="text"
-                    id="address"
-                    placeholder="e.g. 25 Main Street, Johannesburg"
-                >
-
-            </div>
-
-
-            <div class="form-group">
-
-                <label for="description">
-                    About Your Business
-                </label>
-
-                <textarea
-                    id="description"
-                    placeholder="Tell customers about your business..."
-                ></textarea>
-
-            </div>
-
-
-            <button type="submit" id="submitButton">
-                Create Business Profile
-            </button>
-
-        </form>
-
-
-        <div id="successMessage" class="message success">
-            Business profile saved successfully! ✓
-        </div>
-
-
-        <div id="errorMessage" class="message error">
-            Something went wrong. Please try again.
-        </div>
-
-    </div>
-
-</main>
-
+  </div>
+</div>
 
 <script>
 
+  // ==========================================
+  // SUPABASE CONNECTION
+  // ==========================================
+
+  const SUPABASE_URL = "https://jnkfzfmijjdmtebrzrux.supabase.co";
+  const SUPABASE_KEY = "sb_publishable_8hpsNfMPCgeP34IPnjhhrg_BVHKyHET";
+
+  const { createClient } = supabase;
+
+  const db = createClient(
+    SUPABASE_URL,
+    SUPABASE_KEY
+  );
+
+
+  // ==========================================
+  // FORM
+  // ==========================================
+
+  const form = document.getElementById("businessForm");
+  const button = document.getElementById("submitButton");
+  const message = document.getElementById("message");
+
+
+  form.addEventListener("submit", async function(event) {
+
+    event.preventDefault();
+
+    button.disabled = true;
+    button.textContent = "Creating business...";
+
+    message.style.display = "none";
+
+    const business = {
+      name: document.getElementById("name").value.trim(),
+      business_type: document.getElementById("business_type").value,
+      phone: document.getElementById("phone").value.trim() || null,
+      email: document.getElementById("email").value.trim() || null,
+      address: document.getElementById("address").value.trim() || null,
+      description: document.getElementById("description").value.trim() || null
+    };
+
+
     // ==========================================
-    // SUPABASE CONNECTION
+    // SEND BUSINESS TO SUPABASE
     // ==========================================
 
-    const SUPABASE_URL = "https://jnkfzfmijjdmtebrzrux.supabase.co";
+    const { data, error } = await db
+      .from("businesses")
+      .insert([business])
+      .select()
+      .single();
 
-    const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Impua2Z6Zm1pampkbXRlYnJ6cnV4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODg4ODA4NTUsImV4cCI6MjEwNDQ1Njg1NX0.SifyI2RnWTXPeTuYSU9IaG-0GYUYBlKcflZvYBSivtY";
 
+    if (error) {
 
-    const supabaseClient =
-        window.supabase.createClient(
-            SUPABASE_URL,
-            SUPABASE_ANON_KEY
-        );
+      console.error(error);
+
+      message.className = "message error";
+      message.style.display = "block";
+
+      message.textContent =
+        "Something went wrong: " + error.message;
+
+      button.disabled = false;
+      button.textContent = "Create Business";
+
+      return;
+    }
 
 
     // ==========================================
-    // FORM
+    // SUCCESS
     // ==========================================
 
-    const form =
-        document.getElementById("businessForm");
+    message.className = "message success";
+    message.style.display = "block";
 
-    const submitButton =
-        document.getElementById("submitButton");
+    message.innerHTML =
+      "<strong>Business created successfully! 🎉</strong><br>" +
+      "Your business has been saved to AppointmentOS.";
 
-    const successMessage =
-        document.getElementById("successMessage");
+    form.reset();
 
-    const errorMessage =
-        document.getElementById("errorMessage");
+    button.disabled = false;
+    button.textContent = "Create Business";
 
-
-    form.addEventListener("submit", async function(event) {
-
-        event.preventDefault();
-
-
-        successMessage.style.display = "none";
-        errorMessage.style.display = "none";
-
-        submitButton.disabled = true;
-        submitButton.textContent = "Saving...";
-
-
-        const businessName =
-            document.getElementById("businessName").value.trim();
-
-        const businessType =
-            document.getElementById("businessType").value;
-
-        const phone =
-            document.getElementById("phone").value.trim();
-
-        const email =
-            document.getElementById("email").value.trim();
-
-        const address =
-            document.getElementById("address").value.trim();
-
-        const description =
-            document.getElementById("description").value.trim();
-
-
-        try {
-
-            const { data, error } =
-                await supabaseClient
-                .from("businesses")
-                .insert([
-                    {
-                        name: businessName,
-                        business_type: businessType,
-                        phone: phone,
-                        email: email,
-                        address: address,
-                        description: description
-                    }
-                ])
-                .select();
-
-
-            if (error) {
-                throw error;
-            }
-
-
-            console.log("Business created:", data);
-
-
-            successMessage.style.display = "block";
-
-            form.reset();
-
-        }
-
-        catch (error) {
-
-            console.error(error);
-
-            errorMessage.textContent =
-                "Error saving business: " + error.message;
-
-            errorMessage.style.display = "block";
-
-        }
-
-        finally {
-
-            submitButton.disabled = false;
-
-            submitButton.textContent =
-                "Create Business Profile";
-
-        }
-
-    });
+  });
 
 </script>
 
