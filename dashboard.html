@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>AppointmentOS - Dashboard</title>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #071a3d;
+            color: white;
+        }
+
+        header {
+            background: #102852;
+            padding: 20px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .home-link {
+            color: white;
+            text-decoration: none;
+        }
+
+        main {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        .welcome {
+            margin-bottom: 30px;
+        }
+
+        .welcome h1 {
+            margin: 0 0 10px;
+        }
+
+        .welcome p {
+            margin: 0;
+            color: #d5def0;
+        }
+
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin-bottom: 35px;
+        }
+
+        .card {
+            background: #102852;
+            border-radius: 12px;
+            padding: 25px;
+        }
+
+        .card h2 {
+            margin-top: 0;
+            font-size: 18px;
+        }
+
+        .number {
+            font-size: 36px;
+            font-weight: bold;
+            margin-top: 15px;
+        }
+
+        .business-card {
+            margin-bottom: 35px;
+        }
+
+        .business-info {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+        }
+
+        .info-box {
+            background: #183968;
+            padding: 15px;
+            border-radius: 8px;
+        }
+
+        .info-label {
+            color: #b9c7df;
+            font-size: 13px;
+            margin-bottom: 6px;
+        }
+
+        .info-value {
+            font-size: 16px;
+        }
+
+        .appointments {
+            background: #102852;
+            border-radius: 12px;
+            padding: 25px;
+        }
+
+        .appointments h2 {
+            margin-top: 0;
+        }
+
+        .empty {
+            color: #b9c7df;
+            padding: 20px 0;
+        }
+
+        .appointment {
+            background: #183968;
+            padding: 16px;
+            border-radius: 8px;
+            margin-bottom: 12px;
+        }
+
+        .appointment:last-child {
+            margin-bottom: 0;
+        }
+
+        .appointment-name {
+            font-weight: bold;
+            font-size: 17px;
+        }
+
+        .appointment-details {
+            color: #d5def0;
+            margin-top: 6px;
+        }
+
+        .error {
+            background: #8b2635;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            display: none;
+        }
+
+        @media (max-width: 700px) {
+            header {
+                padding: 20px;
+            }
+
+            .cards {
+                grid-template-columns: 1fr;
+            }
+
+            .business-info {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <div class="logo">AppointmentOS</div>
+
+    <a class="home-link" href="index.html">
+        Home
+    </a>
+</header>
+
+<main>
+
+    <div id="errorMessage" class="error"></div>
+
+    <div class="welcome">
+        <h1>Business Dashboard</h1>
+        <p>Manage your business and appointments from one place.</p>
+    </div>
+
+    <section class="cards">
+
+        <div class="card">
+            <h2>Total Appointments</h2>
+            <div id="totalAppointments" class="number">0</div>
+        </div>
+
+        <div class="card">
+            <h2>Upcoming Appointments</h2>
+            <div id="upcomingAppointments" class="number">0</div>
+        </div>
+
+        <div class="card">
+            <h2>Total Customers</h2>
+            <div id="totalCustomers" class="number">0</div>
+        </div>
+
+    </section>
+
+    <section class="card business-card">
+
+        <h2>Business Information</h2>
+
+        <div class="business-info">
+
+            <div class="info-box">
+                <div class="info-label">Business Name</div>
+                <div id="businessName" class="info-value">Loading...</div>
+            </div>
+
+            <div class="info-box">
+                <div class="info-label">Business Type</div>
+                <div id="businessType" class="info-value">Loading...</div>
+            </div>
+
+            <div class="info-box">
+                <div class="info-label">Phone</div>
+                <div id="businessPhone" class="info-value">Loading...</div>
+            </div>
+
+            <div class="info-box">
+                <div class="info-label">Email</div>
+                <div id="businessEmail" class="info-value">Loading...</div>
+            </div>
+
+            <div class="info-box">
+                <div class="info-label">Address</div>
+                <div id="businessAddress" class="info-value">Loading...</div>
+            </div>
+
+            <div class="info-box">
+                <div class="info-label">Description</div>
+                <div id="businessDescription" class="info-value">Loading...</div>
+            </div>
+
+        </div>
+
+    </section>
+
+    <section class="appointments">
+
+        <h2>Recent Appointments</h2>
+
+        <div id="appointmentsList">
+            <div class="empty">No appointments yet.</div>
+        </div>
+
+    </section>
+
+</main>
+
+<script>
+
+    // ==============================
+    // SUPABASE CONNECTION
+    // ==============================
+
+    const SUPABASE_URL =
+        "https://jnkfzfmijjdmtebrzrux.supabase.co";
+
+    // USE YOUR SUPABASE PUBLISHABLE / ANON KEY
+    const SUPABASE_KEY =
+        "sb_publishable_8hpsNfMPCgeP34IPnjhhrg_BVHKyHET";
+
+    const { createClient } = supabase;
+
+    const db = createClient(
+        SUPABASE_URL,
+        SUPABASE_KEY
+    );
+
+
+    // ==============================
+    // LOAD BUSINESS
+    // ==============================
+
+    async function loadBusiness() {
+
+        const { data, error } = await db
+            .from("businesses")
+            .select("*")
+            .order("created_at", { ascending: false })
+            .limit(1);
+
+        if (error) {
+
+            showError(
+                "Could not load business: " +
+                error.message
+            );
+
+            return;
+        }
+
+        if (!data || data.length === 0) {
+
+            showError(
+                "No business has been created yet."
+            );
+
+            return;
+        }
+
+        const business = data[0];
+
+        document.getElementById("businessName").textContent =
+            business.name || "Not provided";
+
+        document.getElementById("businessType").textContent =
+            business.business_type || "Not provided";
+
+        document.getElementById("businessPhone").textContent =
+            business.phone || "Not provided";
+
+        document.getElementById("businessEmail").textContent =
+            business.email || "Not provided";
+
+        document.getElementById("businessAddress").textContent =
+            business.address || "Not provided";
+
+        document.getElementById("businessDescription").textContent =
+            business.description || "Not provided";
+    }
+
+
+    // ==============================
+    // SHOW ERROR
+    // ==============================
+
+    function showError(text) {
+
+        const errorBox =
+            document.getElementById("errorMessage");
+
+        errorBox.textContent = text;
+        errorBox.style.display = "block";
+    }
+
+
+    // ==============================
+    // START
+    // ==============================
+
+    loadBusiness();
+
+</script>
+
+</body>
+</html>
