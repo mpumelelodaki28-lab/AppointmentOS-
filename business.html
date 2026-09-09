@@ -290,22 +290,15 @@
       .from("businesses")
       .insert([business]);
 
-
     if (error) {
+        message.textContent = "Something went wrong: " + error.message;
+        message.className = "message error";
+        return;
+}
 
-      console.error(error);
-
-      message.className = "message error";
-      message.style.display = "block";
-
-      message.textContent =
-        "Something went wrong: " + error.message;
-
-      button.disabled = false;
-      button.textContent = "Create Business";
-
-      return;
-    }
+message.textContent = "Business created successfully! 🎉";
+message.className = "message success";
+form.reset();
 
 
     // ==========================================
