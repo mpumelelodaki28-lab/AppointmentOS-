@@ -670,35 +670,32 @@
             // SAVE APPOINTMENT
             // ==================================
 
-            const { data, error } = await db
-                .from("appointments")
-                .insert([
-                    {
-                        business_id:
-                            currentBusiness.id,
+            const { error } = await db
+    .from("appointments")
+    .insert([{
+        business_id: currentBusiness.id,
 
-                        customer:
-                            name,
+        // Customer information
+        customer: name,
+        phone: phone,
+        email: email || null,
 
-                        phone:
-                            phone,
+        // Service
+        service: service,
 
-                        email:
-                            email || null,
+        // Appointment information
+        appointment_date: date,
+        appointment_time: time,
 
-                        service:
-                            service,
+        // Keep the older columns working too
+        date: date,
+        time: time,
 
-                        date:
-                            date,
+        notes: notes || null,
 
-                        time:
-                            time,
-
-                        notes:
-                            notes || null
-                    }
-                ]);
+        // Default status
+        status: "pending"
+    }]);
 
 
             if (error) {
