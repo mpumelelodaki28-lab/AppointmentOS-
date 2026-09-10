@@ -3,281 +3,783 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AppointmentOS - Create Business</title>
 
+    <title>Create Your Business | AppointmentOS</title>
+
+    <!-- Supabase -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
     <style>
         * {
             box-sizing: border-box;
+            margin: 0;
+            padding: 0;
         }
 
         body {
-            margin: 0;
-            font-family: Arial, sans-serif;
-            background: #071a3d;
+            font-family: Arial, Helvetica, sans-serif;
+            background: #03183d;
             color: white;
+            min-height: 100vh;
         }
+
+        /* HEADER */
 
         header {
-            background: #102852;
-            padding: 20px 40px;
+            height: 105px;
+            background: #061b43;
             display: flex;
-            justify-content: space-between;
             align-items: center;
-        }
-    
-        
-        .logo {
-            font-size: 24px;
-            font-weight: bold;
+            justify-content: space-between;
+            padding: 0 5%;
+            border-bottom: 1px solid rgba(255,255,255,0.06);
         }
 
-        header a {
+        .logo {
+            font-size: 38px;
+            font-weight: 800;
+            letter-spacing: -1.5px;
+        }
+
+        .logo span {
+            color: #3288ff;
+        }
+
+        .home-link {
             color: white;
             text-decoration: none;
+            font-size: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
 
-        main {
-            max-width: 650px;
-            margin: 50px auto;
-            padding: 20px;
+        .home-link:hover {
+            color: #3288ff;
         }
 
-        .card {
-            background: #102852;
-            padding: 30px;
+        /* MAIN */
+
+        .main {
+            max-width: 1250px;
+            margin: auto;
+            padding: 90px 40px 120px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 70px;
+            align-items: center;
+        }
+
+        /* LEFT SIDE */
+
+        .hero h1 {
+            font-size: 64px;
+            line-height: 1.05;
+            margin-bottom: 30px;
+            letter-spacing: -2px;
+        }
+
+        .hero h1 span {
+            color: #3288ff;
+        }
+
+        .hero-description {
+            color: #b9d0f5;
+            font-size: 23px;
+            line-height: 1.5;
+            max-width: 500px;
+            margin-bottom: 38px;
+        }
+
+        .benefits {
+            display: flex;
+            flex-direction: column;
+            gap: 22px;
+        }
+
+        .benefit {
+            display: flex;
+            align-items: center;
+            gap: 18px;
+            color: #c9dcfa;
+            font-size: 19px;
+        }
+
+        .benefit-icon {
+            width: 48px;
+            height: 48px;
+            border: 2px solid #3288ff;
             border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 23px;
+            color: #5aa0ff;
         }
 
-        h1 {
-            margin-top: 0;
+        /* SIMPLE ILLUSTRATION */
+
+        .illustration {
+            margin-top: 55px;
+            width: 390px;
+            height: 220px;
+            position: relative;
         }
 
-        p {
-            color: #d5def0;
+        .circle-one {
+            position: absolute;
+            width: 190px;
+            height: 190px;
+            border-radius: 50%;
+            background: rgba(20, 91, 205, 0.28);
+            left: 0;
+            bottom: 0;
+        }
+
+        .circle-two {
+            position: absolute;
+            width: 130px;
+            height: 130px;
+            border-radius: 50%;
+            background: rgba(40, 130, 255, 0.25);
+            right: 20px;
+            top: 0;
+        }
+
+        .laptop {
+            position: absolute;
+            width: 280px;
+            height: 165px;
+            background: #09295c;
+            border: 5px solid #3288ff;
+            border-radius: 12px;
+            left: 35px;
+            bottom: 25px;
+            padding: 20px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+        }
+
+        .screen-line {
+            height: 12px;
+            background: #6caaff;
+            border-radius: 6px;
+            margin-bottom: 14px;
+            width: 70%;
+        }
+
+        .calendar-box {
+            background: white;
+            width: 110px;
+            height: 75px;
+            border-radius: 8px;
+            position: absolute;
+            right: 5px;
+            bottom: 45px;
+            padding: 12px;
+        }
+
+        .calendar-top {
+            width: 100%;
+            height: 12px;
+            background: #3288ff;
+            border-radius: 4px;
+            margin-bottom: 10px;
+        }
+
+        .calendar-lines {
+            width: 70%;
+            height: 7px;
+            background: #c7ddff;
+            margin-bottom: 7px;
+            border-radius: 4px;
+        }
+
+        /* FORM CARD */
+
+        .form-card {
+            background: #072657;
+            border: 1px solid #1456a8;
+            border-radius: 20px;
+            padding: 38px;
+            box-shadow: 0 25px 70px rgba(0,0,0,0.25);
+        }
+
+        .form-card h2 {
+            font-size: 32px;
+            margin-bottom: 8px;
+        }
+
+        .form-card-subtitle {
+            color: #a9c7f1;
+            font-size: 17px;
+            line-height: 1.5;
+            margin-bottom: 30px;
+        }
+
+        .form-group {
+            margin-bottom: 21px;
         }
 
         label {
             display: block;
-            margin-top: 18px;
-            margin-bottom: 7px;
-            font-weight: bold;
+            font-size: 17px;
+            font-weight: 700;
+            margin-bottom: 9px;
         }
 
         input,
         select,
         textarea {
             width: 100%;
-            padding: 13px;
-            border: none;
-            border-radius: 7px;
+            border: 1px solid #3b75b9;
+            background: #0b326b;
+            color: white;
+            border-radius: 11px;
+            padding: 16px;
             font-size: 16px;
+            outline: none;
+            font-family: inherit;
+        }
+
+        input::placeholder,
+        textarea::placeholder {
+            color: #8eb0dd;
+        }
+
+        input:focus,
+        select:focus,
+        textarea:focus {
+            border-color: #3288ff;
+            box-shadow: 0 0 0 3px rgba(50,136,255,0.15);
+        }
+
+        select {
+            appearance: auto;
+        }
+
+        select option {
+            background: #072657;
+            color: white;
         }
 
         textarea {
-            min-height: 100px;
+            min-height: 110px;
             resize: vertical;
         }
 
-        button {
+        .create-button {
             width: 100%;
-            margin-top: 25px;
-            padding: 14px;
             border: none;
-            border-radius: 7px;
-            background: #ffffff;
-            color: #071a3d;
-            font-size: 16px;
-            font-weight: bold;
+            border-radius: 11px;
+            padding: 17px;
+            background: #2583f7;
+            color: white;
+            font-size: 18px;
+            font-weight: 700;
             cursor: pointer;
+            margin-top: 8px;
         }
 
-        button:hover {
-            opacity: 0.9;
+        .create-button:hover {
+            background: #1675e9;
         }
 
-        .message {
+        .create-button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        /* MESSAGE */
+
+        #message {
             margin-top: 20px;
-            padding: 12px;
-            border-radius: 7px;
+            padding: 15px;
+            border-radius: 10px;
             display: none;
+            line-height: 1.5;
         }
 
         .success {
-            display: block;
-            background: #1d6b45;
+            display: block !important;
+            background: rgba(39, 174, 96, 0.15);
+            border: 1px solid #27ae60;
+            color: #7ff0a8;
         }
 
         .error {
-            display: block;
-            background: #8b2635;
+            display: block !important;
+            background: rgba(231, 76, 60, 0.15);
+            border: 1px solid #e74c3c;
+            color: #ffaaa3;
+        }
+
+        /* FOOTER */
+
+        footer {
+            border-top: 1px solid rgba(255,255,255,0.08);
+            text-align: center;
+            padding: 45px 20px;
+            color: #8eabd2;
+        }
+
+        .footer-logo {
+            font-size: 24px;
+            font-weight: 700;
+            color: white;
+            margin-bottom: 10px;
+        }
+
+        .footer-logo span {
+            color: #3288ff;
+        }
+
+        /* MOBILE */
+
+        @media (max-width: 850px) {
+
+            header {
+                height: 85px;
+                padding: 0 25px;
+            }
+
+            .logo {
+                font-size: 28px;
+            }
+
+            .home-link {
+                font-size: 17px;
+            }
+
+            .main {
+                grid-template-columns: 1fr;
+                padding: 55px 20px 80px;
+                gap: 50px;
+            }
+
+            .hero h1 {
+                font-size: 48px;
+            }
+
+            .hero-description {
+                font-size: 19px;
+            }
+
+            .illustration {
+                width: 100%;
+                max-width: 390px;
+                margin: 45px auto 0;
+            }
+
+            .form-card {
+                padding: 28px 22px;
+            }
+        }
+
+        @media (max-width: 500px) {
+
+            .logo {
+                font-size: 25px;
+            }
+
+            .home-link {
+                font-size: 16px;
+            }
+
+            .hero h1 {
+                font-size: 42px;
+            }
+
+            .hero-description {
+                font-size: 18px;
+            }
+
+            .benefit {
+                font-size: 16px;
+            }
+
+            .benefit-icon {
+                width: 42px;
+                height: 42px;
+                flex-shrink: 0;
+            }
+
+            .illustration {
+                transform: scale(0.85);
+                transform-origin: left center;
+                margin-bottom: -30px;
+            }
+
+            .form-card h2 {
+                font-size: 27px;
+            }
         }
     </style>
 </head>
 
 <body>
 
-<header>
+    <!-- HEADER -->
+
     <header>
-    <div class="logo">AppointmentOS</div>
+        <div class="logo">
+            Appointment<span>OS</span>
+        </div>
 
-    <div>
-        <a href="index.html">Home</a>
-        &nbsp;&nbsp;
-        <a href="dashboard.html">Dashboard</a>
-    </div>
-</header>
+        <a href="index.html" class="home-link">
+            ⌂ Home
+        </a>
+    </header>
 
 
-<main>
-    <div class="card">
+    <!-- MAIN -->
 
-        <h1>Create Your Business</h1>
+    <main class="main">
+
+        <!-- LEFT -->
+
+        <section class="hero">
+
+            <h1>
+                Create Your<br>
+                <span>Business</span>
+            </h1>
+
+            <p class="hero-description">
+                Add your business to AppointmentOS so customers
+                can book appointments with you.
+            </p>
+
+            <div class="benefits">
+
+                <div class="benefit">
+                    <div class="benefit-icon">▣</div>
+                    <span>Get more customers</span>
+                </div>
+
+                <div class="benefit">
+                    <div class="benefit-icon">◷</div>
+                    <span>Manage your appointments</span>
+                </div>
+
+                <div class="benefit">
+                    <div class="benefit-icon">↗</div>
+                    <span>Grow your business</span>
+                </div>
+
+            </div>
+
+
+            <!-- Illustration -->
+
+            <div class="illustration">
+
+                <div class="circle-one"></div>
+                <div class="circle-two"></div>
+
+                <div class="laptop">
+
+                    <div class="screen-line"></div>
+                    <div class="screen-line"></div>
+                    <div class="screen-line"></div>
+
+                </div>
+
+                <div class="calendar-box">
+                    <div class="calendar-top"></div>
+                    <div class="calendar-lines"></div>
+                    <div class="calendar-lines"></div>
+                    <div class="calendar-lines"></div>
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- RIGHT FORM -->
+
+        <section class="form-card">
+
+            <h2>Business Profile</h2>
+
+            <p class="form-card-subtitle">
+                Fill in your business details to get started.
+            </p>
+
+
+            <form id="businessForm">
+
+                <div class="form-group">
+
+                    <label for="name">
+                        Business Name
+                    </label>
+
+                    <input
+                        type="text"
+                        id="name"
+                        placeholder="Example: Mpumelelo's Barber"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="business_type">
+                        Business Type
+                    </label>
+
+                    <select id="business_type" required>
+
+                        <option value="">
+                            Select business type
+                        </option>
+
+                        <option value="Barber & Salon">
+                            Barber & Salon
+                        </option>
+
+                        <option value="Healthcare">
+                            Healthcare
+                        </option>
+
+                        <option value="Legal">
+                            Legal
+                        </option>
+
+                        <option value="Real Estate">
+                            Real Estate
+                        </option>
+
+                        <option value="Fitness">
+                            Fitness
+                        </option>
+
+                        <option value="Beauty">
+                            Beauty
+                        </option>
+
+                        <option value="Automotive">
+                            Automotive
+                        </option>
+
+                        <option value="Education">
+                            Education
+                        </option>
+
+                        <option value="Professional Services">
+                            Professional Services
+                        </option>
+
+                        <option value="Other">
+                            Other
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="phone">
+                        Phone
+                    </label>
+
+                    <input
+                        type="tel"
+                        id="phone"
+                        placeholder="Example: 071 234 5678"
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="email">
+                        Email
+                    </label>
+
+                    <input
+                        type="email"
+                        id="email"
+                        placeholder="business@example.com"
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="address">
+                        Address
+                    </label>
+
+                    <input
+                        type="text"
+                        id="address"
+                        placeholder="Business address"
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="description">
+                        Description
+                    </label>
+
+                    <textarea
+                        id="description"
+                        placeholder="Tell customers about your business"
+                    ></textarea>
+
+                </div>
+
+
+                <button
+                    type="submit"
+                    class="create-button"
+                    id="createButton"
+                >
+                    Create Business
+                </button>
+
+            </form>
+
+
+            <div id="message"></div>
+
+        </section>
+
+    </main>
+
+
+    <!-- FOOTER -->
+
+    <footer>
+
+        <div class="footer-logo">
+            Appointment<span>OS</span>
+        </div>
 
         <p>
-            Add your business to AppointmentOS so customers can book appointments with you.
+            © 2026 AppointmentOS. All rights reserved.
         </p>
 
-        <form id="businessForm">
-
-            <label for="name">Business Name</label>
-            <input
-                type="text"
-                id="name"
-                required
-                placeholder="Example: Mpumelelo's Barber Shop"
-            >
-
-            <label for="businessType">Business Type</label>
-            <select id="businessType" required>
-                <option value="">Select business type</option>
-                <option value="Barber & Salon">Barber & Salon</option>
-                <option value="Restaurant">Restaurant</option>
-                <option value="Medical">Medical</option>
-                <option value="Legal">Legal</option>
-                <option value="Fitness">Fitness</option>
-                <option value="Real Estate">Real Estate</option>
-                <option value="Automotive">Automotive</option>
-                <option value="Other">Other</option>
-            </select>
-
-            <label for="phone">Phone</label>
-            <input
-                type="tel"
-                id="phone"
-                placeholder="Example: 0712345678"
-            >
-
-            <label for="email">Email</label>
-            <input
-                type="email"
-                id="email"
-                placeholder="business@example.com"
-            >
-
-            <label for="address">Address</label>
-            <input
-                type="text"
-                id="address"
-                placeholder="Business address"
-            >
-
-            <label for="description">Description</label>
-            <textarea
-                id="description"
-                placeholder="Tell customers about your business"
-            ></textarea>
-
-            <button type="submit">Create Business</button>
-
-            <div id="message" class="message"></div>
-
-        </form>
-    </div>
-</main>
-
-<script>
-
-    // Supabase connection
-    const SUPABASE_URL = "https://jnkfzfmijjdmtebrzrux.supabase.co";
-
-    // PUT YOUR SUPABASE PUBLISHABLE / ANON KEY HERE
-    const SUPABASE_KEY = "sb_publishable_8hpsNfMPCgeP34IPnjhhrg_BVHKyHET";
-
-    const { createClient } = supabase;
-
-    const db = createClient(
-        SUPABASE_URL,
-        SUPABASE_KEY
-    );
+    </footer>
 
 
-    // Business form
-    const form = document.getElementById("businessForm");
-    const message = document.getElementById("message");
+    <!-- SUPABASE FUNCTIONALITY -->
+
+    <script>
+
+        const SUPABASE_URL =
+            "https://jnkfzfmijjdmtebrzrux.supabase.co";
+
+        const SUPABASE_KEY =
+            "sb_publishable_8hpsNfMPCgeP34IPnjhhrg_BVHKyHET";
+
+        const { createClient } = supabase;
+
+        const db = createClient(
+            SUPABASE_URL,
+            SUPABASE_KEY
+        );
 
 
-    form.addEventListener("submit", async function(event) {
+        const form =
+            document.getElementById("businessForm");
 
-        event.preventDefault();
+        const button =
+            document.getElementById("createButton");
 
-        message.style.display = "none";
-        message.textContent = "";
-
-
-        const business = {
-            name: document.getElementById("name").value.trim(),
-
-            business_type:
-                document.getElementById("businessType").value,
-
-            phone:
-                document.getElementById("phone").value.trim() || null,
-
-            email:
-                document.getElementById("email").value.trim() || null,
-
-            address:
-                document.getElementById("address").value.trim() || null,
-
-            description:
-                document.getElementById("description").value.trim() || null
-        };
+        const message =
+            document.getElementById("message");
 
 
-        console.log("Sending business:", business);
+        form.addEventListener("submit", async function(event) {
+
+            event.preventDefault();
 
 
-        const { error } = await db
-            .from("businesses")
-            .insert([business]);
+            message.className = "";
+            message.style.display = "none";
+            message.textContent = "";
+
+            button.disabled = true;
+            button.textContent = "Creating Business...";
 
 
-        if (error) {
+            const business = {
 
-            console.error("Supabase error:", error);
+                name:
+                    document.getElementById("name").value.trim(),
 
-            message.textContent =
-                "Something went wrong: " + error.message;
+                business_type:
+                    document.getElementById("business_type").value,
 
-            message.className = "message error";
+                phone:
+                    document.getElementById("phone").value.trim() || null,
 
-            return;
-        }
+                email:
+                    document.getElementById("email").value.trim() || null,
+
+                address:
+                    document.getElementById("address").value.trim() || null,
+
+                description:
+                    document.getElementById("description").value.trim() || null
+            };
 
 
-        message.textContent =
-            "Business created successfully!";
+            try {
 
-        message.className =
-            "message success";
+                const { error } = await db
+                    .from("businesses")
+                    .insert([business]);
 
-        form.reset();
 
-    });
+                if (error) {
+                    throw error;
+                }
 
-</script>
+
+                message.textContent =
+                    "Business created successfully!";
+
+                message.className = "success";
+
+
+                form.reset();
+
+            }
+
+            catch (error) {
+
+                console.error(error);
+
+                message.textContent =
+                    "Something went wrong: " + error.message;
+
+                message.className = "error";
+
+            }
+
+            finally {
+
+                button.disabled = false;
+                button.textContent = "Create Business";
+
+            }
+
+        });
+
+    </script>
 
 </body>
 </html>
