@@ -6,7 +6,6 @@
 
     <title>Create Your Business | AppointmentOS</title>
 
-    <!-- Supabase -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
     <style>
@@ -22,8 +21,6 @@
             color: white;
             min-height: 100vh;
         }
-
-        /* HEADER */
 
         header {
             height: 105px;
@@ -49,16 +46,11 @@
             color: white;
             text-decoration: none;
             font-size: 20px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
         }
 
         .home-link:hover {
             color: #3288ff;
         }
-
-        /* MAIN */
 
         .main {
             max-width: 1250px;
@@ -67,10 +59,8 @@
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 70px;
-            align-items: center;
+            align-items: start;
         }
-
-        /* LEFT SIDE */
 
         .hero h1 {
             font-size: 64px;
@@ -115,9 +105,8 @@
             justify-content: center;
             font-size: 23px;
             color: #5aa0ff;
+            flex-shrink: 0;
         }
-
-        /* SIMPLE ILLUSTRATION */
 
         .illustration {
             margin-top: 55px;
@@ -194,8 +183,6 @@
             border-radius: 4px;
         }
 
-        /* FORM CARD */
-
         .form-card {
             background: #072657;
             border: 1px solid #1456a8;
@@ -253,10 +240,6 @@
             box-shadow: 0 0 0 3px rgba(50,136,255,0.15);
         }
 
-        select {
-            appearance: auto;
-        }
-
         select option {
             background: #072657;
             color: white;
@@ -267,7 +250,12 @@
             resize: vertical;
         }
 
-        .create-button {
+        button {
+            font-family: inherit;
+        }
+
+        .create-button,
+        .add-service-button {
             width: 100%;
             border: none;
             border-radius: 11px;
@@ -280,18 +268,18 @@
             margin-top: 8px;
         }
 
-        .create-button:hover {
+        .create-button:hover,
+        .add-service-button:hover {
             background: #1675e9;
         }
 
-        .create-button:disabled {
+        button:disabled {
             opacity: 0.6;
             cursor: not-allowed;
         }
 
-        /* MESSAGE */
-
-        #message {
+        #message,
+        #serviceMessage {
             margin-top: 20px;
             padding: 15px;
             border-radius: 10px;
@@ -313,7 +301,76 @@
             color: #ffaaa3;
         }
 
-        /* FOOTER */
+        /* SERVICES */
+
+        #servicesSection {
+            display: none;
+            margin-top: 35px;
+            padding-top: 30px;
+            border-top: 1px solid rgba(255,255,255,0.12);
+        }
+
+        #servicesSection h3 {
+            font-size: 28px;
+            margin-bottom: 8px;
+        }
+
+        .services-subtitle {
+            color: #a9c7f1;
+            margin-bottom: 25px;
+            line-height: 1.5;
+        }
+
+        .service-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-top: 25px;
+        }
+
+        .service-item {
+            background: #0b326b;
+            border: 1px solid #3b75b9;
+            border-radius: 11px;
+            padding: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 15px;
+        }
+
+        .service-info strong {
+            display: block;
+            font-size: 17px;
+            margin-bottom: 5px;
+        }
+
+        .service-info span {
+            color: #a9c7f1;
+            font-size: 14px;
+        }
+
+        .delete-service {
+            background: transparent;
+            border: 1px solid #e74c3c;
+            color: #ffaaa3;
+            padding: 8px 12px;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+
+        .delete-service:hover {
+            background: rgba(231,76,60,0.15);
+        }
+
+        .business-created {
+            background: rgba(50,136,255,0.12);
+            border: 1px solid #3288ff;
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 20px;
+            color: #c9dcfa;
+        }
 
         footer {
             border-top: 1px solid rgba(255,255,255,0.08);
@@ -332,8 +389,6 @@
         .footer-logo span {
             color: #3288ff;
         }
-
-        /* MOBILE */
 
         @media (max-width: 850px) {
 
@@ -400,7 +455,6 @@
             .benefit-icon {
                 width: 42px;
                 height: 42px;
-                flex-shrink: 0;
             }
 
             .illustration {
@@ -418,330 +472,442 @@
 
 <body>
 
-    <!-- HEADER -->
+<header>
 
-    <header>
-        <div class="logo">
-            Appointment<span>OS</span>
-        </div>
+    <div class="logo">
+        Appointment<span>OS</span>
+    </div>
 
-        <a href="index.html" class="home-link">
-            ⌂ Home
-        </a>
-    </header>
+    <a href="index.html" class="home-link">
+        ⌂ Home
+    </a>
 
+</header>
 
-    <!-- MAIN -->
 
-    <main class="main">
+<main class="main">
 
-        <!-- LEFT -->
+    <!-- LEFT SIDE -->
 
-        <section class="hero">
+    <section class="hero">
 
-            <h1>
-                Create Your<br>
-                <span>Business</span>
-            </h1>
+        <h1>
+            Create Your<br>
+            <span>Business</span>
+        </h1>
 
-            <p class="hero-description">
-                Add your business to AppointmentOS so customers
-                can book appointments with you.
-            </p>
-
-            <div class="benefits">
-
-                <div class="benefit">
-                    <div class="benefit-icon">▣</div>
-                    <span>Get more customers</span>
-                </div>
-
-                <div class="benefit">
-                    <div class="benefit-icon">◷</div>
-                    <span>Manage your appointments</span>
-                </div>
-
-                <div class="benefit">
-                    <div class="benefit-icon">↗</div>
-                    <span>Grow your business</span>
-                </div>
-
-            </div>
-
-
-            <!-- Illustration -->
-
-            <div class="illustration">
-
-                <div class="circle-one"></div>
-                <div class="circle-two"></div>
-
-                <div class="laptop">
-
-                    <div class="screen-line"></div>
-                    <div class="screen-line"></div>
-                    <div class="screen-line"></div>
-
-                </div>
-
-                <div class="calendar-box">
-                    <div class="calendar-top"></div>
-                    <div class="calendar-lines"></div>
-                    <div class="calendar-lines"></div>
-                    <div class="calendar-lines"></div>
-                </div>
-
-            </div>
-
-        </section>
-
-
-        <!-- RIGHT FORM -->
-
-        <section class="form-card">
-
-            <h2>Business Profile</h2>
-
-            <p class="form-card-subtitle">
-                Fill in your business details to get started.
-            </p>
-
-
-            <form id="businessForm">
-
-                <div class="form-group">
-
-                    <label for="name">
-                        Business Name
-                    </label>
-
-                    <input
-                        type="text"
-                        id="name"
-                        placeholder="Example: Mpumelelo's Barber"
-                        required
-                    >
-
-                </div>
-
-
-                <div class="form-group">
-
-                    <label for="business_type">
-                        Business Type
-                    </label>
-
-                    <select id="business_type" required>
-
-                        <option value="">
-                            Select business type
-                        </option>
-
-                        <option value="Barber & Salon">
-                            Barber & Salon
-                        </option>
-
-                        <option value="Healthcare">
-                            Healthcare
-                        </option>
-
-                        <option value="Legal">
-                            Legal
-                        </option>
-
-                        <option value="Real Estate">
-                            Real Estate
-                        </option>
-
-                        <option value="Fitness">
-                            Fitness
-                        </option>
-
-                        <option value="Beauty">
-                            Beauty
-                        </option>
-
-                        <option value="Automotive">
-                            Automotive
-                        </option>
-
-                        <option value="Education">
-                            Education
-                        </option>
-
-                        <option value="Professional Services">
-                            Professional Services
-                        </option>
-
-                        <option value="Other">
-                            Other
-                        </option>
-
-                    </select>
-
-                </div>
-
-
-                <div class="form-group">
-
-                    <label for="phone">
-                        Phone
-                    </label>
-
-                    <input
-                        type="tel"
-                        id="phone"
-                        placeholder="Example: 071 234 5678"
-                    >
-
-                </div>
-
-
-                <div class="form-group">
-
-                    <label for="email">
-                        Email
-                    </label>
-
-                    <input
-                        type="email"
-                        id="email"
-                        placeholder="business@example.com"
-                    >
-
-                </div>
-
-
-                <div class="form-group">
-
-                    <label for="address">
-                        Address
-                    </label>
-
-                    <input
-                        type="text"
-                        id="address"
-                        placeholder="Business address"
-                    >
-
-                </div>
-
-
-                <div class="form-group">
-
-                    <label for="description">
-                        Description
-                    </label>
-
-                    <textarea
-                        id="description"
-                        placeholder="Tell customers about your business"
-                    ></textarea>
-
-                </div>
-
-
-                <button
-                    type="submit"
-                    class="create-button"
-                    id="createButton"
-                >
-                    Create Business
-                </button>
-
-            </form>
-
-
-            <div id="message"></div>
-
-        </section>
-
-    </main>
-
-
-    <!-- FOOTER -->
-
-    <footer>
-
-        <div class="footer-logo">
-            Appointment<span>OS</span>
-        </div>
-
-        <p>
-            © 2026 AppointmentOS. All rights reserved.
+        <p class="hero-description">
+            Add your business to AppointmentOS so customers
+            can book appointments with you.
         </p>
 
-    </footer>
+        <div class="benefits">
+
+            <div class="benefit">
+                <div class="benefit-icon">▣</div>
+                <span>Get more customers</span>
+            </div>
+
+            <div class="benefit">
+                <div class="benefit-icon">◷</div>
+                <span>Manage your appointments</span>
+            </div>
+
+            <div class="benefit">
+                <div class="benefit-icon">↗</div>
+                <span>Grow your business</span>
+            </div>
+
+        </div>
+
+        <div class="illustration">
+
+            <div class="circle-one"></div>
+            <div class="circle-two"></div>
+
+            <div class="laptop">
+
+                <div class="screen-line"></div>
+                <div class="screen-line"></div>
+                <div class="screen-line"></div>
+
+            </div>
+
+            <div class="calendar-box">
+
+                <div class="calendar-top"></div>
+
+                <div class="calendar-lines"></div>
+                <div class="calendar-lines"></div>
+                <div class="calendar-lines"></div>
+
+            </div>
+
+        </div>
+
+    </section>
 
 
-    <!-- SUPABASE FUNCTIONALITY -->
+    <!-- RIGHT SIDE -->
 
-    <script>
+    <section class="form-card">
 
-        const SUPABASE_URL =
-            "https://jnkfzfmijjdmtebrzrux.supabase.co";
+        <h2>Business Profile</h2>
 
-        const SUPABASE_KEY =
-            "sb_publishable_8hpsNfMPCgeP34IPnjhhrg_BVHKyHET";
-
-        const { createClient } = supabase;
-
-        const db = createClient(
-            SUPABASE_URL,
-            SUPABASE_KEY
-        );
+        <p class="form-card-subtitle">
+            Fill in your business details to get started.
+        </p>
 
 
-        const form =
-            document.getElementById("businessForm");
+        <form id="businessForm">
 
-        const button =
-            document.getElementById("createButton");
+            <div class="form-group">
 
-        const message =
-            document.getElementById("message");
+                <label for="name">
+                    Business Name
+                </label>
+
+                <input
+                    type="text"
+                    id="name"
+                    placeholder="Example: Mpumelelo's Barber"
+                    required
+                >
+
+            </div>
 
 
-        form.addEventListener("submit", async function(event) {
+            <div class="form-group">
+
+                <label for="business_type">
+                    Business Type
+                </label>
+
+                <select id="business_type" required>
+
+                    <option value="">
+                        Select business type
+                    </option>
+
+                    <option value="Barber & Salon">
+                        Barber & Salon
+                    </option>
+
+                    <option value="Healthcare">
+                        Healthcare
+                    </option>
+
+                    <option value="Legal">
+                        Legal
+                    </option>
+
+                    <option value="Real Estate">
+                        Real Estate
+                    </option>
+
+                    <option value="Fitness">
+                        Fitness
+                    </option>
+
+                    <option value="Beauty">
+                        Beauty
+                    </option>
+
+                    <option value="Automotive">
+                        Automotive
+                    </option>
+
+                    <option value="Education">
+                        Education
+                    </option>
+
+                    <option value="Professional Services">
+                        Professional Services
+                    </option>
+
+                    <option value="Other">
+                        Other
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label for="phone">
+                    Phone
+                </label>
+
+                <input
+                    type="tel"
+                    id="phone"
+                    placeholder="Example: 071 234 5678"
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label for="email">
+                    Email
+                </label>
+
+                <input
+                    type="email"
+                    id="email"
+                    placeholder="business@example.com"
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label for="address">
+                    Address
+                </label>
+
+                <input
+                    type="text"
+                    id="address"
+                    placeholder="Business address"
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label for="description">
+                    Description
+                </label>
+
+                <textarea
+                    id="description"
+                    placeholder="Tell customers about your business"
+                ></textarea>
+
+            </div>
+
+
+            <button
+                type="submit"
+                class="create-button"
+                id="createButton"
+            >
+                Create Business
+            </button>
+
+        </form>
+
+
+        <div id="message"></div>
+
+
+        <!-- SERVICES -->
+
+        <div id="servicesSection">
+
+            <h3>Add Your Services</h3>
+
+            <p class="services-subtitle">
+                Add the services customers can book with your business.
+            </p>
+
+
+            <div class="form-group">
+
+                <label for="serviceName">
+                    Service Name
+                </label>
+
+                <input
+                    type="text"
+                    id="serviceName"
+                    placeholder="Example: Haircut"
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label for="servicePrice">
+                    Price (R)
+                </label>
+
+                <input
+                    type="number"
+                    id="servicePrice"
+                    placeholder="150"
+                    min="0"
+                    step="0.01"
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label for="serviceDuration">
+                    Duration (minutes)
+                </label>
+
+                <input
+                    type="number"
+                    id="serviceDuration"
+                    placeholder="30"
+                    min="1"
+                >
+
+            </div>
+
+
+            <button
+                type="button"
+                class="add-service-button"
+                id="addServiceButton"
+            >
+                Add Service
+            </button>
+
+
+            <div id="serviceMessage"></div>
+
+
+            <div
+                id="serviceList"
+                class="service-list"
+            ></div>
+
+        </div>
+
+    </section>
+
+</main>
+
+
+<footer>
+
+    <div class="footer-logo">
+        Appointment<span>OS</span>
+    </div>
+
+    <p>
+        © 2026 AppointmentOS. All rights reserved.
+    </p>
+
+</footer>
+
+
+<script>
+
+    const SUPABASE_URL =
+        "https://jnkfzfmijjdmtebrzrux.supabase.co";
+
+    const SUPABASE_KEY =
+        "sb_publishable_8hpsNfMPCgeP34IPnjhhrg_BVHKyHET";
+
+    const { createClient } = supabase;
+
+    const db = createClient(
+        SUPABASE_URL,
+        SUPABASE_KEY
+    );
+
+
+    let currentBusinessId = null;
+
+
+    const businessForm =
+        document.getElementById("businessForm");
+
+    const createButton =
+        document.getElementById("createButton");
+
+    const message =
+        document.getElementById("message");
+
+    const servicesSection =
+        document.getElementById("servicesSection");
+
+    const addServiceButton =
+        document.getElementById("addServiceButton");
+
+    const serviceMessage =
+        document.getElementById("serviceMessage");
+
+    const serviceList =
+        document.getElementById("serviceList");
+
+
+    /* CREATE BUSINESS */
+
+    businessForm.addEventListener(
+        "submit",
+        async function(event) {
 
             event.preventDefault();
-
 
             message.className = "";
             message.style.display = "none";
             message.textContent = "";
 
-            button.disabled = true;
-            button.textContent = "Creating Business...";
+            createButton.disabled = true;
+            createButton.textContent = "Creating Business...";
 
 
             const business = {
 
                 name:
-                    document.getElementById("name").value.trim(),
+                    document
+                    .getElementById("name")
+                    .value
+                    .trim(),
 
                 business_type:
-                    document.getElementById("business_type").value,
+                    document
+                    .getElementById("business_type")
+                    .value,
 
                 phone:
-                    document.getElementById("phone").value.trim() || null,
+                    document
+                    .getElementById("phone")
+                    .value
+                    .trim() || null,
 
                 email:
-                    document.getElementById("email").value.trim() || null,
+                    document
+                    .getElementById("email")
+                    .value
+                    .trim() || null,
 
                 address:
-                    document.getElementById("address").value.trim() || null,
+                    document
+                    .getElementById("address")
+                    .value
+                    .trim() || null,
 
                 description:
-                    document.getElementById("description").value.trim() || null
+                    document
+                    .getElementById("description")
+                    .value
+                    .trim() || null
+
             };
 
 
             try {
 
-                const { error } = await db
+                const { data, error } =
+                    await db
                     .from("businesses")
-                    .insert([business]);
+                    .insert([business])
+                    .select("id")
+                    .single();
 
 
                 if (error) {
@@ -749,13 +915,20 @@
                 }
 
 
+                currentBusinessId = data.id;
+
+
                 message.textContent =
-                    "Business created successfully!";
+                    "Business created successfully! Now add your services.";
 
                 message.className = "success";
 
 
-                form.reset();
+                businessForm.style.display = "none";
+
+
+                servicesSection.style.display = "block";
+
 
             }
 
@@ -764,7 +937,8 @@
                 console.error(error);
 
                 message.textContent =
-                    "Something went wrong: " + error.message;
+                    "Something went wrong: " +
+                    error.message;
 
                 message.className = "error";
 
@@ -772,14 +946,266 @@
 
             finally {
 
-                button.disabled = false;
-                button.textContent = "Create Business";
+                createButton.disabled = false;
+                createButton.textContent =
+                    "Create Business";
 
             }
 
-        });
+        }
+    );
 
-    </script>
+
+    /* ADD SERVICE */
+
+    addServiceButton.addEventListener(
+        "click",
+        async function() {
+
+            serviceMessage.className = "";
+            serviceMessage.style.display = "none";
+            serviceMessage.textContent = "";
+
+
+            if (!currentBusinessId) {
+
+                serviceMessage.textContent =
+                    "Please create your business first.";
+
+                serviceMessage.className = "error";
+
+                return;
+
+            }
+
+
+            const name =
+                document
+                .getElementById("serviceName")
+                .value
+                .trim();
+
+            const price =
+                document
+                .getElementById("servicePrice")
+                .value;
+
+            const duration =
+                document
+                .getElementById("serviceDuration")
+                .value;
+
+
+            if (!name || !price || !duration) {
+
+                serviceMessage.textContent =
+                    "Please complete all service fields.";
+
+                serviceMessage.className = "error";
+
+                return;
+
+            }
+
+
+            addServiceButton.disabled = true;
+            addServiceButton.textContent =
+                "Adding Service...";
+
+
+            try {
+
+                const service = {
+
+                    business_id:
+                        currentBusinessId,
+
+                    name:
+                        name,
+
+                    price:
+                        Number(price),
+
+                    duration_minutes:
+                        Number(duration)
+
+                };
+
+
+                const { data, error } =
+                    await db
+                    .from("services")
+                    .insert([service])
+                    .select()
+                    .single();
+
+
+                if (error) {
+                    throw error;
+                }
+
+
+                serviceMessage.textContent =
+                    "Service added successfully.";
+
+                serviceMessage.className =
+                    "success";
+
+
+                document
+                    .getElementById("serviceName")
+                    .value = "";
+
+                document
+                    .getElementById("servicePrice")
+                    .value = "";
+
+                document
+                    .getElementById("serviceDuration")
+                    .value = "";
+
+
+                addServiceToScreen(data);
+
+            }
+
+            catch (error) {
+
+                console.error(error);
+
+                serviceMessage.textContent =
+                    "Something went wrong: " +
+                    error.message;
+
+                serviceMessage.className =
+                    "error";
+
+            }
+
+            finally {
+
+                addServiceButton.disabled = false;
+                addServiceButton.textContent =
+                    "Add Service";
+
+            }
+
+        }
+    );
+
+
+    /* DISPLAY SERVICE */
+
+    function addServiceToScreen(service) {
+
+        const item =
+            document.createElement("div");
+
+        item.className = "service-item";
+
+        item.id =
+            "service-" + service.id;
+
+
+        item.innerHTML = `
+
+            <div class="service-info">
+
+                <strong>
+                    ${escapeHtml(service.name)}
+                </strong>
+
+                <span>
+                    R${Number(service.price).toFixed(2)}
+                    •
+                    ${service.duration_minutes} minutes
+                </span>
+
+            </div>
+
+            <button
+                type="button"
+                class="delete-service"
+                onclick="deleteService(${service.id})"
+            >
+                Delete
+            </button>
+
+        `;
+
+
+        serviceList.appendChild(item);
+
+    }
+
+
+    /* DELETE SERVICE */
+
+    async function deleteService(serviceId) {
+
+        if (!confirm("Delete this service?")) {
+            return;
+        }
+
+
+        try {
+
+            const { error } =
+                await db
+                .from("services")
+                .delete()
+                .eq("id", serviceId)
+                .eq("business_id", currentBusinessId);
+
+
+            if (error) {
+                throw error;
+            }
+
+
+            const item =
+                document.getElementById(
+                    "service-" + serviceId
+                );
+
+
+            if (item) {
+                item.remove();
+            }
+
+
+        }
+
+        catch (error) {
+
+            console.error(error);
+
+            serviceMessage.textContent =
+                "Could not delete service: " +
+                error.message;
+
+            serviceMessage.className =
+                "error";
+
+        }
+
+    }
+
+
+    /* SECURITY FOR SERVICE NAME */
+
+    function escapeHtml(text) {
+
+        const div =
+            document.createElement("div");
+
+        div.textContent = text;
+
+        return div.innerHTML;
+
+    }
+
+</script>
 
 </body>
 </html>
