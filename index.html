@@ -1,299 +1,679 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<meta charset="UTF-8">
+    <title>AppointmentOS | Book Appointments</title>
 
-<meta name="viewport"
-content="width=device-width, initial-scale=1.0">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
 
-<title>AppointmentOS</title>
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background: #f5f7fb;
+            color: #0b1838;
+        }
 
-<style>
+        /* HEADER */
 
-* {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-    font-family: Arial, sans-serif;
-}
+        header {
+            height: 90px;
+            background: #06183d;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 6%;
+        }
 
-body {
-    background: #f4f6f9;
-    color: #222;
-}
+        .logo {
+            color: white;
+            font-size: 35px;
+            font-weight: 800;
+            letter-spacing: -1.5px;
+        }
 
-/* HEADER */
+        .logo span {
+            color: #3288ff;
+        }
 
-header {
-    background: #071a3d;
-    color: white;
-    padding: 20px 7%;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
+        .business-link {
+            color: white;
+            text-decoration: none;
+            border: 1px solid white;
+            border-radius: 10px;
+            padding: 14px 27px;
+            font-size: 17px;
+            transition: 0.2s;
+        }
 
-.logo {
-    font-size: 25px;
-    font-weight: bold;
-}
+        .business-link:hover {
+            background: white;
+            color: #06183d;
+        }
 
-.business-login {
-    color: white;
-    text-decoration: none;
-    padding: 10px 18px;
-    border: 1px solid white;
-    border-radius: 7px;
-}
+        /* HERO */
 
-/* HERO */
+        .hero {
+            max-width: 1200px;
+            min-height: 680px;
+            margin: auto;
+            padding: 90px 40px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            align-items: center;
+            gap: 70px;
+        }
 
-.hero {
-    min-height: 80vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    padding: 40px 20px;
-}
+        .hero-content h1 {
+            font-size: 64px;
+            line-height: 1.05;
+            letter-spacing: -2px;
+            margin-bottom: 28px;
+        }
 
-.hero-content {
-    max-width: 750px;
-}
+        .hero-content h1 span {
+            color: #2784f7;
+        }
 
-.hero h1 {
-    font-size: 48px;
-    color: #071a3d;
-    margin-bottom: 20px;
-}
+        .hero-content p {
+            font-size: 21px;
+            line-height: 1.6;
+            color: #68738a;
+            max-width: 540px;
+            margin-bottom: 35px;
+        }
 
-.hero p {
-    font-size: 19px;
-    color: #666;
-    line-height: 1.6;
-    margin-bottom: 30px;
-}
+        .buttons {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
 
-.buttons {
-    display: flex;
-    justify-content: center;
-    gap: 15px;
-    flex-wrap: wrap;
-}
+        .primary-button,
+        .secondary-button {
+            text-decoration: none;
+            padding: 17px 28px;
+            border-radius: 10px;
+            font-size: 17px;
+            font-weight: 700;
+            display: inline-block;
+            transition: 0.2s;
+        }
 
-.button {
-    display: inline-block;
-    padding: 14px 25px;
-    border-radius: 8px;
-    text-decoration: none;
-    font-weight: bold;
-}
+        .primary-button {
+            background: #2784f7;
+            color: white;
+        }
 
-.primary {
-    background: #071a3d;
-    color: white;
-}
+        .primary-button:hover {
+            background: #116fdc;
+        }
 
-.secondary {
-    background: white;
-    color: #071a3d;
-    border: 1px solid #071a3d;
-}
+        .secondary-button {
+            border: 2px solid #0b1838;
+            color: #0b1838;
+            background: white;
+        }
 
-/* FEATURES */
+        .secondary-button:hover {
+            background: #0b1838;
+            color: white;
+        }
 
-.features {
-    background: white;
-    padding: 60px 7%;
-}
+        /* HERO VISUAL */
 
-.features h2 {
-    text-align: center;
-    color: #071a3d;
-    margin-bottom: 35px;
-}
+        .visual {
+            background: #06183d;
+            border-radius: 25px;
+            min-height: 420px;
+            padding: 35px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 25px 60px rgba(0,0,0,0.12);
+        }
 
-.feature-grid {
-    display: grid;
-    grid-template-columns:
-        repeat(auto-fit, minmax(220px, 1fr));
+        .visual h2 {
+            color: white;
+            font-size: 29px;
+            margin-bottom: 12px;
+        }
 
-    gap: 20px;
-}
+        .visual-text {
+            color: #a9c7ef;
+            line-height: 1.5;
+            margin-bottom: 25px;
+        }
 
-.feature {
-    padding: 25px;
-    background: #f4f6f9;
-    border-radius: 12px;
-}
+        .calendar {
+            background: white;
+            border-radius: 16px;
+            padding: 22px;
+            max-width: 390px;
+            margin: auto;
+            box-shadow: 0 20px 45px rgba(0,0,0,0.2);
+        }
 
-.feature h3 {
-    color: #071a3d;
-    margin-bottom: 10px;
-}
+        .calendar-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            font-weight: 700;
+            color: #0b1838;
+        }
 
-.feature p {
-    color: #666;
-    line-height: 1.5;
-}
+        .calendar-header span {
+            color: #2784f7;
+        }
 
-/* FOOTER */
+        .appointment {
+            display: flex;
+            align-items: center;
+            gap: 13px;
+            padding: 13px;
+            border-radius: 9px;
+            background: #eef5ff;
+            margin-bottom: 10px;
+        }
 
-footer {
-    text-align: center;
-    padding: 25px;
-    background: #071a3d;
-    color: white;
-}
+        .time {
+            font-weight: 700;
+            color: #2784f7;
+            min-width: 55px;
+        }
 
-@media (max-width: 600px) {
+        .appointment-name {
+            color: #27334b;
+            font-weight: 600;
+        }
 
-    .hero h1 {
-        font-size: 36px;
-    }
+        .appointment-service {
+            color: #7a8498;
+            font-size: 13px;
+            margin-top: 3px;
+        }
 
-    header {
-        padding: 18px 20px;
-    }
+        /* FEATURES */
 
-}
+        .features {
+            background: white;
+            padding: 80px 30px;
+        }
 
-</style>
+        .features-container {
+            max-width: 1100px;
+            margin: auto;
+        }
 
+        .section-title {
+            text-align: center;
+            font-size: 38px;
+            margin-bottom: 12px;
+        }
+
+        .section-subtitle {
+            text-align: center;
+            color: #707b90;
+            font-size: 18px;
+            margin-bottom: 45px;
+        }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+        }
+
+        .feature {
+            padding: 30px 22px;
+            border: 1px solid #e2e7ef;
+            border-radius: 15px;
+            text-align: center;
+            background: #fafcff;
+        }
+
+        .feature-icon {
+            width: 55px;
+            height: 55px;
+            margin: 0 auto 18px;
+            border-radius: 13px;
+            background: #e8f2ff;
+            color: #2784f7;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 25px;
+            font-weight: bold;
+        }
+
+        .feature h3 {
+            margin-bottom: 10px;
+            font-size: 19px;
+        }
+
+        .feature p {
+            color: #727d91;
+            line-height: 1.5;
+            font-size: 14px;
+        }
+
+        /* CALL TO ACTION */
+
+        .cta {
+            background: #06183d;
+            text-align: center;
+            padding: 75px 25px;
+            color: white;
+        }
+
+        .cta h2 {
+            font-size: 40px;
+            margin-bottom: 15px;
+        }
+
+        .cta p {
+            color: #aec4e5;
+            font-size: 18px;
+            margin-bottom: 28px;
+        }
+
+        /* FOOTER */
+
+        footer {
+            background: #031332;
+            color: #91a6c8;
+            text-align: center;
+            padding: 35px 20px;
+        }
+
+        .footer-logo {
+            color: white;
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .footer-logo span {
+            color: #3288ff;
+        }
+
+        /* MOBILE */
+
+        @media (max-width: 850px) {
+
+            header {
+                height: 82px;
+                padding: 0 25px;
+            }
+
+            .logo {
+                font-size: 27px;
+            }
+
+            .business-link {
+                padding: 11px 17px;
+                font-size: 15px;
+            }
+
+            .hero {
+                grid-template-columns: 1fr;
+                padding: 65px 25px;
+                gap: 45px;
+                text-align: center;
+            }
+
+            .hero-content h1 {
+                font-size: 48px;
+            }
+
+            .hero-content p {
+                font-size: 18px;
+                margin-left: auto;
+                margin-right: auto;
+            }
+
+            .buttons {
+                justify-content: center;
+            }
+
+            .visual {
+                min-height: auto;
+            }
+
+            .feature-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .section-title {
+                font-size: 32px;
+            }
+        }
+
+        @media (max-width: 520px) {
+
+            header {
+                padding: 0 18px;
+            }
+
+            .logo {
+                font-size: 23px;
+            }
+
+            .business-link {
+                font-size: 14px;
+                padding: 10px 14px;
+            }
+
+            .hero {
+                padding: 55px 18px;
+            }
+
+            .hero-content h1 {
+                font-size: 42px;
+            }
+
+            .hero-content p {
+                font-size: 17px;
+            }
+
+            .primary-button,
+            .secondary-button {
+                width: 100%;
+            }
+
+            .visual {
+                padding: 25px 18px;
+            }
+
+            .visual h2 {
+                font-size: 25px;
+            }
+
+            .feature-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .cta h2 {
+                font-size: 31px;
+            }
+        }
+    </style>
 </head>
 
 <body>
 
+    <!-- HEADER -->
 
-<header>
+    <header>
 
-    <div class="logo">
-        AppointmentOS
-    </div>
+        <div class="logo">
+            Appointment<span>OS</span>
+        </div>
 
-    <a
-        href="business.html"
-        class="business-login">
-
-        Business
-
-    </a>
-
-</header>
-
-
-<section class="hero">
-
-    <div class="hero-content">
-
-        <h1>
-            Book appointments without the waiting.
-        </h1>
-
-        <p>
-            AppointmentOS connects customers with
-            businesses so appointments can be booked
-            quickly and easily.
-        </p>
-
-        <div class="buttons">
-
-            <a href="businesses.html">
-                Book an Appointment
+        <a href="business.html" class="business-link">
+            Business
         </a>
 
-            <a
-                href="business.html"
-                class="button secondary">
-
-                I'm a Business
-
-            </a>
-
-        </div>
-
-    </div>
-
-</section>
+    </header>
 
 
-<section class="features">
+    <!-- HERO -->
 
-    <h2>
-        Everything in one place
-    </h2>
+    <section class="hero">
 
-    <div class="feature-grid">
+        <div class="hero-content">
 
-        <div class="feature">
-
-            <h3>
-                📅 Easy Booking
-            </h3>
+            <h1>
+                Book appointments<br>
+                <span>without the waiting.</span>
+            </h1>
 
             <p>
-                Customers can choose a service,
-                date and time and book online.
+                AppointmentOS connects customers with businesses
+                so appointments can be booked quickly and easily.
             </p>
+
+            <div class="buttons">
+
+                <!-- IMPORTANT:
+                     This goes to businesses.html,
+                     NOT directly to booking.html.
+                -->
+
+                <a
+                    href="businesses.html"
+                    class="primary-button"
+                >
+                    Book an Appointment
+                </a>
+
+                <a
+                    href="business.html"
+                    class="secondary-button"
+                >
+                    I'm a Business
+                </a>
+
+            </div>
 
         </div>
 
 
-        <div class="feature">
+        <!-- VISUAL -->
 
-            <h3>
-                👥 Customer Management
-            </h3>
+        <div class="visual">
 
-            <p>
-                Businesses can keep track of
-                their customers and appointments.
+            <h2>Simple appointment management</h2>
+
+            <p class="visual-text">
+                Customers choose a business, select a service
+                and book a time that works for them.
             </p>
+
+            <div class="calendar">
+
+                <div class="calendar-header">
+                    <span>‹</span>
+                    <strong>Today's Appointments</strong>
+                    <span>›</span>
+                </div>
+
+                <div class="appointment">
+
+                    <div class="time">
+                        09:00
+                    </div>
+
+                    <div>
+                        <div class="appointment-name">
+                            Customer
+                        </div>
+
+                        <div class="appointment-service">
+                            Haircut
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="appointment">
+
+                    <div class="time">
+                        10:30
+                    </div>
+
+                    <div>
+                        <div class="appointment-name">
+                            Customer
+                        </div>
+
+                        <div class="appointment-service">
+                            Consultation
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="appointment">
+
+                    <div class="time">
+                        12:00
+                    </div>
+
+                    <div>
+                        <div class="appointment-name">
+                            Customer
+                        </div>
+
+                        <div class="appointment-service">
+                            General Appointment
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
 
         </div>
 
+    </section>
 
-        <div class="feature">
 
-            <h3>
-                💼 Business Dashboard
-            </h3>
+    <!-- FEATURES -->
 
-            <p>
-                Businesses can manage their
-                appointments and services.
+    <section class="features">
+
+        <div class="features-container">
+
+            <h2 class="section-title">
+                Everything in one place
+            </h2>
+
+            <p class="section-subtitle">
+                A simpler way for businesses and customers to manage appointments.
             </p>
+
+
+            <div class="feature-grid">
+
+                <div class="feature">
+
+                    <div class="feature-icon">
+                        +
+                    </div>
+
+                    <h3>
+                        Easy Booking
+                    </h3>
+
+                    <p>
+                        Customers can find a business
+                        and book an appointment in minutes.
+                    </p>
+
+                </div>
+
+
+                <div class="feature">
+
+                    <div class="feature-icon">
+                        ✓
+                    </div>
+
+                    <h3>
+                        Customer Management
+                    </h3>
+
+                    <p>
+                        Keep customer and appointment
+                        information organised.
+                    </p>
+
+                </div>
+
+
+                <div class="feature">
+
+                    <div class="feature-icon">
+                        ▣
+                    </div>
+
+                    <h3>
+                        Business Dashboard
+                    </h3>
+
+                    <p>
+                        Businesses can view and manage
+                        their appointments.
+                    </p>
+
+                </div>
+
+
+                <div class="feature">
+
+                    <div class="feature-icon">
+                        ↗
+                    </div>
+
+                    <h3>
+                        Grow Your Business
+                    </h3>
+
+                    <p>
+                        Give customers an easier way
+                        to discover and book with you.
+                    </p>
+
+                </div>
+
+            </div>
 
         </div>
 
+    </section>
 
-        <div class="feature">
 
-            <h3>
-                🔔 Booking Updates
-            </h3>
+    <!-- CTA -->
 
-            <p>
-                New bookings can be displayed
-                for the business to manage.
-            </p>
+    <section class="cta">
 
+        <h2>
+            Ready to get started?
+        </h2>
+
+        <p>
+            Find a business and book your next appointment.
+        </p>
+
+        <a
+            href="businesses.html"
+            class="primary-button"
+        >
+            Find a Business
+        </a>
+
+    </section>
+
+
+    <!-- FOOTER -->
+
+    <footer>
+
+        <div class="footer-logo">
+            Appointment<span>OS</span>
         </div>
 
-    </div>
+        <p>
+            © 2026 AppointmentOS. All rights reserved.
+        </p>
 
-</section>
-
-
-<footer>
-
-    © 2026 AppointmentOS
-
-</footer>
-
+    </footer>
 
 </body>
-
 </html>
