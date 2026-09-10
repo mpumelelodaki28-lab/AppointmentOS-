@@ -6,7 +6,6 @@
 
     <title>Find a Business | AppointmentOS</title>
 
-    <!-- Supabase -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
     <style>
@@ -14,145 +13,272 @@
             box-sizing: border-box;
             margin: 0;
             padding: 0;
-            font-family: Arial, sans-serif;
         }
 
         body {
+            font-family: Arial, Helvetica, sans-serif;
             background: #f5f7fb;
-            color: #172033;
+            color: #0b1838;
         }
 
         header {
-            height: 70px;
-            background: #071a3d;
-            color: white;
+            height: 90px;
+            background: #06183d;
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 0 7%;
+            padding: 0 6%;
         }
 
         .logo {
-            font-size: 24px;
-            font-weight: bold;
+            color: white;
+            font-size: 35px;
+            font-weight: 800;
         }
 
         .logo span {
-            color: #4da3ff;
+            color: #3288ff;
         }
 
-        .home {
+        .business-link {
             color: white;
             text-decoration: none;
-            font-size: 15px;
+            border: 1px solid white;
+            padding: 12px 22px;
+            border-radius: 9px;
         }
 
-        main {
-            max-width: 950px;
-            margin: 45px auto;
-            padding: 0 20px;
+        .business-link:hover {
+            background: white;
+            color: #06183d;
         }
 
-        .title {
+        .hero {
+            background: #06183d;
+            color: white;
+            padding: 65px 20px 80px;
             text-align: center;
+        }
+
+        .hero h1 {
+            font-size: 50px;
+            margin-bottom: 15px;
+        }
+
+        .hero h1 span {
+            color: #3288ff;
+        }
+
+        .hero p {
+            color: #b9c9e4;
+            font-size: 19px;
             margin-bottom: 30px;
         }
 
-        .title h1 {
-            font-size: 34px;
-            margin-bottom: 10px;
-        }
-
-        .title p {
-            color: #667085;
-        }
-
-        .search-box {
-            background: white;
-            padding: 20px;
-            border-radius: 14px;
-            box-shadow: 0 8px 30px rgba(0,0,0,0.06);
-            margin-bottom: 25px;
-        }
-
-        .search-box input {
+        .search {
             width: 100%;
-            padding: 15px;
-            border: 1px solid #d8dee9;
-            border-radius: 9px;
+            max-width: 650px;
+            padding: 17px 20px;
+            border: none;
+            border-radius: 12px;
             font-size: 16px;
             outline: none;
         }
 
-        .search-box input:focus {
-            border-color: #2779ff;
+        .categories {
+            max-width: 1150px;
+            margin: 35px auto 0;
+            padding: 0 20px;
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            justify-content: center;
         }
 
-        #businessList {
+        .category {
+            border: 1px solid #d8e0ed;
+            background: white;
+            color: #233453;
+            padding: 11px 17px;
+            border-radius: 30px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        .category.active,
+        .category:hover {
+            background: #2784f7;
+            color: white;
+            border-color: #2784f7;
+        }
+
+        main {
+            max-width: 1200px;
+            margin: auto;
+            padding: 50px 20px 90px;
+        }
+
+        .section-heading {
+            margin-bottom: 25px;
+        }
+
+        .section-heading h2 {
+            font-size: 30px;
+            margin-bottom: 7px;
+        }
+
+        .section-heading p {
+            color: #718096;
+        }
+
+        .business-grid {
             display: grid;
-            gap: 16px;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 25px;
         }
 
         .business-card {
             background: white;
-            padding: 22px;
-            border-radius: 14px;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+            border-radius: 18px;
+            overflow: hidden;
+            box-shadow: 0 8px 30px rgba(10, 35, 75, 0.08);
+            transition: 0.25s;
         }
 
-        .business-card h2 {
-            font-size: 21px;
-            margin-bottom: 7px;
+        .business-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(10, 35, 75, 0.14);
+        }
+
+        .business-image {
+            width: 100%;
+            height: 210px;
+            object-fit: cover;
+            display: block;
+        }
+
+        .business-content {
+            padding: 22px;
         }
 
         .business-type {
-            color: #2779ff;
+            color: #2784f7;
+            font-size: 13px;
+            font-weight: bold;
+            text-transform: uppercase;
+            margin-bottom: 8px;
+        }
+
+        .business-name {
+            font-size: 23px;
+            margin-bottom: 9px;
+        }
+
+        .location {
+            color: #68738a;
             font-size: 14px;
+            margin-bottom: 12px;
+        }
+
+        .description {
+            color: #69758a;
+            font-size: 14px;
+            line-height: 1.5;
+            min-height: 42px;
+            margin-bottom: 20px;
+        }
+
+        .book-button {
+            display: block;
+            width: 100%;
+            text-align: center;
+            text-decoration: none;
+            background: #2784f7;
+            color: white;
+            padding: 13px;
+            border-radius: 9px;
+            font-weight: bold;
+        }
+
+        .book-button:hover {
+            background: #116fdc;
+        }
+
+        .loading,
+        .empty {
+            text-align: center;
+            padding: 50px 20px;
+            color: #718096;
+            grid-column: 1 / -1;
+        }
+
+        .error {
+            background: #fff0f0;
+            color: #b42318;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 25px;
+            display: none;
+        }
+
+        footer {
+            background: #031332;
+            color: #91a6c8;
+            text-align: center;
+            padding: 35px 20px;
+        }
+
+        .footer-logo {
+            color: white;
+            font-size: 24px;
             font-weight: bold;
             margin-bottom: 10px;
         }
 
-        .business-address {
-            color: #667085;
-            font-size: 14px;
-            margin-bottom: 15px;
+        .footer-logo span {
+            color: #3288ff;
         }
 
-        .book-button {
-            display: inline-block;
-            background: #0b2a63;
-            color: white;
-            text-decoration: none;
-            padding: 12px 18px;
-            border-radius: 8px;
-            font-weight: bold;
-            font-size: 14px;
+        @media (max-width: 900px) {
+            .business-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
         }
 
-        .book-button:hover {
-            background: #123b82;
-        }
-
-        .message {
-            background: white;
-            padding: 30px;
-            border-radius: 14px;
-            text-align: center;
-            color: #667085;
-        }
-
-        @media (max-width: 650px) {
+        @media (max-width: 600px) {
 
             header {
-                padding: 0 5%;
+                height: 75px;
+                padding: 0 18px;
+            }
+
+            .logo {
+                font-size: 25px;
+            }
+
+            .business-link {
+                font-size: 14px;
+                padding: 9px 13px;
+            }
+
+            .hero {
+                padding: 50px 18px 60px;
+            }
+
+            .hero h1 {
+                font-size: 38px;
+            }
+
+            .hero p {
+                font-size: 17px;
+            }
+
+            .business-grid {
+                grid-template-columns: 1fr;
             }
 
             main {
-                margin-top: 30px;
-            }
-
-            .title h1 {
-                font-size: 28px;
+                padding-top: 35px;
             }
         }
     </style>
@@ -166,40 +292,86 @@
         Appointment<span>OS</span>
     </div>
 
-    <a href="index.html" class="home">
-        ← Home
+    <a href="business.html" class="business-link">
+        I'm a Business
     </a>
 
 </header>
 
 
+<section class="hero">
+
+    <h1>
+        Find your <span>business</span>
+    </h1>
+
+    <p>
+        Discover businesses and book your next appointment.
+    </p>
+
+    <input
+        type="text"
+        id="search"
+        class="search"
+        placeholder="Search for a business..."
+    >
+
+</section>
+
+
+<div class="categories">
+
+    <button class="category active" data-category="All">
+        All
+    </button>
+
+    <button class="category" data-category="Barber & Salon">
+        Barber & Salon
+    </button>
+
+    <button class="category" data-category="Healthcare">
+        Healthcare
+    </button>
+
+    <button class="category" data-category="Legal">
+        Legal
+    </button>
+
+    <button class="category" data-category="Real Estate">
+        Real Estate
+    </button>
+
+    <button class="category" data-category="Fitness">
+        Fitness
+    </button>
+
+    <button class="category" data-category="Education">
+        Education
+    </button>
+
+</div>
+
+
 <main>
 
-    <div class="title">
+    <div class="section-heading">
 
-        <h1>Find a Business</h1>
+        <h2>Businesses near you</h2>
 
         <p>
-            Search for a business and book an appointment.
+            Choose a business to view its services and book.
         </p>
 
     </div>
 
+    <div id="errorMessage" class="error"></div>
 
-    <div class="search-box">
+    <div
+        id="businessGrid"
+        class="business-grid"
+    >
 
-        <input
-            type="text"
-            id="searchInput"
-            placeholder="Search for a business..."
-        >
-
-    </div>
-
-
-    <div id="businessList">
-
-        <div class="message">
+        <div class="loading">
             Loading businesses...
         </div>
 
@@ -208,10 +380,23 @@
 </main>
 
 
+<footer>
+
+    <div class="footer-logo">
+        Appointment<span>OS</span>
+    </div>
+
+    <p>
+        © 2026 AppointmentOS. All rights reserved.
+    </p>
+
+</footer>
+
+
 <script>
 
     // ==========================================
-    // SUPABASE CONNECTION
+    // SUPABASE
     // ==========================================
 
     const SUPABASE_URL =
@@ -229,17 +414,60 @@
 
 
     // ==========================================
-    // PAGE ELEMENTS
+    // VARIABLES
     // ==========================================
 
-    const businessList =
-        document.getElementById("businessList");
-
-    const searchInput =
-        document.getElementById("searchInput");
-
-
     let businesses = [];
+
+    let selectedCategory = "All";
+
+    const grid =
+        document.getElementById("businessGrid");
+
+    const search =
+        document.getElementById("search");
+
+    const errorMessage =
+        document.getElementById("errorMessage");
+
+
+    // ==========================================
+    // BUSINESS IMAGES
+    // ==========================================
+
+    function getBusinessImage(type) {
+
+        const images = {
+
+            "Barber & Salon":
+                "https://images.unsplash.com/photo-1560066984-138dadb4c035?auto=format&fit=crop&w=900&q=80",
+
+            "Healthcare":
+                "https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?auto=format&fit=crop&w=900&q=80",
+
+            "Legal":
+                "https://images.unsplash.com/photo-1505664194779-8beaceb93744?auto=format&fit=crop&w=900&q=80",
+
+            "Real Estate":
+                "https://images.unsplash.com/photo-1560518883-ce09059eeffa?auto=format&fit=crop&w=900&q=80",
+
+            "Fitness":
+                "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?auto=format&fit=crop&w=900&q=80",
+
+            "Education":
+                "https://images.unsplash.com/photo-1523050854058-8df90110c9f1?auto=format&fit=crop&w=900&q=80",
+
+            "Beauty":
+                "https://images.unsplash.com/photo-1562322140-8baeececf3df?auto=format&fit=crop&w=900&q=80",
+
+            "Automotive":
+                "https://images.unsplash.com/photo-1487754180451-c456f719a1fc?auto=format&fit=crop&w=900&q=80"
+
+        };
+
+        return images[type] ||
+            "https://images.unsplash.com/photo-1497366754035-f200968a6e72?auto=format&fit=crop&w=900&q=80";
+    }
 
 
     // ==========================================
@@ -250,11 +478,9 @@
 
         const { data, error } = await db
             .from("businesses")
-            .select(
-                "id, name, business_type, address, description, slug"
-            )
-            .order("name", {
-                ascending: true
+            .select("*")
+            .order("created_at", {
+                ascending: false
             });
 
 
@@ -265,11 +491,14 @@
                 error
             );
 
-            businessList.innerHTML = `
-                <div class="message">
-                    Unable to load businesses.
-                </div>
-            `;
+            errorMessage.textContent =
+                "Could not load businesses: " +
+                error.message;
+
+            errorMessage.style.display =
+                "block";
+
+            grid.innerHTML = "";
 
             return;
         }
@@ -277,21 +506,66 @@
 
         businesses = data || [];
 
-        displayBusinesses(businesses);
+        renderBusinesses();
     }
 
 
     // ==========================================
-    // DISPLAY BUSINESSES
+    // RENDER BUSINESSES
     // ==========================================
 
-    function displayBusinesses(list) {
+    function renderBusinesses() {
 
-        if (list.length === 0) {
+        const searchText =
+            search.value
+                .trim()
+                .toLowerCase();
 
-            businessList.innerHTML = `
-                <div class="message">
-                    No businesses found.
+
+        const filtered =
+            businesses.filter(function(business) {
+
+                const matchesCategory =
+                    selectedCategory === "All" ||
+                    business.business_type ===
+                    selectedCategory;
+
+
+                const matchesSearch =
+                    !searchText ||
+
+                    (business.name || "")
+                        .toLowerCase()
+                        .includes(searchText) ||
+
+                    (business.business_type || "")
+                        .toLowerCase()
+                        .includes(searchText) ||
+
+                    (business.address || "")
+                        .toLowerCase()
+                        .includes(searchText);
+
+
+                return matchesCategory &&
+                       matchesSearch;
+
+            });
+
+
+        if (filtered.length === 0) {
+
+            grid.innerHTML = `
+                <div class="empty">
+
+                    <h3>
+                        No businesses found
+                    </h3>
+
+                    <p>
+                        Try another search or category.
+                    </p>
+
                 </div>
             `;
 
@@ -299,46 +573,71 @@
         }
 
 
-        businessList.innerHTML = "";
+        grid.innerHTML =
+            filtered.map(function(business) {
+
+                /*
+                 * IMPORTANT FIX
+                 *
+                 * We now use the database ID.
+                 *
+                 * This works even when the
+                 * business slug is NULL.
+                 */
+
+                const businessId =
+                    business.id;
 
 
-        list.forEach(function(business) {
+                return `
 
-            const card =
-                document.createElement("div");
+                    <article class="business-card">
 
-            card.className =
-                "business-card";
+                        <img
+                            class="business-image"
+                            src="${getBusinessImage(
+                                business.business_type
+                            )}"
+                            alt="${business.name || "Business"}"
+                        >
 
+                        <div class="business-content">
 
-            card.innerHTML = `
+                            <div class="business-type">
+                                ${business.business_type || "Business"}
+                            </div>
 
-                <h2>
-                    ${escapeHTML(business.name)}
-                </h2>
+                            <h3 class="business-name">
+                                ${business.name || "Unnamed Business"}
+                            </h3>
 
-                <div class="business-type">
-                    ${escapeHTML(business.business_type || "Business")}
-                </div>
+                            <div class="location">
+                                ${business.address || "Location not provided"}
+                            </div>
 
-                <div class="business-address">
-                    ${escapeHTML(business.address || "Address not provided")}
-                </div>
+                            <p class="description">
 
-                <a
-                    class="book-button"
-                    href="booking.html?business=${encodeURIComponent(business.slug)}"
-                >
-                    Book Appointment
-                </a>
+                                ${
+                                    business.description ||
+                                    "View this business and book an appointment."
+                                }
 
-            `;
+                            </p>
 
+                            <a
+                                class="book-button"
+                                href="booking.html?business_id=${businessId}"
+                            >
+                                View & Book
+                            </a>
 
-            businessList.appendChild(card);
+                        </div>
 
-        });
+                    </article>
 
+                `;
+
+            }).join("");
     }
 
 
@@ -346,61 +645,48 @@
     // SEARCH
     // ==========================================
 
-    searchInput.addEventListener(
+    search.addEventListener(
         "input",
-        function() {
-
-            const search =
-                searchInput.value
-                    .toLowerCase()
-                    .trim();
-
-
-            const filtered =
-                businesses.filter(function(business) {
-
-                    const name =
-                        (business.name || "")
-                            .toLowerCase();
-
-                    const type =
-                        (business.business_type || "")
-                            .toLowerCase();
-
-                    const address =
-                        (business.address || "")
-                            .toLowerCase();
-
-
-                    return (
-                        name.includes(search) ||
-                        type.includes(search) ||
-                        address.includes(search)
-                    );
-
-                });
-
-
-            displayBusinesses(filtered);
-
-        }
+        renderBusinesses
     );
 
 
     // ==========================================
-    // SECURITY
+    // CATEGORY BUTTONS
     // ==========================================
 
-    function escapeHTML(value) {
+    document
+        .querySelectorAll(".category")
+        .forEach(function(button) {
 
-        const div =
-            document.createElement("div");
+            button.addEventListener(
+                "click",
+                function() {
 
-        div.textContent =
-            value || "";
+                    document
+                        .querySelectorAll(".category")
+                        .forEach(function(btn) {
 
-        return div.innerHTML;
-    }
+                            btn.classList.remove(
+                                "active"
+                            );
+
+                        });
+
+
+                    button.classList.add("active");
+
+
+                    selectedCategory =
+                        button.dataset.category;
+
+
+                    renderBusinesses();
+
+                }
+            );
+
+        });
 
 
     // ==========================================
@@ -413,4 +699,3 @@
 
 </body>
 </html>
-
