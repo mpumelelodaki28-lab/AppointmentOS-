@@ -1,12 +1,19 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>AppointmentOS | Book Appointments</title>
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>AppointmentOS | Find & Book</title>
 
     <style>
+
         * {
             box-sizing: border-box;
             margin: 0;
@@ -19,20 +26,27 @@
             color: #0b1838;
         }
 
-        /* HEADER */
+        a {
+            text-decoration: none;
+        }
+
+        /* =========================
+           HEADER
+        ========================= */
 
         header {
-            height: 90px;
+            height: 76px;
             background: #06183d;
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 0 6%;
+            padding: 0 5%;
+            color: white;
         }
 
         .logo {
             color: white;
-            font-size: 35px;
+            font-size: 29px;
             font-weight: 800;
             letter-spacing: -1.5px;
         }
@@ -41,639 +55,1369 @@
             color: #3288ff;
         }
 
-        .business-link {
-            color: white;
-            text-decoration: none;
+        .nav {
+            display: flex;
+            align-items: center;
+            gap: 30px;
+        }
+
+        .nav a {
+            color: #dce8ff;
+            font-size: 14px;
+        }
+
+        .nav a:hover {
+            color: #4da3ff;
+        }
+
+        .business-button {
             border: 1px solid white;
-            border-radius: 10px;
-            padding: 14px 27px;
-            font-size: 17px;
-            transition: 0.2s;
+            color: white !important;
+            padding: 10px 18px;
+            border-radius: 9px;
         }
 
-        .business-link:hover {
+        .business-button:hover {
             background: white;
-            color: #06183d;
+            color: #06183d !important;
         }
 
-        /* HERO */
+
+        /* =========================
+           HERO
+        ========================= */
 
         .hero {
-            max-width: 1200px;
-            min-height: 680px;
-            margin: auto;
-            padding: 90px 40px;
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            align-items: center;
-            gap: 70px;
-        }
-
-        .hero-content h1 {
-            font-size: 64px;
-            line-height: 1.05;
-            letter-spacing: -2px;
-            margin-bottom: 28px;
-        }
-
-        .hero-content h1 span {
-            color: #2784f7;
-        }
-
-        .hero-content p {
-            font-size: 21px;
-            line-height: 1.6;
-            color: #68738a;
-            max-width: 540px;
-            margin-bottom: 35px;
-        }
-
-        .buttons {
+            min-height: 610px;
+            position: relative;
             display: flex;
-            gap: 15px;
-            flex-wrap: wrap;
-        }
+            align-items: center;
 
-        .primary-button,
-        .secondary-button {
-            text-decoration: none;
-            padding: 17px 28px;
-            border-radius: 10px;
-            font-size: 17px;
-            font-weight: 700;
-            display: inline-block;
-            transition: 0.2s;
-        }
+            background:
+                linear-gradient(
+                    90deg,
+                    rgba(3,20,52,0.96) 0%,
+                    rgba(3,20,52,0.84) 42%,
+                    rgba(3,20,52,0.35) 75%,
+                    rgba(3,20,52,0.20) 100%
+                ),
 
-        .primary-button {
-            background: #2784f7;
+                url("https://images.unsplash.com/photo-1521737711867-e3b97375f902?auto=format&fit=crop&w=1800&q=85");
+
+            background-size: cover;
+            background-position: center;
             color: white;
         }
 
-        .primary-button:hover {
+        .hero-content {
+            width: 1200px;
+            max-width: 90%;
+            margin: auto;
+        }
+
+        .hero-badge {
+            display: inline-block;
+            background: #147cff;
+            padding: 9px 16px;
+            border-radius: 30px;
+            font-size: 14px;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        .hero h1 {
+            font-size: 66px;
+            line-height: 1.03;
+            max-width: 720px;
+            letter-spacing: -2.5px;
+            margin-bottom: 22px;
+        }
+
+        .hero h1 span {
+            color: #3c91ff;
+        }
+
+        .hero-description {
+            max-width: 620px;
+            color: #dce8ff;
+            font-size: 20px;
+            line-height: 1.6;
+            margin-bottom: 30px;
+        }
+
+
+        /* SEARCH */
+
+        .search-box {
+            max-width: 760px;
+            background: white;
+            border-radius: 15px;
+            padding: 7px;
+            display: flex;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.25);
+        }
+
+        .search-box input {
+            flex: 1;
+            border: none;
+            outline: none;
+            padding: 15px 18px;
+            font-size: 16px;
+            color: #172033;
+        }
+
+        .search-button {
+            border: none;
+            background: #2784f7;
+            color: white;
+            padding: 0 28px;
+            border-radius: 10px;
+            font-weight: bold;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        .search-button:hover {
             background: #116fdc;
         }
 
-        .secondary-button {
-            border: 2px solid #0b1838;
-            color: #0b1838;
-            background: white;
+
+        /* HERO CATEGORIES */
+
+        .hero-categories {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-top: 25px;
         }
 
-        .secondary-button:hover {
-            background: #0b1838;
+        .hero-category {
+            background: rgba(255,255,255,0.12);
+            border: 1px solid rgba(255,255,255,0.22);
             color: white;
+            padding: 10px 15px;
+            border-radius: 30px;
+            font-size: 13px;
+            backdrop-filter: blur(5px);
         }
 
-        /* HERO VISUAL */
 
-        .visual {
-            background: #06183d;
-            border-radius: 25px;
-            min-height: 420px;
-            padding: 35px;
-            position: relative;
-            overflow: hidden;
-            box-shadow: 0 25px 60px rgba(0,0,0,0.12);
+        /* =========================
+           SECTION
+        ========================= */
+
+        section {
+            padding: 70px 5%;
         }
 
-        .visual h2 {
-            color: white;
-            font-size: 29px;
-            margin-bottom: 12px;
-        }
-
-        .visual-text {
-            color: #a9c7ef;
-            line-height: 1.5;
-            margin-bottom: 25px;
-        }
-
-        .calendar {
-            background: white;
-            border-radius: 16px;
-            padding: 22px;
-            max-width: 390px;
+        .section-container {
+            max-width: 1200px;
             margin: auto;
-            box-shadow: 0 20px 45px rgba(0,0,0,0.2);
         }
 
-        .calendar-header {
+        .section-heading {
             display: flex;
             justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-            font-weight: 700;
-            color: #0b1838;
+            align-items: end;
+            margin-bottom: 30px;
         }
 
-        .calendar-header span {
-            color: #2784f7;
+        .section-heading h2 {
+            font-size: 35px;
+            margin-bottom: 7px;
         }
 
-        .appointment {
-            display: flex;
-            align-items: center;
-            gap: 13px;
-            padding: 13px;
-            border-radius: 9px;
-            background: #eef5ff;
-            margin-bottom: 10px;
+        .section-heading p {
+            color: #6d788d;
         }
 
-        .time {
-            font-weight: 700;
-            color: #2784f7;
-            min-width: 55px;
-        }
-
-        .appointment-name {
-            color: #27334b;
-            font-weight: 600;
-        }
-
-        .appointment-service {
-            color: #7a8498;
-            font-size: 13px;
-            margin-top: 3px;
-        }
-
-        /* FEATURES */
-
-        .features {
-            background: white;
-            padding: 80px 30px;
-        }
-
-        .features-container {
-            max-width: 1100px;
-            margin: auto;
-        }
-
-        .section-title {
-            text-align: center;
-            font-size: 38px;
-            margin-bottom: 12px;
-        }
-
-        .section-subtitle {
-            text-align: center;
-            color: #707b90;
-            font-size: 18px;
-            margin-bottom: 45px;
-        }
-
-        .feature-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 20px;
-        }
-
-        .feature {
-            padding: 30px 22px;
-            border: 1px solid #e2e7ef;
-            border-radius: 15px;
-            text-align: center;
-            background: #fafcff;
-        }
-
-        .feature-icon {
-            width: 55px;
-            height: 55px;
-            margin: 0 auto 18px;
-            border-radius: 13px;
-            background: #e8f2ff;
-            color: #2784f7;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 25px;
+        .view-link {
+            color: #147cff;
             font-weight: bold;
         }
 
-        .feature h3 {
-            margin-bottom: 10px;
-            font-size: 19px;
+
+        /* =========================
+           CATEGORIES
+        ========================= */
+
+        .categories {
+            background: white;
         }
 
-        .feature p {
-            color: #727d91;
+        .category-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 16px;
+        }
+
+        .category {
+            height: 205px;
+            border-radius: 15px;
+            overflow: hidden;
+            position: relative;
+            color: white;
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            align-items: end;
+        }
+
+        .category::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+
+            background:
+                linear-gradient(
+                    transparent 25%,
+                    rgba(0,0,0,0.85)
+                );
+        }
+
+        .category-content {
+            position: relative;
+            z-index: 2;
+            padding: 20px;
+        }
+
+        .category-content h3 {
+            font-size: 18px;
+            margin-bottom: 5px;
+        }
+
+        .category-content p {
+            font-size: 12px;
+            color: #dce8ff;
+        }
+
+        .category:hover {
+            transform: translateY(-4px);
+            transition: 0.2s;
+        }
+
+
+        /* CATEGORY IMAGES */
+
+        .barber {
+            background-image:
+                url("https://images.unsplash.com/photo-1622286342621-4bd786c2447c?auto=format&fit=crop&w=800&q=80");
+        }
+
+        .healthcare {
+            background-image:
+                url("https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?auto=format&fit=crop&w=800&q=80");
+        }
+
+        .realestate {
+            background-image:
+                url("https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=800&q=80");
+        }
+
+        .legal {
+            background-image:
+                url("https://images.unsplash.com/photo-1589829545856-d10d557cf95f?auto=format&fit=crop&w=800&q=80");
+        }
+
+        .fitness {
+            background-image:
+                url("https://images.unsplash.com/photo-1534438327276-14e5300c3a48?auto=format&fit=crop&w=800&q=80");
+        }
+
+
+        /* =========================
+           FEATURED BUSINESSES
+        ========================= */
+
+        .featured {
+            background: #06183d;
+            color: white;
+        }
+
+        .featured .section-heading p {
+            color: #9eb6d8;
+        }
+
+        .business-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 22px;
+        }
+
+        .business-card {
+            background: white;
+            border-radius: 16px;
+            overflow: hidden;
+            color: #0b1838;
+        }
+
+        .business-image {
+            height: 220px;
+            background-size: cover;
+            background-position: center;
+            position: relative;
+        }
+
+        .business-tag {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            background: #2784f7;
+            color: white;
+            padding: 7px 11px;
+            border-radius: 7px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .realestate-image {
+            background-image:
+                url("https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?auto=format&fit=crop&w=1000&q=85");
+        }
+
+        .clinic-image {
+            background-image:
+                url("https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?auto=format&fit=crop&w=1000&q=85");
+        }
+
+        .salon-image {
+            background-image:
+                url("https://images.unsplash.com/photo-1560066984-138dadb4c035?auto=format&fit=crop&w=1000&q=85");
+        }
+
+        .business-content {
+            padding: 20px;
+        }
+
+        .business-content h3 {
+            font-size: 19px;
+            margin-bottom: 5px;
+        }
+
+        .business-type {
+            color: #667085;
+            font-size: 13px;
+            margin-bottom: 12px;
+        }
+
+        .business-location {
+            color: #667085;
+            font-size: 13px;
+            margin-bottom: 10px;
+        }
+
+        .rating {
+            color: #e49b00;
+            font-size: 14px;
+            margin-bottom: 15px;
+        }
+
+        .services-preview {
+            color: #667085;
+            font-size: 13px;
+            line-height: 1.5;
+            margin-bottom: 18px;
+        }
+
+        .book-now {
+            display: block;
+            text-align: center;
+            background: #2784f7;
+            color: white;
+            padding: 12px;
+            border-radius: 9px;
+            font-weight: bold;
+        }
+
+        .book-now:hover {
+            background: #116fdc;
+        }
+
+
+        /* =========================
+           HOW IT WORKS
+        ========================= */
+
+        .how-it-works {
+            background: white;
+        }
+
+        .steps {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 25px;
+        }
+
+        .step {
+            text-align: center;
+            padding: 20px;
+        }
+
+        .step-number {
+            width: 55px;
+            height: 55px;
+            margin: auto auto 18px;
+            border-radius: 50%;
+            background: #e8f2ff;
+            color: #2784f7;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        .step h3 {
+            margin-bottom: 10px;
+        }
+
+        .step p {
+            color: #6d788d;
             line-height: 1.5;
             font-size: 14px;
         }
 
-        /* CALL TO ACTION */
 
-        .cta {
+        /* =========================
+           BUSINESS CTA
+        ========================= */
+
+        .business-cta {
             background: #06183d;
-            text-align: center;
-            padding: 75px 25px;
             color: white;
         }
 
-        .cta h2 {
-            font-size: 40px;
-            margin-bottom: 15px;
+        .business-cta-inner {
+            max-width: 1200px;
+            margin: auto;
+            border-radius: 22px;
+            overflow: hidden;
+
+            min-height: 350px;
+
+            display: flex;
+            align-items: center;
+
+            background:
+                linear-gradient(
+                    90deg,
+                    rgba(3,20,52,0.96),
+                    rgba(3,20,52,0.72)
+                ),
+
+                url("https://images.unsplash.com/photo-1556761175-b413da4baf72?auto=format&fit=crop&w=1600&q=85");
+
+            background-size: cover;
+            background-position: center;
         }
 
-        .cta p {
-            color: #aec4e5;
-            font-size: 18px;
-            margin-bottom: 28px;
+        .business-cta-content {
+            max-width: 600px;
+            padding: 60px;
         }
 
-        /* FOOTER */
+        .business-cta-content small {
+            color: #4da3ff;
+            font-weight: bold;
+        }
+
+        .business-cta-content h2 {
+            font-size: 42px;
+            margin: 12px 0 15px;
+        }
+
+        .business-cta-content p {
+            color: #c4d5ee;
+            line-height: 1.6;
+            margin-bottom: 25px;
+        }
+
+        .cta-button {
+            display: inline-block;
+            background: #2784f7;
+            color: white;
+            padding: 14px 24px;
+            border-radius: 9px;
+            font-weight: bold;
+        }
+
+        .cta-button:hover {
+            background: #116fdc;
+        }
+
+
+        /* =========================
+           FOOTER
+        ========================= */
 
         footer {
             background: #031332;
             color: #91a6c8;
-            text-align: center;
-            padding: 35px 20px;
+            padding: 45px 5%;
+        }
+
+        .footer-container {
+            max-width: 1200px;
+            margin: auto;
+
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
 
         .footer-logo {
             color: white;
             font-size: 24px;
-            font-weight: 700;
-            margin-bottom: 10px;
+            font-weight: bold;
+            margin-bottom: 8px;
         }
 
         .footer-logo span {
             color: #3288ff;
         }
 
-        /* MOBILE */
+        .footer-links {
+            display: flex;
+            gap: 25px;
+        }
 
-        @media (max-width: 850px) {
+        .footer-links a {
+            color: #91a6c8;
+            font-size: 13px;
+        }
 
-            header {
-                height: 82px;
-                padding: 0 25px;
-            }
+        .footer-links a:hover {
+            color: white;
+        }
 
-            .logo {
-                font-size: 27px;
-            }
 
-            .business-link {
-                padding: 11px 17px;
-                font-size: 15px;
+        /* =========================
+           MOBILE
+        ========================= */
+
+        @media (max-width: 900px) {
+
+            .nav {
+                display: none;
             }
 
             .hero {
+                min-height: 650px;
+            }
+
+            .hero h1 {
+                font-size: 50px;
+            }
+
+            .category-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .business-grid {
                 grid-template-columns: 1fr;
-                padding: 65px 25px;
-                gap: 45px;
+            }
+
+            .steps {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .footer-container {
+                flex-direction: column;
+                gap: 25px;
                 text-align: center;
-            }
-
-            .hero-content h1 {
-                font-size: 48px;
-            }
-
-            .hero-content p {
-                font-size: 18px;
-                margin-left: auto;
-                margin-right: auto;
-            }
-
-            .buttons {
-                justify-content: center;
-            }
-
-            .visual {
-                min-height: auto;
-            }
-
-            .feature-grid {
-                grid-template-columns: 1fr 1fr;
-            }
-
-            .section-title {
-                font-size: 32px;
             }
         }
 
-        @media (max-width: 520px) {
+
+        @media (max-width: 600px) {
 
             header {
-                padding: 0 18px;
+                height: 70px;
+                padding: 0 20px;
             }
 
             .logo {
                 font-size: 23px;
             }
 
-            .business-link {
-                font-size: 14px;
-                padding: 10px 14px;
-            }
-
             .hero {
-                padding: 55px 18px;
+                min-height: 690px;
+                padding: 50px 20px;
             }
 
-            .hero-content h1 {
+            .hero-content {
+                max-width: 100%;
+            }
+
+            .hero h1 {
                 font-size: 42px;
+                letter-spacing: -1.5px;
             }
 
-            .hero-content p {
+            .hero-description {
                 font-size: 17px;
             }
 
-            .primary-button,
-            .secondary-button {
-                width: 100%;
+            .search-box {
+                flex-direction: column;
+                padding: 8px;
             }
 
-            .visual {
-                padding: 25px 18px;
+            .search-box input {
+                min-height: 52px;
             }
 
-            .visual h2 {
-                font-size: 25px;
+            .search-button {
+                min-height: 48px;
             }
 
-            .feature-grid {
+            section {
+                padding: 55px 20px;
+            }
+
+            .section-heading {
+                display: block;
+            }
+
+            .section-heading h2 {
+                font-size: 30px;
+            }
+
+            .view-link {
+                display: inline-block;
+                margin-top: 15px;
+            }
+
+            .category-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .category {
+                height: 180px;
+            }
+
+            .steps {
                 grid-template-columns: 1fr;
             }
 
-            .cta h2 {
-                font-size: 31px;
+            .business-cta-content {
+                padding: 35px 25px;
+            }
+
+            .business-cta-content h2 {
+                font-size: 32px;
+            }
+
+            .footer-links {
+                flex-wrap: wrap;
+                justify-content: center;
             }
         }
+
     </style>
+
 </head>
+
 
 <body>
 
-    <!-- HEADER -->
 
-    <header>
+<!-- =========================
+     HEADER
+========================= -->
 
-        <div class="logo">
-            Appointment<span>OS</span>
-        </div>
+<header>
 
-        <a href="business.html" class="business-link">
-            Business
+    <div class="logo">
+        Appointment<span>OS</span>
+    </div>
+
+    <nav class="nav">
+
+        <a href="index.html">
+            Home
         </a>
 
-    </header>
-
-
-    <!-- HERO -->
-
-    <section class="hero">
-
-        <div class="hero-content">
-
-            <h1>
-                Book appointments<br>
-                <span>without the waiting.</span>
-            </h1>
-
-            <p>
-                AppointmentOS connects customers with businesses
-                so appointments can be booked quickly and easily.
-            </p>
-
-            <div class="buttons">
-
-                <!-- IMPORTANT:
-                     This goes to businesses.html,
-                     NOT directly to booking.html.
-                -->
-
-                <a
-                    href="businesses.html"
-                    class="primary-button"
-                >
-                    Book an Appointment
-                </a>
-
-                <a
-                    href="business.html"
-                    class="secondary-button"
-                >
-                    I'm a Business
-                </a>
-
-            </div>
-
-        </div>
-
-
-        <!-- VISUAL -->
-
-        <div class="visual">
-
-            <h2>Simple appointment management</h2>
-
-            <p class="visual-text">
-                Customers choose a business, select a service
-                and book a time that works for them.
-            </p>
-
-            <div class="calendar">
-
-                <div class="calendar-header">
-                    <span>‹</span>
-                    <strong>Today's Appointments</strong>
-                    <span>›</span>
-                </div>
-
-                <div class="appointment">
-
-                    <div class="time">
-                        09:00
-                    </div>
-
-                    <div>
-                        <div class="appointment-name">
-                            Customer
-                        </div>
-
-                        <div class="appointment-service">
-                            Haircut
-                        </div>
-                    </div>
-
-                </div>
-
-                <div class="appointment">
-
-                    <div class="time">
-                        10:30
-                    </div>
-
-                    <div>
-                        <div class="appointment-name">
-                            Customer
-                        </div>
-
-                        <div class="appointment-service">
-                            Consultation
-                        </div>
-                    </div>
-
-                </div>
-
-                <div class="appointment">
-
-                    <div class="time">
-                        12:00
-                    </div>
-
-                    <div>
-                        <div class="appointment-name">
-                            Customer
-                        </div>
-
-                        <div class="appointment-service">
-                            General Appointment
-                        </div>
-                    </div>
-
-                </div>
-
-            </div>
-
-        </div>
-
-    </section>
-
-
-    <!-- FEATURES -->
-
-    <section class="features">
-
-        <div class="features-container">
-
-            <h2 class="section-title">
-                Everything in one place
-            </h2>
-
-            <p class="section-subtitle">
-                A simpler way for businesses and customers to manage appointments.
-            </p>
-
-
-            <div class="feature-grid">
-
-                <div class="feature">
-
-                    <div class="feature-icon">
-                        +
-                    </div>
-
-                    <h3>
-                        Easy Booking
-                    </h3>
-
-                    <p>
-                        Customers can find a business
-                        and book an appointment in minutes.
-                    </p>
-
-                </div>
-
-
-                <div class="feature">
-
-                    <div class="feature-icon">
-                        ✓
-                    </div>
-
-                    <h3>
-                        Customer Management
-                    </h3>
-
-                    <p>
-                        Keep customer and appointment
-                        information organised.
-                    </p>
-
-                </div>
-
-
-                <div class="feature">
-
-                    <div class="feature-icon">
-                        ▣
-                    </div>
-
-                    <h3>
-                        Business Dashboard
-                    </h3>
-
-                    <p>
-                        Businesses can view and manage
-                        their appointments.
-                    </p>
-
-                </div>
-
-
-                <div class="feature">
-
-                    <div class="feature-icon">
-                        ↗
-                    </div>
-
-                    <h3>
-                        Grow Your Business
-                    </h3>
-
-                    <p>
-                        Give customers an easier way
-                        to discover and book with you.
-                    </p>
-
-                </div>
-
-            </div>
-
-        </div>
-
-    </section>
-
-
-    <!-- CTA -->
-
-    <section class="cta">
-
-        <h2>
-            Ready to get started?
-        </h2>
-
-        <p>
-            Find a business and book your next appointment.
-        </p>
-
-        <a
-            href="businesses.html"
-            class="primary-button"
-        >
+        <a href="businesses.html">
             Find a Business
         </a>
 
-    </section>
+        <a href="#categories">
+            Categories
+        </a>
+
+        <a href="#how">
+            How It Works
+        </a>
+
+        <a
+            href="business.html"
+            class="business-button"
+        >
+            Business
+        </a>
+
+    </nav>
+
+</header>
 
 
-    <!-- FOOTER -->
 
-    <footer>
+<!-- =========================
+     HERO
+========================= -->
 
-        <div class="footer-logo">
-            Appointment<span>OS</span>
+<section class="hero">
+
+    <div class="hero-content">
+
+        <div class="hero-badge">
+            Simple booking. Better businesses.
         </div>
 
-        <p>
-            © 2026 AppointmentOS. All rights reserved.
+        <h1>
+            Find a business.<br>
+            <span>Book your time.</span>
+        </h1>
+
+        <p class="hero-description">
+
+            Discover businesses and services near you.
+            Compare options, choose a service and book
+            your appointment without the waiting.
+
         </p>
 
-    </footer>
+
+        <!-- SEARCH -->
+
+        <form
+            class="search-box"
+            onsubmit="searchBusinesses(event)"
+        >
+
+            <input
+                type="text"
+                id="searchInput"
+                placeholder="Search for a business or service..."
+            >
+
+            <button
+                type="submit"
+                class="search-button"
+            >
+                Search
+            </button>
+
+        </form>
+
+
+        <!-- QUICK CATEGORIES -->
+
+        <div class="hero-categories">
+
+            <div class="hero-category">
+                Barber & Salon
+            </div>
+
+            <div class="hero-category">
+                Healthcare
+            </div>
+
+            <div class="hero-category">
+                Real Estate
+            </div>
+
+            <div class="hero-category">
+                Legal
+            </div>
+
+            <div class="hero-category">
+                Fitness
+            </div>
+
+            <div class="hero-category">
+                More
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+<!-- =========================
+     CATEGORIES
+========================= -->
+
+<section
+    class="categories"
+    id="categories"
+>
+
+    <div class="section-container">
+
+        <div class="section-heading">
+
+            <div>
+
+                <h2>
+                    Explore Categories
+                </h2>
+
+                <p>
+                    Find the service you need.
+                </p>
+
+            </div>
+
+            <a
+                href="businesses.html"
+                class="view-link"
+            >
+                View all businesses →
+            </a>
+
+        </div>
+
+
+        <div class="category-grid">
+
+
+            <a
+                href="businesses.html"
+                class="category barber"
+            >
+
+                <div class="category-content">
+
+                    <h3>
+                        Barber & Salon
+                    </h3>
+
+                    <p>
+                        Haircuts · Beauty · Styling
+                    </p>
+
+                </div>
+
+            </a>
+
+
+            <a
+                href="businesses.html"
+                class="category healthcare"
+            >
+
+                <div class="category-content">
+
+                    <h3>
+                        Healthcare
+                    </h3>
+
+                    <p>
+                        Doctors · Dentists · Clinics
+                    </p>
+
+                </div>
+
+            </a>
+
+
+            <a
+                href="businesses.html"
+                class="category realestate"
+            >
+
+                <div class="category-content">
+
+                    <h3>
+                        Real Estate
+                    </h3>
+
+                    <p>
+                        Viewings · Valuations · Agents
+                    </p>
+
+                </div>
+
+            </a>
+
+
+            <a
+                href="businesses.html"
+                class="category legal"
+            >
+
+                <div class="category-content">
+
+                    <h3>
+                        Legal
+                    </h3>
+
+                    <p>
+                        Lawyers · Consultations
+                    </p>
+
+                </div>
+
+            </a>
+
+
+            <a
+                href="businesses.html"
+                class="category fitness"
+            >
+
+                <div class="category-content">
+
+                    <h3>
+                        Fitness
+                    </h3>
+
+                    <p>
+                        Gyms · Trainers · Classes
+                    </p>
+
+                </div>
+
+            </a>
+
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+<!-- =========================
+     FEATURED BUSINESSES
+========================= -->
+
+<section class="featured">
+
+    <div class="section-container">
+
+        <div class="section-heading">
+
+            <div>
+
+                <h2>
+                    Featured Businesses
+                </h2>
+
+                <p>
+                    Discover businesses available on AppointmentOS.
+                </p>
+
+            </div>
+
+            <a
+                href="businesses.html"
+                class="view-link"
+            >
+                View all businesses →
+            </a>
+
+        </div>
+
+
+        <div class="business-grid">
+
+
+            <!-- REAL ESTATE -->
+
+            <div class="business-card">
+
+                <div
+                    class="business-image realestate-image"
+                >
+
+                    <div class="business-tag">
+                        Featured
+                    </div>
+
+                </div>
+
+                <div class="business-content">
+
+                    <h3>
+                        Boss Real Estate
+                    </h3>
+
+                    <div class="business-type">
+                        Real Estate
+                    </div>
+
+                    <div class="business-location">
+                        Johannesburg, Gauteng
+                    </div>
+
+                    <div class="rating">
+                        ★ 4.8
+                    </div>
+
+                    <div class="services-preview">
+
+                        Property Viewing ·
+                        Property Valuation ·
+                        Buyer Consultation
+
+                    </div>
+
+                    <a
+                        href="businesses.html"
+                        class="book-now"
+                    >
+                        View Business →
+                    </a>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- CLINIC -->
+
+            <div class="business-card">
+
+                <div
+                    class="business-image clinic-image"
+                ></div>
+
+                <div class="business-content">
+
+                    <h3>
+                        Gen Clinic
+                    </h3>
+
+                    <div class="business-type">
+                        Healthcare
+                    </div>
+
+                    <div class="business-location">
+                        Johannesburg, Gauteng
+                    </div>
+
+                    <div class="rating">
+                        ★ 4.7
+                    </div>
+
+                    <div class="services-preview">
+
+                        General Checkups ·
+                        Consultations ·
+                        Healthcare Services
+
+                    </div>
+
+                    <a
+                        href="businesses.html"
+                        class="book-now"
+                    >
+                        View Business →
+                    </a>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- SALON -->
+
+            <div class="business-card">
+
+                <div
+                    class="business-image salon-image"
+                ></div>
+
+                <div class="business-content">
+
+                    <h3>
+                        The Fade Lounge
+                    </h3>
+
+                    <div class="business-type">
+                        Barber & Salon
+                    </div>
+
+                    <div class="business-location">
+                        Johannesburg, Gauteng
+                    </div>
+
+                    <div class="rating">
+                        ★ 4.6
+                    </div>
+
+                    <div class="services-preview">
+
+                        Haircuts ·
+                        Beard Trims ·
+                        Styling
+
+                    </div>
+
+                    <a
+                        href="businesses.html"
+                        class="book-now"
+                    >
+                        View Business →
+                    </a>
+
+                </div>
+
+            </div>
+
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+<!-- =========================
+     HOW IT WORKS
+========================= -->
+
+<section
+    class="how-it-works"
+    id="how"
+>
+
+    <div class="section-container">
+
+        <div class="section-heading">
+
+            <div>
+
+                <h2>
+                    How AppointmentOS Works
+                </h2>
+
+                <p>
+                    Get your appointment in four simple steps.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="steps">
+
+
+            <div class="step">
+
+                <div class="step-number">
+                    1
+                </div>
+
+                <h3>
+                    Search
+                </h3>
+
+                <p>
+                    Find a business or service
+                    that suits your needs.
+                </p>
+
+            </div>
+
+
+            <div class="step">
+
+                <div class="step-number">
+                    2
+                </div>
+
+                <h3>
+                    Choose
+                </h3>
+
+                <p>
+                    Compare businesses, services,
+                    prices and available times.
+                </p>
+
+            </div>
+
+
+            <div class="step">
+
+                <div class="step-number">
+                    3
+                </div>
+
+                <h3>
+                    Book
+                </h3>
+
+                <p>
+                    Select your date and time
+                    and confirm your appointment.
+                </p>
+
+            </div>
+
+
+            <div class="step">
+
+                <div class="step-number">
+                    4
+                </div>
+
+                <h3>
+                    Done
+                </h3>
+
+                <p>
+                    Your booking is sent directly
+                    to the business.
+                </p>
+
+            </div>
+
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+<!-- =========================
+     BUSINESS CTA
+========================= -->
+
+<section class="business-cta">
+
+    <div class="business-cta-inner">
+
+        <div class="business-cta-content">
+
+            <small>
+                OWN A BUSINESS?
+            </small>
+
+            <h2>
+                Put your business on
+                <span style="color:#3288ff;">
+                    AppointmentOS
+                </span>
+            </h2>
+
+            <p>
+
+                Let customers discover your business,
+                view your services and book appointments
+                online.
+
+            </p>
+
+            <a
+                href="business.html"
+                class="cta-button"
+            >
+                Add Your Business →
+            </a>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+<!-- =========================
+     FOOTER
+========================= -->
+
+<footer>
+
+    <div class="footer-container">
+
+        <div>
+
+            <div class="footer-logo">
+                Appointment<span>OS</span>
+            </div>
+
+            <p>
+                © 2026 AppointmentOS.
+                All rights reserved.
+            </p>
+
+        </div>
+
+
+        <div class="footer-links">
+
+            <a href="index.html">
+                Home
+            </a>
+
+            <a href="businesses.html">
+                Find a Business
+            </a>
+
+            <a href="business.html">
+                Business
+            </a>
+
+            <a href="#how">
+                How It Works
+            </a>
+
+        </div>
+
+    </div>
+
+</footer>
+
+
+
+<!-- =========================
+     SEARCH FUNCTION
+========================= -->
+
+<script>
+
+    function searchBusinesses(event) {
+
+        event.preventDefault();
+
+        const search =
+            document.getElementById("searchInput")
+            .value
+            .trim();
+
+        if (search === "") {
+
+            window.location.href =
+                "businesses.html";
+
+            return;
+        }
+
+        window.location.href =
+            "businesses.html?search=" +
+            encodeURIComponent(search);
+
+    }
+
+</script>
+
 
 </body>
+
 </html>
