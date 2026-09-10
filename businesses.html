@@ -1,1 +1,416 @@
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Find a Business | AppointmentOS</title>
+
+    <!-- Supabase -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: #f5f7fb;
+            color: #172033;
+        }
+
+        header {
+            height: 70px;
+            background: #071a3d;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 7%;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .logo span {
+            color: #4da3ff;
+        }
+
+        .home {
+            color: white;
+            text-decoration: none;
+            font-size: 15px;
+        }
+
+        main {
+            max-width: 950px;
+            margin: 45px auto;
+            padding: 0 20px;
+        }
+
+        .title {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .title h1 {
+            font-size: 34px;
+            margin-bottom: 10px;
+        }
+
+        .title p {
+            color: #667085;
+        }
+
+        .search-box {
+            background: white;
+            padding: 20px;
+            border-radius: 14px;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.06);
+            margin-bottom: 25px;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 15px;
+            border: 1px solid #d8dee9;
+            border-radius: 9px;
+            font-size: 16px;
+            outline: none;
+        }
+
+        .search-box input:focus {
+            border-color: #2779ff;
+        }
+
+        #businessList {
+            display: grid;
+            gap: 16px;
+        }
+
+        .business-card {
+            background: white;
+            padding: 22px;
+            border-radius: 14px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+        }
+
+        .business-card h2 {
+            font-size: 21px;
+            margin-bottom: 7px;
+        }
+
+        .business-type {
+            color: #2779ff;
+            font-size: 14px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .business-address {
+            color: #667085;
+            font-size: 14px;
+            margin-bottom: 15px;
+        }
+
+        .book-button {
+            display: inline-block;
+            background: #0b2a63;
+            color: white;
+            text-decoration: none;
+            padding: 12px 18px;
+            border-radius: 8px;
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+        .book-button:hover {
+            background: #123b82;
+        }
+
+        .message {
+            background: white;
+            padding: 30px;
+            border-radius: 14px;
+            text-align: center;
+            color: #667085;
+        }
+
+        @media (max-width: 650px) {
+
+            header {
+                padding: 0 5%;
+            }
+
+            main {
+                margin-top: 30px;
+            }
+
+            .title h1 {
+                font-size: 28px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+
+    <div class="logo">
+        Appointment<span>OS</span>
+    </div>
+
+    <a href="index.html" class="home">
+        ← Home
+    </a>
+
+</header>
+
+
+<main>
+
+    <div class="title">
+
+        <h1>Find a Business</h1>
+
+        <p>
+            Search for a business and book an appointment.
+        </p>
+
+    </div>
+
+
+    <div class="search-box">
+
+        <input
+            type="text"
+            id="searchInput"
+            placeholder="Search for a business..."
+        >
+
+    </div>
+
+
+    <div id="businessList">
+
+        <div class="message">
+            Loading businesses...
+        </div>
+
+    </div>
+
+</main>
+
+
+<script>
+
+    // ==========================================
+    // SUPABASE CONNECTION
+    // ==========================================
+
+    const SUPABASE_URL =
+        "https://jnkfzfmijjdmtebrzrux.supabase.co";
+
+    const SUPABASE_KEY =
+        "sb_publishable_8hpsNfMPCgeP34IPnjhhrg_BVHKyHET";
+
+    const { createClient } = supabase;
+
+    const db = createClient(
+        SUPABASE_URL,
+        SUPABASE_KEY
+    );
+
+
+    // ==========================================
+    // PAGE ELEMENTS
+    // ==========================================
+
+    const businessList =
+        document.getElementById("businessList");
+
+    const searchInput =
+        document.getElementById("searchInput");
+
+
+    let businesses = [];
+
+
+    // ==========================================
+    // LOAD BUSINESSES
+    // ==========================================
+
+    async function loadBusinesses() {
+
+        const { data, error } = await db
+            .from("businesses")
+            .select(
+                "id, name, business_type, address, description, slug"
+            )
+            .order("name", {
+                ascending: true
+            });
+
+
+        if (error) {
+
+            console.error(
+                "Business loading error:",
+                error
+            );
+
+            businessList.innerHTML = `
+                <div class="message">
+                    Unable to load businesses.
+                </div>
+            `;
+
+            return;
+        }
+
+
+        businesses = data || [];
+
+        displayBusinesses(businesses);
+    }
+
+
+    // ==========================================
+    // DISPLAY BUSINESSES
+    // ==========================================
+
+    function displayBusinesses(list) {
+
+        if (list.length === 0) {
+
+            businessList.innerHTML = `
+                <div class="message">
+                    No businesses found.
+                </div>
+            `;
+
+            return;
+        }
+
+
+        businessList.innerHTML = "";
+
+
+        list.forEach(function(business) {
+
+            const card =
+                document.createElement("div");
+
+            card.className =
+                "business-card";
+
+
+            card.innerHTML = `
+
+                <h2>
+                    ${escapeHTML(business.name)}
+                </h2>
+
+                <div class="business-type">
+                    ${escapeHTML(business.business_type || "Business")}
+                </div>
+
+                <div class="business-address">
+                    ${escapeHTML(business.address || "Address not provided")}
+                </div>
+
+                <a
+                    class="book-button"
+                    href="booking.html?business=${encodeURIComponent(business.slug)}"
+                >
+                    Book Appointment
+                </a>
+
+            `;
+
+
+            businessList.appendChild(card);
+
+        });
+
+    }
+
+
+    // ==========================================
+    // SEARCH
+    // ==========================================
+
+    searchInput.addEventListener(
+        "input",
+        function() {
+
+            const search =
+                searchInput.value
+                    .toLowerCase()
+                    .trim();
+
+
+            const filtered =
+                businesses.filter(function(business) {
+
+                    const name =
+                        (business.name || "")
+                            .toLowerCase();
+
+                    const type =
+                        (business.business_type || "")
+                            .toLowerCase();
+
+                    const address =
+                        (business.address || "")
+                            .toLowerCase();
+
+
+                    return (
+                        name.includes(search) ||
+                        type.includes(search) ||
+                        address.includes(search)
+                    );
+
+                });
+
+
+            displayBusinesses(filtered);
+
+        }
+    );
+
+
+    // ==========================================
+    // SECURITY
+    // ==========================================
+
+    function escapeHTML(value) {
+
+        const div =
+            document.createElement("div");
+
+        div.textContent =
+            value || "";
+
+        return div.innerHTML;
+    }
+
+
+    // ==========================================
+    // START
+    // ==========================================
+
+    loadBusinesses();
+
+</script>
+
+</body>
+</html>
