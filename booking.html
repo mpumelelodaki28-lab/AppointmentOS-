@@ -1,113 +1,292 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Book an Appointment | AppointmentOS</title>
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Book | AppointmentOS</title>
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
+
     <style>
+
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
-            font-family: Arial, sans-serif;
         }
+
 
         body {
-            background: #f5f7fb;
-            color: #172033;
+            font-family: Arial, Helvetica, sans-serif;
+            background: #f4f7fc;
+            color: #0b1838;
         }
 
+
+        /* =========================
+           HEADER
+        ========================= */
+
         header {
-            height: 70px;
-            background: #071a3d;
-            color: white;
+            height: 78px;
+            background: #06183d;
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 0 7%;
+            padding: 0 6%;
         }
+
 
         .logo {
-            font-size: 24px;
-            font-weight: bold;
+            color: white;
+            font-size: 30px;
+            font-weight: 800;
         }
+
 
         .logo span {
-            color: #4da3ff;
+            color: #3288ff;
         }
 
-        .home {
+
+        .home-link {
             color: white;
             text-decoration: none;
-            font-size: 15px;
+            font-size: 16px;
         }
 
-        main {
-            max-width: 850px;
-            margin: 45px auto;
-            padding: 0 20px;
+
+        /* =========================
+           HERO BUSINESS
+        ========================= */
+
+        .business-hero {
+            position: relative;
+            height: 330px;
+            overflow: hidden;
+            background: #06183d;
         }
 
-        .title {
-            text-align: center;
-            margin-bottom: 30px;
+
+        .business-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0.55;
         }
 
-        .title h1 {
-            font-size: 34px;
+
+        .business-overlay {
+            position: absolute;
+            inset: 0;
+            background:
+                linear-gradient(
+                    to right,
+                    rgba(6,24,61,0.95),
+                    rgba(6,24,61,0.45)
+                );
+        }
+
+
+        .business-content {
+            position: absolute;
+            left: 7%;
+            bottom: 45px;
+            color: white;
+            max-width: 700px;
+        }
+
+
+        .business-type {
+            color: #69aaff;
+            font-weight: bold;
+            font-size: 14px;
+            text-transform: uppercase;
+            margin-bottom: 10px;
+            letter-spacing: 1px;
+        }
+
+
+        .business-content h1 {
+            font-size: 46px;
             margin-bottom: 10px;
         }
 
-        .title p {
-            color: #667085;
+
+        .business-description {
+            color: #d3def1;
+            font-size: 17px;
+            line-height: 1.5;
         }
 
-        .card {
+
+        .business-location {
+            margin-top: 12px;
+            color: #b7c9e8;
+        }
+
+
+        /* =========================
+           MAIN
+        ========================= */
+
+        main {
+            max-width: 1100px;
+            margin: -35px auto 80px;
+            padding: 0 20px;
+            position: relative;
+        }
+
+
+        .booking-card {
             background: white;
+            border-radius: 20px;
             padding: 35px;
-            border-radius: 16px;
-            box-shadow: 0 8px 30px rgba(0,0,0,0.06);
+            box-shadow:
+                0 20px 60px rgba(10,35,75,0.12);
         }
 
-        .business {
-            background: #eef4ff;
-            padding: 18px;
-            border-radius: 10px;
-            margin-bottom: 25px;
+
+        .section {
+            margin-bottom: 35px;
         }
 
-        .business h2 {
-            font-size: 20px;
-            margin-bottom: 5px;
+
+        .section-title {
+            font-size: 25px;
+            margin-bottom: 7px;
         }
 
-        .business p {
-            color: #667085;
-            font-size: 14px;
+
+        .section-subtitle {
+            color: #718096;
+            margin-bottom: 22px;
         }
+
+
+        /* =========================
+           LOADING
+        ========================= */
 
         .loading {
             text-align: center;
-            padding: 30px;
-            color: #667085;
+            padding: 50px 20px;
+            color: #718096;
         }
+
+
+        /* =========================
+           ERROR
+        ========================= */
 
         .error {
             display: none;
             background: #fff0f0;
             color: #b42318;
-            padding: 15px;
-            border-radius: 8px;
-            margin-bottom: 20px;
+            padding: 16px;
+            border-radius: 10px;
+            margin-bottom: 25px;
         }
+
+
+        /* =========================
+           SERVICES
+        ========================= */
+
+        .services {
+            display: grid;
+            grid-template-columns:
+                repeat(2, minmax(0, 1fr));
+            gap: 15px;
+        }
+
+
+        .service-card {
+            border: 2px solid #e3e9f3;
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+
+        .service-card:hover {
+            border-color: #3288ff;
+            transform: translateY(-2px);
+        }
+
+
+        .service-card.selected {
+            border-color: #2784f7;
+            background: #f0f6ff;
+        }
+
+
+        .service-name {
+            font-size: 19px;
+            font-weight: bold;
+            margin-bottom: 9px;
+        }
+
+
+        .service-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 10px;
+        }
+
+
+        .service-duration {
+            color: #718096;
+            font-size: 14px;
+        }
+
+
+        .service-price {
+            color: #2784f7;
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+
+        .no-services {
+            background: #fff7e8;
+            color: #8a5a00;
+            padding: 18px;
+            border-radius: 10px;
+        }
+
+
+        /* =========================
+           FORM
+        ========================= */
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
 
         .form-group {
             margin-bottom: 20px;
         }
+
+
+        .full {
+            grid-column: 1 / -1;
+        }
+
 
         label {
             display: block;
@@ -116,129 +295,246 @@
             font-size: 14px;
         }
 
+
         input,
-        select,
         textarea {
             width: 100%;
-            padding: 13px;
-            border: 1px solid #d8dee9;
-            border-radius: 8px;
+            border: 1px solid #d8e0ed;
+            border-radius: 10px;
+            padding: 14px;
             font-size: 15px;
-            background: white;
             outline: none;
+            background: white;
         }
+
 
         input:focus,
-        select:focus,
         textarea:focus {
-            border-color: #2779ff;
+            border-color: #2784f7;
         }
 
-        .row {
+
+        textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+
+        /* =========================
+           DATE / TIME
+        ========================= */
+
+        .date-time {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 20px;
         }
 
-        .service-info {
-            display: none;
-            background: #eef4ff;
-            border-radius: 8px;
-            padding: 12px 15px;
-            margin-top: 10px;
-            color: #172033;
-            font-size: 14px;
-        }
 
-        .service-info strong {
-            color: #0b2a63;
-        }
+        /* =========================
+           SUMMARY
+        ========================= */
 
-        button {
-            width: 100%;
-            padding: 15px;
-            border: none;
-            border-radius: 9px;
-            background: #0b2a63;
+        .summary {
+            background: #071a3d;
             color: white;
-            font-size: 16px;
+            border-radius: 15px;
+            padding: 25px;
+            margin-top: 25px;
+        }
+
+
+        .summary h3 {
+            font-size: 20px;
+            margin-bottom: 20px;
+        }
+
+
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            gap: 20px;
+            padding: 11px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.12);
+        }
+
+
+        .summary-row:last-child {
+            border-bottom: none;
+        }
+
+
+        .summary-label {
+            color: #aebfdd;
+        }
+
+
+        .summary-value {
+            text-align: right;
+            font-weight: bold;
+        }
+
+
+        /* =========================
+           BUTTON
+        ========================= */
+
+        .book-button {
+            width: 100%;
+            border: none;
+            border-radius: 11px;
+            padding: 17px;
+            margin-top: 25px;
+            background: #2784f7;
+            color: white;
+            font-size: 17px;
             font-weight: bold;
             cursor: pointer;
-            margin-top: 5px;
         }
 
-        button:hover {
-            background: #123b82;
+
+        .book-button:hover {
+            background: #116fdc;
         }
 
-        button:disabled {
+
+        .book-button:disabled {
             opacity: 0.6;
             cursor: not-allowed;
         }
 
+
+        /* =========================
+           SUCCESS
+        ========================= */
+
         .success {
             display: none;
             text-align: center;
-            padding: 25px;
+            padding: 30px 10px;
         }
+
 
         .success-icon {
-            font-size: 45px;
-            margin-bottom: 15px;
+            width: 70px;
+            height: 70px;
+            margin: 0 auto 20px;
+            border-radius: 50%;
+            background: #e7f8ed;
+            color: #16a34a;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 38px;
+            font-weight: bold;
         }
 
+
         .success h2 {
+            font-size: 30px;
             margin-bottom: 10px;
         }
 
+
         .success p {
-            color: #667085;
-            line-height: 1.6;
+            color: #718096;
+            margin-bottom: 25px;
         }
 
-        .booking-details {
-            background: #f5f7fb;
-            padding: 18px;
-            border-radius: 10px;
-            margin-top: 20px;
+
+        .success-details {
+            max-width: 550px;
+            margin: auto;
+            background: #f4f7fc;
+            border-radius: 14px;
+            padding: 20px;
             text-align: left;
         }
 
-        .booking-details div {
-            margin-bottom: 8px;
+
+        .success-details div {
+            padding: 9px 0;
         }
 
-        .booking-details div:last-child {
-            margin-bottom: 0;
-        }
 
-        @media (max-width: 650px) {
+        /* =========================
+           MOBILE
+        ========================= */
+
+        @media (max-width: 700px) {
 
             header {
-                padding: 0 5%;
+                padding: 0 20px;
             }
+
+
+            .logo {
+                font-size: 24px;
+            }
+
+
+            .business-hero {
+                height: 300px;
+            }
+
+
+            .business-content {
+                left: 25px;
+                right: 25px;
+                bottom: 30px;
+            }
+
+
+            .business-content h1 {
+                font-size: 34px;
+            }
+
+
+            .business-description {
+                font-size: 15px;
+            }
+
 
             main {
-                margin-top: 30px;
+                margin-top: -20px;
             }
 
-            .title h1 {
-                font-size: 28px;
+
+            .booking-card {
+                padding: 23px 18px;
             }
 
-            .card {
-                padding: 25px 20px;
+
+            .services {
+                grid-template-columns: 1fr;
             }
 
-            .row {
+
+            .form-grid,
+            .date-time {
                 grid-template-columns: 1fr;
                 gap: 0;
             }
+
+
+            .full {
+                grid-column: auto;
+            }
+
+
+            .section-title {
+                font-size: 22px;
+            }
+
         }
+
     </style>
+
 </head>
 
+
 <body>
+
 
 <header>
 
@@ -246,67 +542,150 @@
         Appointment<span>OS</span>
     </div>
 
-    <a href="index.html" class="home">
-        ← Home
+
+    <a
+        href="businesses.html"
+        class="home-link"
+    >
+        ← Businesses
     </a>
 
 </header>
 
 
-<main>
 
-    <div class="title">
+<!-- =========================
+     BUSINESS HERO
+========================= -->
 
-        <h1>Book an Appointment</h1>
+<section class="business-hero">
 
-        <p>
-            Choose a service and a time that works for you.
-        </p>
+    <img
+        id="businessImage"
+        class="business-image"
+        src=""
+        alt="Business"
+    >
 
-    </div>
+
+    <div class="business-overlay"></div>
 
 
-    <div class="card">
+    <div class="business-content">
 
-        <div class="business">
-
-            <div id="loadingBusiness" class="loading">
-                Loading business...
-            </div>
-
-            <div id="businessInfo" style="display: none;">
-
-                <h2 id="businessName"></h2>
-
-                <p id="businessDescription"></p>
-
-            </div>
-
+        <div
+            id="businessType"
+            class="business-type"
+        >
+            Business
         </div>
 
 
-        <div id="errorMessage" class="error"></div>
+        <h1 id="businessName">
+            Loading...
+        </h1>
 
 
-        <form id="bookingForm" style="display: none;">
-
-            <div class="form-group">
-
-                <label for="customerName">
-                    Your Name
-                </label>
-
-                <input
-                    type="text"
-                    id="customerName"
-                    placeholder="Enter your full name"
-                    required
-                >
-
-            </div>
+        <p
+            id="businessDescription"
+            class="business-description"
+        >
+            Loading business information...
+        </p>
 
 
-            <div class="row">
+        <div
+            id="businessLocation"
+            class="business-location"
+        ></div>
+
+    </div>
+
+</section>
+
+
+
+<!-- =========================
+     BOOKING
+========================= -->
+
+<main>
+
+    <div
+        id="errorMessage"
+        class="error"
+    ></div>
+
+
+    <div
+        id="loading"
+        class="loading"
+    >
+        Loading booking information...
+    </div>
+
+
+    <div
+        id="bookingCard"
+        class="booking-card"
+        style="display:none;"
+    >
+
+
+        <!-- SERVICES -->
+
+        <section class="section">
+
+            <h2 class="section-title">
+                Choose a service
+            </h2>
+
+            <p class="section-subtitle">
+                Select the service you would like to book.
+            </p>
+
+
+            <div
+                id="services"
+                class="services"
+            ></div>
+
+        </section>
+
+
+
+        <!-- CUSTOMER -->
+
+        <section class="section">
+
+            <h2 class="section-title">
+                Your details
+            </h2>
+
+            <p class="section-subtitle">
+                Tell the business who is booking.
+            </p>
+
+
+            <div class="form-grid">
+
+
+                <div class="form-group">
+
+                    <label for="customerName">
+                        Full Name
+                    </label>
+
+                    <input
+                        id="customerName"
+                        type="text"
+                        placeholder="Enter your full name"
+                        required
+                    >
+
+                </div>
+
+
 
                 <div class="form-group">
 
@@ -315,13 +694,14 @@
                     </label>
 
                     <input
-                        type="tel"
                         id="phone"
+                        type="tel"
                         placeholder="071 123 4567"
                         required
                     >
 
                 </div>
+
 
 
                 <div class="form-group">
@@ -331,51 +711,13 @@
                     </label>
 
                     <input
-                        type="email"
                         id="email"
+                        type="email"
                         placeholder="you@example.com"
                     >
 
                 </div>
 
-            </div>
-
-
-            <!-- SERVICES -->
-
-            <div class="form-group">
-
-                <label for="service">
-                    Choose a Service
-                </label>
-
-                <select id="service" required>
-
-                    <option value="">
-                        Loading services...
-                    </option>
-
-                </select>
-
-
-                <div id="serviceInfo" class="service-info">
-
-                    <div>
-                        <strong>Price:</strong>
-                        <span id="servicePrice"></span>
-                    </div>
-
-                    <div>
-                        <strong>Duration:</strong>
-                        <span id="serviceDuration"></span>
-                    </div>
-
-                </div>
-
-            </div>
-
-
-            <div class="row">
 
                 <div class="form-group">
 
@@ -384,87 +726,243 @@
                     </label>
 
                     <input
-                        type="date"
                         id="date"
+                        type="date"
                         required
                     >
 
                 </div>
 
 
-                <div class="form-group">
-
-                    <label for="time">
-                        Appointment Time
-                    </label>
-
-                    <input
-                        type="time"
-                        id="time"
-                        required
-                    >
-
-                </div>
-
             </div>
 
-
-            <div class="form-group">
-
-                <label for="notes">
-                    Additional Notes
-                </label>
-
-                <textarea
-                    id="notes"
-                    placeholder="Anything the business should know?"
-                ></textarea>
-
-            </div>
+        </section>
 
 
-            <button type="submit" id="bookButton">
-                Book Appointment
-            </button>
 
-        </form>
+        <!-- TIME -->
 
+        <section class="section">
 
-        <div class="success" id="success">
+            <h2 class="section-title">
+                Choose a time
+            </h2>
 
-            <div class="success-icon">
-                ✓
-            </div>
-
-            <h2>Appointment Request Created</h2>
-
-            <p>
-                Your appointment has been sent to the business.
+            <p class="section-subtitle">
+                Select your preferred appointment time.
             </p>
 
 
-            <div class="booking-details">
+            <input
+                id="time"
+                type="time"
+                required
+            >
 
-                <div>
-                    <strong>Name:</strong>
-                    <span id="showName"></span>
-                </div>
+        </section>
 
-                <div>
-                    <strong>Service:</strong>
-                    <span id="showService"></span>
-                </div>
 
-                <div>
-                    <strong>Date:</strong>
-                    <span id="showDate"></span>
-                </div>
 
-                <div>
-                    <strong>Time:</strong>
-                    <span id="showTime"></span>
-                </div>
+        <!-- NOTES -->
 
+        <section class="section">
+
+            <h2 class="section-title">
+                Additional information
+            </h2>
+
+            <p class="section-subtitle">
+                Anything you would like the business to know?
+            </p>
+
+
+            <textarea
+                id="notes"
+                placeholder="Optional notes..."
+            ></textarea>
+
+        </section>
+
+
+
+        <!-- SUMMARY -->
+
+        <div class="summary">
+
+            <h3>
+                Booking summary
+            </h3>
+
+
+            <div class="summary-row">
+
+                <span class="summary-label">
+                    Business
+                </span>
+
+                <span
+                    id="summaryBusiness"
+                    class="summary-value"
+                >
+                    —
+                </span>
+
+            </div>
+
+
+            <div class="summary-row">
+
+                <span class="summary-label">
+                    Service
+                </span>
+
+                <span
+                    id="summaryService"
+                    class="summary-value"
+                >
+                    Select a service
+                </span>
+
+            </div>
+
+
+            <div class="summary-row">
+
+                <span class="summary-label">
+                    Duration
+                </span>
+
+                <span
+                    id="summaryDuration"
+                    class="summary-value"
+                >
+                    —
+                </span>
+
+            </div>
+
+
+            <div class="summary-row">
+
+                <span class="summary-label">
+                    Price
+                </span>
+
+                <span
+                    id="summaryPrice"
+                    class="summary-value"
+                >
+                    —
+                </span>
+
+            </div>
+
+
+            <div class="summary-row">
+
+                <span class="summary-label">
+                    Date
+                </span>
+
+                <span
+                    id="summaryDate"
+                    class="summary-value"
+                >
+                    —
+                </span>
+
+            </div>
+
+
+            <div class="summary-row">
+
+                <span class="summary-label">
+                    Time
+                </span>
+
+                <span
+                    id="summaryTime"
+                    class="summary-value"
+                >
+                    —
+                </span>
+
+            </div>
+
+        </div>
+
+
+
+        <button
+            id="bookButton"
+            class="book-button"
+            type="button"
+        >
+            Confirm Appointment
+        </button>
+
+
+    </div>
+
+
+
+    <!-- SUCCESS -->
+
+    <div
+        id="success"
+        class="booking-card success"
+    >
+
+        <div class="success-icon">
+            ✓
+        </div>
+
+
+        <h2>
+            Appointment booked
+        </h2>
+
+
+        <p>
+            Your appointment request has been sent to the business.
+        </p>
+
+
+        <div class="success-details">
+
+            <div>
+                <strong>Business:</strong>
+                <span id="successBusiness"></span>
+            </div>
+
+
+            <div>
+                <strong>Service:</strong>
+                <span id="successService"></span>
+            </div>
+
+
+            <div>
+                <strong>Duration:</strong>
+                <span id="successDuration"></span>
+            </div>
+
+
+            <div>
+                <strong>Price:</strong>
+                <span id="successPrice"></span>
+            </div>
+
+
+            <div>
+                <strong>Date:</strong>
+                <span id="successDate"></span>
+            </div>
+
+
+            <div>
+                <strong>Time:</strong>
+                <span id="successTime"></span>
             </div>
 
         </div>
@@ -474,7 +972,9 @@
 </main>
 
 
+
 <script>
+
 
     // ==========================================
     // SUPABASE
@@ -483,10 +983,13 @@
     const SUPABASE_URL =
         "https://jnkfzfmijjdmtebrzrux.supabase.co";
 
+
     const SUPABASE_KEY =
         "sb_publishable_8hpsNfMPCgeP34IPnjhhrg_BVHKyHET";
 
+
     const { createClient } = supabase;
+
 
     const db = createClient(
         SUPABASE_URL,
@@ -494,55 +997,53 @@
     );
 
 
+
     // ==========================================
-    // GET BUSINESS SLUG
+    // GET BUSINESS ID
     // ==========================================
 
-    const urlParams =
-        new URLSearchParams(window.location.search);
+    const params =
+        new URLSearchParams(
+            window.location.search
+        );
 
-    const businessSlug =
-        urlParams.get("business");
+
+    const businessId =
+        params.get("business_id");
+
+
+
+    // ==========================================
+    // VARIABLES
+    // ==========================================
+
+    let currentBusiness = null;
+
+    let services = [];
+
+    let selectedService = null;
+
 
 
     // ==========================================
     // ELEMENTS
     // ==========================================
 
-    const loadingBusiness =
-        document.getElementById("loadingBusiness");
+    const loading =
+        document.getElementById("loading");
 
-    const businessInfo =
-        document.getElementById("businessInfo");
 
-    const businessName =
-        document.getElementById("businessName");
+    const bookingCard =
+        document.getElementById("bookingCard");
 
-    const businessDescription =
-        document.getElementById("businessDescription");
-
-    const bookingForm =
-        document.getElementById("bookingForm");
 
     const errorMessage =
         document.getElementById("errorMessage");
 
-    const serviceSelect =
-        document.getElementById("service");
 
-    const serviceInfo =
-        document.getElementById("serviceInfo");
+    const servicesContainer =
+        document.getElementById("services");
 
-    const servicePrice =
-        document.getElementById("servicePrice");
-
-    const serviceDuration =
-        document.getElementById("serviceDuration");
-
-
-    let currentBusiness = null;
-
-    let currentServices = [];
 
 
     // ==========================================
@@ -551,13 +1052,52 @@
 
     function showError(message) {
 
-        loadingBusiness.style.display = "none";
+        loading.style.display = "none";
 
-        errorMessage.textContent = message;
+        errorMessage.textContent =
+            message;
 
-        errorMessage.style.display = "block";
+        errorMessage.style.display =
+            "block";
 
     }
+
+
+
+    // ==========================================
+    // BUSINESS IMAGE
+    // ==========================================
+
+    function getBusinessImage(type) {
+
+        const images = {
+
+            "Barber & Salon":
+                "https://images.unsplash.com/photo-1560066984-138dadb4c035?auto=format&fit=crop&w=1400&q=85",
+
+            "Healthcare":
+                "https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?auto=format&fit=crop&w=1400&q=85",
+
+            "Legal":
+                "https://images.unsplash.com/photo-1505664194779-8beaceb93744?auto=format&fit=crop&w=1400&q=85",
+
+            "Real Estate":
+                "https://images.unsplash.com/photo-1560518883-ce09059eeffa?auto=format&fit=crop&w=1400&q=85",
+
+            "Fitness":
+                "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?auto=format&fit=crop&w=1400&q=85",
+
+            "Education":
+                "https://images.unsplash.com/photo-1523050854058-8df90110c9f1?auto=format&fit=crop&w=1400&q=85"
+
+        };
+
+
+        return images[type] ||
+            "https://images.unsplash.com/photo-1497366754035-f200968a6e72?auto=format&fit=crop&w=1400&q=85";
+
+    }
+
 
 
     // ==========================================
@@ -566,7 +1106,7 @@
 
     async function loadBusiness() {
 
-        if (!businessSlug) {
+        if (!businessId) {
 
             showError(
                 "No business was specified."
@@ -576,22 +1116,21 @@
         }
 
 
-        const { data, error } = await db
-            .from("businesses")
-            .select("*")
-            .eq("slug", businessSlug)
-            .single();
+        const { data, error } =
+            await db
+                .from("businesses")
+                .select("*")
+                .eq("id", businessId)
+                .single();
 
 
         if (error) {
 
-            console.error(
-                "Business loading error:",
-                error
-            );
+            console.error(error);
 
             showError(
-                "We could not find this business."
+                "Could not load this business: " +
+                error.message
             );
 
             return;
@@ -611,30 +1150,49 @@
         currentBusiness = data;
 
 
-        businessName.textContent =
-            data.name;
+        document.getElementById(
+            "businessName"
+        ).textContent =
+            data.name || "Business";
 
-        businessDescription.textContent =
+
+        document.getElementById(
+            "businessType"
+        ).textContent =
+            data.business_type || "Business";
+
+
+        document.getElementById(
+            "businessDescription"
+        ).textContent =
             data.description ||
-            "Select your service and appointment time below.";
+            "Choose a service and book an appointment.";
 
 
-        loadingBusiness.style.display =
-            "none";
+        document.getElementById(
+            "businessLocation"
+        ).textContent =
+            data.address || "";
 
-        businessInfo.style.display =
-            "block";
+
+        document.getElementById(
+            "businessImage"
+        ).src =
+            getBusinessImage(
+                data.business_type
+            );
 
 
-        // Now load this business's services
+        document.getElementById(
+            "summaryBusiness"
+        ).textContent =
+            data.name || "Business";
+
 
         await loadServices();
 
-
-        bookingForm.style.display =
-            "block";
-
     }
+
 
 
     // ==========================================
@@ -643,196 +1201,314 @@
 
     async function loadServices() {
 
-        serviceSelect.innerHTML = `
-            <option value="">
-                Loading services...
-            </option>
-        `;
-
-
-        const { data, error } = await db
-            .from("services")
-            .select("*")
-            .eq("business_id", currentBusiness.id)
-            .order("name");
+        const { data, error } =
+            await db
+                .from("services")
+                .select(
+                    "id, business_id, name, price, duration_minutes, pricing_type"
+                )
+                .eq(
+                    "business_id",
+                    currentBusiness.id
+                )
+                .order(
+                    "id",
+                    { ascending: true }
+                );
 
 
         if (error) {
 
-            console.error(
-                "Services loading error:",
-                error
-            );
-
-            serviceSelect.innerHTML = `
-                <option value="">
-                    Could not load services
-                </option>
-            `;
+            console.error(error);
 
             showError(
-                "The business was found, but its services could not be loaded."
+                "Could not load services: " +
+                error.message
             );
 
             return;
         }
 
 
-        currentServices = data || [];
+        services = data || [];
 
 
-        serviceSelect.innerHTML = `
-            <option value="">
-                Select a service
-            </option>
-        `;
+        loading.style.display =
+            "none";
 
 
-        if (currentServices.length === 0) {
-
-            serviceSelect.innerHTML = `
-                <option value="">
-                    No services available
-                </option>
-            `;
-
-            return;
-        }
+        bookingCard.style.display =
+            "block";
 
 
-        currentServices.forEach(function(service) {
-
-            const option =
-                document.createElement("option");
-
-            option.value =
-                service.id;
-
-            option.textContent =
-                service.name;
-
-            serviceSelect.appendChild(option);
-
-        });
+        renderServices();
 
     }
 
 
+
     // ==========================================
-    // SERVICE SELECTED
+    // RENDER SERVICES
     // ==========================================
 
-    serviceSelect.addEventListener(
-        "change",
-        function() {
+    function renderServices() {
 
-            const selectedId =
-                this.value;
+        if (services.length === 0) {
+
+            servicesContainer.innerHTML = `
+
+                <div class="no-services">
+
+                    This business has not added
+                    any bookable services yet.
+
+                </div>
+
+            `;
+
+            return;
+        }
 
 
-            if (!selectedId) {
+        servicesContainer.innerHTML =
+            services.map(function(service) {
 
-                serviceInfo.style.display =
-                    "none";
-
-                return;
-            }
+                let priceText;
 
 
-            const selectedService =
-                currentServices.find(
-                    function(service) {
-                        return String(service.id) ===
-                            String(selectedId);
+                if (
+                    service.pricing_type ===
+                    "fixed"
+                ) {
+
+                    priceText =
+                        "R" +
+                        Number(
+                            service.price || 0
+                        ).toFixed(2);
+
+                } else {
+
+                    priceText =
+                        "Price varies";
+
+                }
+
+
+                return `
+
+                    <div
+                        class="service-card"
+                        data-service-id="${service.id}"
+                    >
+
+                        <div class="service-name">
+                            ${escapeHTML(
+                                service.name
+                            )}
+                        </div>
+
+
+                        <div class="service-info">
+
+                            <div class="service-duration">
+
+                                ${service.duration_minutes || 0}
+                                minutes
+
+                            </div>
+
+
+                            <div class="service-price">
+
+                                ${priceText}
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                `;
+
+            }).join("");
+
+
+        document
+            .querySelectorAll(".service-card")
+            .forEach(function(card) {
+
+                card.addEventListener(
+                    "click",
+                    function() {
+
+                        selectService(
+                            Number(
+                                card.dataset.serviceId
+                            )
+                        );
+
                     }
                 );
 
+            });
 
-            if (!selectedService) {
-
-                serviceInfo.style.display =
-                    "none";
-
-                return;
-            }
+    }
 
 
-            // Price
 
-            if (
-                selectedService.price === null ||
-                selectedService.price === undefined
-            ) {
+    // ==========================================
+    // SELECT SERVICE
+    // ==========================================
 
-                servicePrice.textContent =
-                    "Price on request";
+    function selectService(serviceId) {
 
-            } else {
+        selectedService =
+            services.find(function(service) {
 
-                servicePrice.textContent =
-                    "R" +
-                    Number(selectedService.price)
-                        .toFixed(2);
+                return service.id === serviceId;
 
-            }
+            });
 
 
-            // Duration
+        document
+            .querySelectorAll(".service-card")
+            .forEach(function(card) {
 
-            if (
-                selectedService.duration_minutes
-            ) {
+                card.classList.remove(
+                    "selected"
+                );
 
-                serviceDuration.textContent =
-                    selectedService.duration_minutes +
-                    " minutes";
-
-            } else {
-
-                serviceDuration.textContent =
-                    "Not specified";
-
-            }
+            });
 
 
-            serviceInfo.style.display =
-                "block";
+        const selectedCard =
+            document.querySelector(
+                '[data-service-id="' +
+                serviceId +
+                '"]'
+            );
+
+
+        if (selectedCard) {
+
+            selectedCard.classList.add(
+                "selected"
+            );
 
         }
+
+
+        updateSummary();
+
+    }
+
+
+
+    // ==========================================
+    // SUMMARY
+    // ==========================================
+
+    function updateSummary() {
+
+        if (selectedService) {
+
+            document.getElementById(
+                "summaryService"
+            ).textContent =
+                selectedService.name;
+
+
+            document.getElementById(
+                "summaryDuration"
+            ).textContent =
+                selectedService.duration_minutes +
+                " minutes";
+
+
+            if (
+                selectedService.pricing_type ===
+                "fixed"
+            ) {
+
+                document.getElementById(
+                    "summaryPrice"
+                ).textContent =
+                    "R" +
+                    Number(
+                        selectedService.price || 0
+                    ).toFixed(2);
+
+            } else {
+
+                document.getElementById(
+                    "summaryPrice"
+                ).textContent =
+                    "Price varies";
+
+            }
+
+        }
+
+
+        document.getElementById(
+            "summaryDate"
+        ).textContent =
+            document.getElementById(
+                "date"
+            ).value || "—";
+
+
+        document.getElementById(
+            "summaryTime"
+        ).textContent =
+            document.getElementById(
+                "time"
+            ).value || "—";
+
+    }
+
+
+
+    // ==========================================
+    // FORM CHANGES
+    // ==========================================
+
+    document.getElementById(
+        "date"
+    ).addEventListener(
+        "change",
+        updateSummary
     );
+
+
+    document.getElementById(
+        "time"
+    ).addEventListener(
+        "change",
+        updateSummary
+    );
+
 
 
     // ==========================================
     // BOOK APPOINTMENT
     // ==========================================
 
-    bookingForm.addEventListener(
-        "submit",
-        async function(event) {
+    document.getElementById(
+        "bookButton"
+    ).addEventListener(
+        "click",
+        async function() {
 
-            event.preventDefault();
-
-
-            if (!currentBusiness) {
+            if (!selectedService) {
 
                 alert(
-                    "Business information is missing."
+                    "Please choose a service."
                 );
 
                 return;
             }
-
-
-            const bookButton =
-                document.getElementById(
-                    "bookButton"
-                );
-
-
-            bookButton.disabled = true;
-
-            bookButton.textContent =
-                "Booking...";
 
 
             const name =
@@ -853,12 +1529,6 @@
                 ).value.trim();
 
 
-            const serviceId =
-                document.getElementById(
-                    "service"
-                ).value;
-
-
             const date =
                 document.getElementById(
                     "date"
@@ -877,75 +1547,108 @@
                 ).value.trim();
 
 
-            const selectedService =
-                currentServices.find(
-                    function(service) {
-                        return String(service.id) ===
-                            String(serviceId);
-                    }
-                );
-
-
-            if (!selectedService) {
+            if (!name) {
 
                 alert(
-                    "Please select a service."
+                    "Please enter your name."
                 );
-
-                bookButton.disabled = false;
-
-                bookButton.textContent =
-                    "Book Appointment";
 
                 return;
             }
 
 
-            // ==================================
-            // SAVE APPOINTMENT
-            // ==================================
+            if (!phone) {
 
-            const { error } = await db
-                .from("appointments")
-                .insert([{
+                alert(
+                    "Please enter your phone number."
+                );
 
-                    business_id:
-                        currentBusiness.id,
+                return;
+            }
 
-                    service_id:
-                        selectedService.id,
 
-                    customer:
-                        name,
+            if (!date) {
 
-                    phone:
-                        phone,
+                alert(
+                    "Please choose an appointment date."
+                );
 
-                    email:
-                        email || null,
+                return;
+            }
 
-                    service:
-                        selectedService.name,
 
-                    appointment_date:
-                        date,
+            if (!time) {
 
-                    appointment_time:
-                        time,
+                alert(
+                    "Please choose an appointment time."
+                );
 
-                    date:
-                        date,
+                return;
+            }
 
-                    time:
-                        time,
 
-                    notes:
-                        notes || null,
+            const button =
+                document.getElementById(
+                    "bookButton"
+                );
 
-                    status:
-                        "pending"
 
-                }]);
+            button.disabled = true;
+
+            button.textContent =
+                "Booking...";
+
+
+            /*
+             * Save the booking.
+             *
+             * service_id is now saved so
+             * the business knows exactly
+             * which service was booked.
+             */
+
+            const { error } =
+                await db
+                    .from("appointments")
+                    .insert([{
+
+                        business_id:
+                            currentBusiness.id,
+
+                        service_id:
+                            selectedService.id,
+
+                        customer:
+                            name,
+
+                        phone:
+                            phone,
+
+                        email:
+                            email || null,
+
+                        service:
+                            selectedService.name,
+
+                        appointment_date:
+                            date,
+
+                        appointment_time:
+                            time,
+
+                        date:
+                            date,
+
+                        time:
+                            time,
+
+                        notes:
+                            notes || null,
+
+                        status:
+                            "pending"
+
+                    }]);
 
 
             if (error) {
@@ -955,59 +1658,134 @@
                     error
                 );
 
+
                 alert(
                     "Something went wrong: " +
                     error.message
                 );
 
-                bookButton.disabled = false;
 
-                bookButton.textContent =
-                    "Book Appointment";
+                button.disabled =
+                    false;
+
+
+                button.textContent =
+                    "Confirm Appointment";
+
 
                 return;
             }
 
 
-            // ==================================
-            // SUCCESS
-            // ==================================
-
-            document.getElementById(
-                "showName"
-            ).textContent =
-                name;
-
-
-            document.getElementById(
-                "showService"
-            ).textContent =
-                selectedService.name;
-
-
-            document.getElementById(
-                "showDate"
-            ).textContent =
-                date;
-
-
-            document.getElementById(
-                "showTime"
-            ).textContent =
-                time;
-
-
-            bookingForm.style.display =
-                "none";
-
-
-            document.getElementById(
-                "success"
-            ).style.display =
-                "block";
+            showSuccess(
+                name,
+                date,
+                time
+            );
 
         }
     );
+
+
+
+    // ==========================================
+    // SUCCESS
+    // ==========================================
+
+    function showSuccess(
+        customerName,
+        date,
+        time
+    ) {
+
+        document.getElementById(
+            "bookingCard"
+        ).style.display =
+            "none";
+
+
+        const success =
+            document.getElementById(
+                "success"
+            );
+
+
+        success.style.display =
+            "block";
+
+
+        document.getElementById(
+            "successBusiness"
+        ).textContent =
+            currentBusiness.name;
+
+
+        document.getElementById(
+            "successService"
+        ).textContent =
+            selectedService.name;
+
+
+        document.getElementById(
+            "successDuration"
+        ).textContent =
+            selectedService.duration_minutes +
+            " minutes";
+
+
+        if (
+            selectedService.pricing_type ===
+            "fixed"
+        ) {
+
+            document.getElementById(
+                "successPrice"
+            ).textContent =
+                "R" +
+                Number(
+                    selectedService.price || 0
+                ).toFixed(2);
+
+        } else {
+
+            document.getElementById(
+                "successPrice"
+            ).textContent =
+                "Price varies";
+
+        }
+
+
+        document.getElementById(
+            "successDate"
+        ).textContent =
+            date;
+
+
+        document.getElementById(
+            "successTime"
+        ).textContent =
+            time;
+
+    }
+
+
+
+    // ==========================================
+    // SECURITY
+    // ==========================================
+
+    function escapeHTML(value) {
+
+        return String(value)
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;")
+            .replace(/'/g, "&#039;");
+
+    }
+
 
 
     // ==========================================
@@ -1019,4 +1797,5 @@
 </script>
 
 </body>
+
 </html>
