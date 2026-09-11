@@ -1,0 +1,1068 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Services | AppointmentOS</title>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background: #f5f7fb;
+            color: #0b1838;
+        }
+
+        header {
+            background: #06183d;
+            color: white;
+            padding: 20px 6%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 28px;
+            font-weight: 800;
+        }
+
+        .logo span {
+            color: #3288ff;
+        }
+
+        .back {
+            color: white;
+            text-decoration: none;
+            font-size: 15px;
+        }
+
+        main {
+            max-width: 1100px;
+            margin: auto;
+            padding: 45px 20px 80px;
+        }
+
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .page-header h1 {
+            font-size: 36px;
+            margin-bottom: 8px;
+        }
+
+        .page-header p {
+            color: #69758a;
+        }
+
+        .add-button {
+            background: #2784f7;
+            color: white;
+            border: none;
+            border-radius: 9px;
+            padding: 14px 22px;
+            font-size: 15px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .add-button:hover {
+            background: #116fdc;
+        }
+
+        .business-box {
+            background: #06183d;
+            color: white;
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 30px;
+        }
+
+        .business-box .label {
+            color: #9eb8df;
+            font-size: 13px;
+            margin-bottom: 7px;
+        }
+
+        .business-box h2 {
+            font-size: 25px;
+        }
+
+        .message {
+            display: none;
+            padding: 14px;
+            border-radius: 9px;
+            margin-bottom: 20px;
+        }
+
+        .success {
+            display: block;
+            background: #e9f9ef;
+            color: #147a3d;
+        }
+
+        .error {
+            display: block;
+            background: #fff0f0;
+            color: #b42318;
+        }
+
+        .service-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+
+        .service-card {
+            background: white;
+            border-radius: 15px;
+            padding: 23px;
+            box-shadow: 0 8px 25px rgba(10, 35, 75, 0.08);
+            border: 1px solid #e4e9f1;
+        }
+
+        .service-card h3 {
+            font-size: 20px;
+            margin-bottom: 15px;
+        }
+
+        .service-price {
+            font-size: 25px;
+            font-weight: bold;
+            color: #2784f7;
+            margin-bottom: 8px;
+        }
+
+        .service-duration {
+            color: #69758a;
+            font-size: 14px;
+            margin-bottom: 18px;
+        }
+
+        .pricing-type {
+            display: inline-block;
+            background: #eef5ff;
+            color: #2779dd;
+            padding: 6px 9px;
+            border-radius: 6px;
+            font-size: 12px;
+            margin-bottom: 18px;
+        }
+
+        .actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .edit-button,
+        .delete-button {
+            flex: 1;
+            border: none;
+            padding: 10px;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .edit-button {
+            background: #eaf2ff;
+            color: #1768d1;
+        }
+
+        .delete-button {
+            background: #fff0f0;
+            color: #c62828;
+        }
+
+        .empty {
+            background: white;
+            border-radius: 15px;
+            padding: 50px 20px;
+            text-align: center;
+            color: #69758a;
+        }
+
+        /* MODAL */
+
+        .modal {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(3, 18, 50, 0.65);
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .modal-card {
+            background: white;
+            width: 100%;
+            max-width: 500px;
+            border-radius: 16px;
+            padding: 30px;
+        }
+
+        .modal-card h2 {
+            margin-bottom: 25px;
+        }
+
+        .form-group {
+            margin-bottom: 18px;
+        }
+
+        label {
+            display: block;
+            font-weight: bold;
+            font-size: 14px;
+            margin-bottom: 7px;
+        }
+
+        input,
+        select {
+            width: 100%;
+            padding: 13px;
+            border: 1px solid #d5dce8;
+            border-radius: 8px;
+            font-size: 15px;
+            outline: none;
+        }
+
+        input:focus,
+        select:focus {
+            border-color: #2784f7;
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 25px;
+        }
+
+        .save-button,
+        .cancel-button {
+            flex: 1;
+            padding: 13px;
+            border: none;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .save-button {
+            background: #2784f7;
+            color: white;
+        }
+
+        .cancel-button {
+            background: #e9edf3;
+            color: #24324d;
+        }
+
+        @media (max-width: 800px) {
+            .service-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 550px) {
+            .page-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .add-button {
+                width: 100%;
+            }
+
+            .service-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .page-header h1 {
+                font-size: 30px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+
+    <div class="logo">
+        Appointment<span>OS</span>
+    </div>
+
+    <a href="dashboard.html" class="back">
+        ← Dashboard
+    </a>
+
+</header>
+
+
+<main>
+
+    <div class="page-header">
+
+        <div>
+            <h1>Services</h1>
+
+            <p>
+                Manage the services customers can book.
+            </p>
+        </div>
+
+        <button
+            class="add-button"
+            onclick="openAddModal()"
+        >
+            + Add Service
+        </button>
+
+    </div>
+
+
+    <div class="business-box">
+
+        <div class="label">
+            BUSINESS
+        </div>
+
+        <h2 id="businessName">
+            Loading...
+        </h2>
+
+    </div>
+
+
+    <div id="message" class="message"></div>
+
+
+    <div
+        id="serviceGrid"
+        class="service-grid"
+    >
+
+        <div class="empty">
+            Loading services...
+        </div>
+
+    </div>
+
+</main>
+
+
+<!-- ADD / EDIT MODAL -->
+
+<div
+    id="serviceModal"
+    class="modal"
+>
+
+    <div class="modal-card">
+
+        <h2 id="modalTitle">
+            Add Service
+        </h2>
+
+
+        <form id="serviceForm">
+
+            <div class="form-group">
+
+                <label for="serviceName">
+                    Service Name
+                </label>
+
+                <input
+                    type="text"
+                    id="serviceName"
+                    placeholder="Example: Property Viewing"
+                    required
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label for="price">
+                    Price
+                </label>
+
+                <input
+                    type="number"
+                    id="price"
+                    min="0"
+                    step="0.01"
+                    placeholder="Example: 500"
+                    required
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label for="duration">
+                    Duration (minutes)
+                </label>
+
+                <input
+                    type="number"
+                    id="duration"
+                    min="1"
+                    placeholder="Example: 30"
+                    required
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label for="pricingType">
+                    Pricing Type
+                </label>
+
+                <select id="pricingType">
+
+                    <option value="fixed">
+                        Fixed
+                    </option>
+
+                    <option value="starting_from">
+                        Starting From
+                    </option>
+
+                    <option value="free">
+                        Free
+                    </option>
+
+                    <option value="contact">
+                        Contact Business
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <div class="modal-actions">
+
+                <button
+                    type="button"
+                    class="cancel-button"
+                    onclick="closeModal()"
+                >
+                    Cancel
+                </button>
+
+                <button
+                    type="submit"
+                    class="save-button"
+                >
+                    Save Service
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+
+<script>
+
+    // ==============================
+    // SUPABASE
+    // ==============================
+
+    const SUPABASE_URL =
+        "https://jnkfzfmijjdmtebrzrux.supabase.co";
+
+    const SUPABASE_KEY =
+        "sb_publishable_8hpsNfMPCgeP34IPnjhhrg_BVHKyHET";
+
+    const { createClient } = supabase;
+
+    const db = createClient(
+        SUPABASE_URL,
+        SUPABASE_KEY
+    );
+
+
+    // ==============================
+    // VARIABLES
+    // ==============================
+
+    let currentBusiness = null;
+
+    let editingServiceId = null;
+
+
+    const serviceGrid =
+        document.getElementById("serviceGrid");
+
+    const modal =
+        document.getElementById("serviceModal");
+
+    const serviceForm =
+        document.getElementById("serviceForm");
+
+    const message =
+        document.getElementById("message");
+
+
+    // ==============================
+    // MESSAGE
+    // ==============================
+
+    function showMessage(text, type) {
+
+        message.textContent = text;
+
+        message.className =
+            "message " + type;
+
+        setTimeout(function() {
+
+            message.className =
+                "message";
+
+        }, 4000);
+    }
+
+
+    // ==============================
+    // LOAD BUSINESS
+    // ==============================
+
+    async function loadBusiness() {
+
+        const { data, error } = await db
+            .from("businesses")
+            .select("*")
+            .order("created_at", {
+                ascending: false
+            })
+            .limit(1);
+
+
+        if (error) {
+
+            showMessage(
+                "Could not load business: " +
+                error.message,
+                "error"
+            );
+
+            return;
+        }
+
+
+        if (!data || data.length === 0) {
+
+            showMessage(
+                "No business found.",
+                "error"
+            );
+
+            return;
+        }
+
+
+        currentBusiness = data[0];
+
+
+        document.getElementById(
+            "businessName"
+        ).textContent =
+            currentBusiness.name;
+
+
+        loadServices();
+
+    }
+
+
+    // ==============================
+    // LOAD SERVICES
+    // ==============================
+
+    async function loadServices() {
+
+        const { data, error } = await db
+            .from("services")
+            .select("*")
+            .eq(
+                "business_id",
+                currentBusiness.id
+            )
+            .order("created_at", {
+                ascending: false
+            });
+
+
+        if (error) {
+
+            showMessage(
+                "Could not load services: " +
+                error.message,
+                "error"
+            );
+
+            return;
+        }
+
+
+        renderServices(data || []);
+
+    }
+
+
+    // ==============================
+    // RENDER SERVICES
+    // ==============================
+
+    function renderServices(services) {
+
+        if (services.length === 0) {
+
+            serviceGrid.innerHTML = `
+                <div class="empty">
+                    <h3>No services yet</h3>
+                    <p>
+                        Add your first service so customers
+                        can book it.
+                    </p>
+                </div>
+            `;
+
+            return;
+        }
+
+
+        serviceGrid.innerHTML =
+            services.map(function(service) {
+
+                let priceText;
+
+
+                if (
+                    service.pricing_type ===
+                    "contact"
+                ) {
+
+                    priceText =
+                        "Contact Business";
+
+                }
+
+                else if (
+                    service.pricing_type ===
+                    "free"
+                ) {
+
+                    priceText =
+                        "Free";
+
+                }
+
+                else if (
+                    service.pricing_type ===
+                    "starting_from"
+                ) {
+
+                    priceText =
+                        "From R" +
+                        Number(service.price)
+                            .toFixed(2);
+
+                }
+
+                else {
+
+                    priceText =
+                        "R" +
+                        Number(service.price)
+                            .toFixed(2);
+
+                }
+
+
+                return `
+
+                    <div class="service-card">
+
+                        <h3>
+                            ${escapeHtml(
+                                service.name
+                            )}
+                        </h3>
+
+                        <div class="service-price">
+                            ${priceText}
+                        </div>
+
+                        <div class="service-duration">
+                            ${service.duration_minutes}
+                            minutes
+                        </div>
+
+                        <div class="pricing-type">
+                            ${service.pricing_type || "fixed"}
+                        </div>
+
+                        <div class="actions">
+
+                            <button
+                                class="edit-button"
+                                onclick="editService(
+                                    ${service.id},
+                                    '${escapeHtml(
+                                        service.name
+                                    )}',
+                                    ${service.price},
+                                    ${service.duration_minutes},
+                                    '${service.pricing_type || "fixed"}'
+                                )"
+                            >
+                                Edit
+                            </button>
+
+                            <button
+                                class="delete-button"
+                                onclick="deleteService(
+                                    ${service.id}
+                                )"
+                            >
+                                Delete
+                            </button>
+
+                        </div>
+
+                    </div>
+
+                `;
+
+            }).join("");
+
+    }
+
+
+    // ==============================
+    // ESCAPE HTML
+    // ==============================
+
+    function escapeHtml(text) {
+
+        return String(text)
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;")
+            .replace(/'/g, "&#039;");
+
+    }
+
+
+    // ==============================
+    // OPEN ADD MODAL
+    // ==============================
+
+    function openAddModal() {
+
+        editingServiceId = null;
+
+        document.getElementById(
+            "modalTitle"
+        ).textContent =
+            "Add Service";
+
+        serviceForm.reset();
+
+        document.getElementById(
+            "pricingType"
+        ).value =
+            "fixed";
+
+        modal.style.display =
+            "flex";
+
+    }
+
+
+    // ==============================
+    // EDIT SERVICE
+    // ==============================
+
+    function editService(
+        id,
+        name,
+        price,
+        duration,
+        pricingType
+    ) {
+
+        editingServiceId = id;
+
+        document.getElementById(
+            "modalTitle"
+        ).textContent =
+            "Edit Service";
+
+        document.getElementById(
+            "serviceName"
+        ).value =
+            name;
+
+        document.getElementById(
+            "price"
+        ).value =
+            price;
+
+        document.getElementById(
+            "duration"
+        ).value =
+            duration;
+
+        document.getElementById(
+            "pricingType"
+        ).value =
+            pricingType;
+
+        modal.style.display =
+            "flex";
+
+    }
+
+
+    // ==============================
+    // CLOSE MODAL
+    // ==============================
+
+    function closeModal() {
+
+        modal.style.display =
+            "none";
+
+    }
+
+
+    // ==============================
+    // SAVE SERVICE
+    // ==============================
+
+    serviceForm.addEventListener(
+        "submit",
+        async function(event) {
+
+            event.preventDefault();
+
+
+            const name =
+                document.getElementById(
+                    "serviceName"
+                ).value.trim();
+
+            const price =
+                Number(
+                    document.getElementById(
+                        "price"
+                    ).value
+                );
+
+            const duration =
+                Number(
+                    document.getElementById(
+                        "duration"
+                    ).value
+                );
+
+            const pricingType =
+                document.getElementById(
+                    "pricingType"
+                ).value;
+
+
+            if (!currentBusiness) {
+
+                showMessage(
+                    "Business not loaded.",
+                    "error"
+                );
+
+                return;
+            }
+
+
+            let error;
+
+
+            if (editingServiceId) {
+
+                const result =
+                    await db
+                        .from("services")
+                        .update({
+
+                            name: name,
+
+                            price: price,
+
+                            duration_minutes:
+                                duration,
+
+                            pricing_type:
+                                pricingType
+
+                        })
+                        .eq(
+                            "id",
+                            editingServiceId
+                        )
+                        .eq(
+                            "business_id",
+                            currentBusiness.id
+                        );
+
+                error = result.error;
+
+            }
+
+            else {
+
+                const result =
+                    await db
+                        .from("services")
+                        .insert([{
+
+                            business_id:
+                                currentBusiness.id,
+
+                            name: name,
+
+                            price: price,
+
+                            duration_minutes:
+                                duration,
+
+                            pricing_type:
+                                pricingType
+
+                        }]);
+
+                error = result.error;
+
+            }
+
+
+            if (error) {
+
+                console.error(error);
+
+                showMessage(
+                    "Could not save service: " +
+                    error.message,
+                    "error"
+                );
+
+                return;
+            }
+
+
+            closeModal();
+
+            showMessage(
+                editingServiceId
+                    ? "Service updated successfully."
+                    : "Service added successfully.",
+                "success"
+            );
+
+
+            loadServices();
+
+        }
+    );
+
+
+    // ==============================
+    // DELETE SERVICE
+    // ==============================
+
+    async function deleteService(id) {
+
+        const confirmed =
+            confirm(
+                "Are you sure you want to delete this service?"
+            );
+
+
+        if (!confirmed) {
+            return;
+        }
+
+
+        const { error } =
+            await db
+                .from("services")
+                .delete()
+                .eq("id", id)
+                .eq(
+                    "business_id",
+                    currentBusiness.id
+                );
+
+
+        if (error) {
+
+            console.error(error);
+
+            showMessage(
+                "Could not delete service: " +
+                error.message,
+                "error"
+            );
+
+            return;
+        }
+
+
+        showMessage(
+            "Service deleted successfully.",
+            "success"
+        );
+
+
+        loadServices();
+
+    }
+
+
+    // ==============================
+    // START
+    // ==============================
+
+    loadBusiness();
+
+</script>
+
+</body>
+</html>
