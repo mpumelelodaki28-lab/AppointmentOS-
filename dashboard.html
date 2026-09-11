@@ -1,545 +1,465 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>AppointmentOS | Business Dashboard</title>
-
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
-    <style>
-
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
-
-        body {
-            font-family: Arial, Helvetica, sans-serif;
-            background: #f5f7fb;
-            color: #10203f;
-        }
-
-        /* =========================
-           SIDEBAR
-        ========================= */
-
-        .sidebar {
-            position: fixed;
-            left: 0;
-            top: 0;
-            width: 245px;
-            height: 100vh;
-            background: #06183d;
-            color: white;
-            padding: 25px 18px;
-            z-index: 10;
-        }
-
-        .logo {
-            font-size: 25px;
-            font-weight: 800;
-            margin-bottom: 45px;
-            padding-left: 12px;
-        }
-
-        .logo span {
-            color: #3288ff;
-        }
-
-        .business-label {
-            color: #8fa7cf;
-            font-size: 12px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            padding: 0 12px;
-            margin-bottom: 12px;
-        }
-
-        .nav {
-            display: flex;
-            flex-direction: column;
-            gap: 7px;
-        }
-
-        .nav a {
-            color: #dce7f8;
-            text-decoration: none;
-            padding: 13px 12px;
-            border-radius: 9px;
-            font-size: 15px;
-            transition: 0.2s;
-        }
-
-        .nav a:hover,
-        .nav a.active {
-            background: #17386e;
-            color: white;
-        }
-
-        .sidebar-bottom {
-            position: absolute;
-            bottom: 25px;
-            left: 18px;
-            right: 18px;
-        }
-
-        .home-link {
-            display: block;
-            color: #dce7f8;
-            text-decoration: none;
-            padding: 12px;
-            border-radius: 8px;
-        }
-
-        .home-link:hover {
-            background: #17386e;
-        }
-
-        /* =========================
-           MAIN
-        ========================= */
-
-        .main {
-            margin-left: 245px;
-            min-height: 100vh;
-        }
-
-        .topbar {
-            background: white;
-            height: 75px;
-            border-bottom: 1px solid #e5e9f0;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 0 35px;
-        }
-
-        .topbar h2 {
-            font-size: 21px;
-        }
-
-        .business-status {
-            font-size: 14px;
-            color: #667085;
-        }
-
-        .online {
-            display: inline-block;
-            width: 8px;
-            height: 8px;
-            background: #20a464;
-            border-radius: 50%;
-            margin-right: 5px;
-        }
-
-        .content {
-            padding: 35px;
-            max-width: 1400px;
-        }
-
-        /* =========================
-           WELCOME
-        ========================= */
-
-        .welcome {
-            margin-bottom: 30px;
-        }
-
-        .welcome h1 {
-            font-size: 32px;
-            margin-bottom: 7px;
-        }
-
-        .welcome p {
-            color: #667085;
-        }
-
-        /* =========================
-           STATS
-        ========================= */
-
-        .stats {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 18px;
-            margin-bottom: 30px;
-        }
-
-        .stat-card {
-            background: white;
-            border: 1px solid #e5e9f0;
-            border-radius: 14px;
-            padding: 22px;
-        }
-
-        .stat-top {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .stat-title {
-            color: #667085;
-            font-size: 14px;
-        }
-
-        .stat-icon {
-            width: 38px;
-            height: 38px;
-            background: #eaf3ff;
-            color: #2784f7;
-            border-radius: 9px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-        }
-
-        .stat-number {
-            font-size: 32px;
-            font-weight: 800;
-            margin-top: 15px;
-        }
-
-        /* =========================
-           QUICK ACTIONS
-        ========================= */
-
-        .quick-actions {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 18px;
-            margin-bottom: 30px;
-        }
-
-        .action {
-            background: #06183d;
-            color: white;
-            text-decoration: none;
-            padding: 23px;
-            border-radius: 14px;
-            transition: 0.2s;
-        }
-
-        .action:hover {
-            transform: translateY(-2px);
-            background: #0b2860;
-        }
-
-        .action-icon {
-            font-size: 25px;
-            margin-bottom: 12px;
-        }
-
-        .action h3 {
-            margin-bottom: 6px;
-        }
-
-        .action p {
-            color: #aec3e4;
-            font-size: 13px;
-        }
-
-        /* =========================
-           TWO COLUMN AREA
-        ========================= */
-
-        .dashboard-grid {
-            display: grid;
-            grid-template-columns: 1.5fr 1fr;
-            gap: 22px;
-        }
-
-        .panel {
-            background: white;
-            border: 1px solid #e5e9f0;
-            border-radius: 14px;
-            padding: 25px;
-            margin-bottom: 22px;
-        }
-
-        .panel-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-        }
-
-        .panel-header h2 {
-            font-size: 19px;
-        }
-
-        .panel-link {
-            color: #2784f7;
-            text-decoration: none;
-            font-size: 14px;
-            font-weight: bold;
-        }
-
-        /* =========================
-           APPOINTMENTS
-        ========================= */
-
-        .appointment {
-            border: 1px solid #e5e9f0;
-            border-radius: 10px;
-            padding: 17px;
-            margin-bottom: 12px;
-            display: flex;
-            justify-content: space-between;
-            gap: 15px;
-        }
-
-        .appointment:last-child {
-            margin-bottom: 0;
-        }
-
-        .appointment-name {
-            font-weight: bold;
-            margin-bottom: 5px;
-        }
-
-        .appointment-service {
-            color: #667085;
-            font-size: 14px;
-        }
-
-        .appointment-date {
-            text-align: right;
-            color: #2784f7;
-            font-weight: bold;
-            font-size: 14px;
-        }
-
-        .appointment-status {
-            display: inline-block;
-            margin-top: 6px;
-            padding: 4px 8px;
-            border-radius: 20px;
-            background: #eaf8f0;
-            color: #16834e;
-            font-size: 11px;
-            font-weight: bold;
-        }
-
-        .empty {
-            color: #667085;
-            text-align: center;
-            padding: 30px 10px;
-        }
-
-        /* =========================
-           BUSINESS INFO
-        ========================= */
-
-        .info-item {
-            padding: 13px 0;
-            border-bottom: 1px solid #edf0f5;
-        }
-
-        .info-item:last-child {
-            border-bottom: none;
-        }
-
-        .info-label {
-            color: #8a94a6;
-            font-size: 12px;
-            margin-bottom: 4px;
-        }
-
-        .info-value {
-            font-size: 14px;
-            font-weight: 600;
-        }
-
-        /* =========================
-           ERROR
-        ========================= */
-
-        .error {
-            display: none;
-            background: #fff0f0;
-            color: #b42318;
-            padding: 15px;
-            border-radius: 10px;
-            margin-bottom: 20px;
-        }
-
-        /* =========================
-           MOBILE HEADER
-        ========================= */
-
-        .mobile-header {
-            display: none;
-            background: #06183d;
-            color: white;
-            padding: 18px 20px;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .mobile-header .logo {
-            margin: 0;
-            padding: 0;
-        }
-
-        /* =========================
-           RESPONSIVE
-        ========================= */
-
-        @media (max-width: 1050px) {
-
-            .stats {
-                grid-template-columns: repeat(2, 1fr);
-            }
-
-            .dashboard-grid {
-                grid-template-columns: 1fr;
-            }
-        }
-
-        @media (max-width: 750px) {
-
-            .sidebar {
-                display: none;
-            }
-
-            .mobile-header {
-                display: flex;
-            }
-
-            .main {
-                margin-left: 0;
-            }
-
-            .topbar {
-                display: none;
-            }
-
-            .content {
-                padding: 25px 18px;
-            }
-
-            .welcome h1 {
-                font-size: 27px;
-            }
-
-            .stats {
-                grid-template-columns: 1fr 1fr;
-            }
-
-            .quick-actions {
-                grid-template-columns: 1fr;
-            }
-        }
-
-        @media (max-width: 500px) {
-
-            .stats {
-                grid-template-columns: 1fr;
-            }
-
-            .appointment {
-                flex-direction: column;
-            }
-
-            .appointment-date {
-                text-align: left;
-            }
-        }
-
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Dashboard | AppointmentOS</title>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<style>
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: Arial, Helvetica, sans-serif;
+    background: #06142f;
+    color: white;
+}
+
+/* HEADER */
+
+header {
+    height: 76px;
+    background: #071b3d;
+    border-bottom: 1px solid #183968;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 32px;
+}
+
+.logo {
+    font-size: 30px;
+    font-weight: 800;
+    letter-spacing: -1px;
+}
+
+.logo span {
+    color: #3288ff;
+}
+
+.account {
+    color: #b9c7df;
+    font-size: 15px;
+}
+
+/* LAYOUT */
+
+.layout {
+    display: flex;
+    min-height: calc(100vh - 76px);
+}
+
+/* SIDEBAR */
+
+.sidebar {
+    width: 230px;
+    background: #071a38;
+    border-right: 1px solid #183968;
+    padding: 28px 15px;
+}
+
+.nav {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.nav a {
+    text-decoration: none;
+    color: #aebfda;
+    padding: 14px 16px;
+    border-radius: 10px;
+    font-size: 16px;
+    transition: 0.2s;
+}
+
+.nav a:hover {
+    background: #102f61;
+    color: white;
+}
+
+.nav a.active {
+    background: #1269e8;
+    color: white;
+    font-weight: 700;
+}
+
+/* MAIN */
+
+main {
+    flex: 1;
+    max-width: 1400px;
+    padding: 38px;
+}
+
+/* WELCOME */
+
+.welcome {
+    background: linear-gradient(135deg, #092657, #071b3d);
+    border: 1px solid #16457f;
+    border-radius: 18px;
+    padding: 34px;
+    margin-bottom: 25px;
+}
+
+.welcome-small {
+    color: #3288ff;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 3px;
+    margin-bottom: 10px;
+}
+
+.welcome h1 {
+    margin: 0;
+    font-size: 42px;
+}
+
+.welcome h1 span {
+    color: #3288ff;
+}
+
+.welcome p {
+    color: #aebfda;
+    font-size: 17px;
+    margin: 12px 0 0;
+}
+
+/* STATS */
+
+.stats {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    margin-bottom: 25px;
+}
+
+.stat {
+    background: #091f45;
+    border: 1px solid #173d70;
+    border-radius: 15px;
+    padding: 22px;
+    min-height: 145px;
+}
+
+.stat-title {
+    color: #aebfda;
+    font-size: 15px;
+    margin-bottom: 18px;
+}
+
+.stat-number {
+    font-size: 34px;
+    font-weight: 800;
+}
+
+.stat-link {
+    display: block;
+    color: #3288ff;
+    text-decoration: none;
+    margin-top: 14px;
+    font-size: 14px;
+}
+
+/* CONTENT GRID */
+
+.content-grid {
+    display: grid;
+    grid-template-columns: 1.5fr 1fr;
+    gap: 22px;
+}
+
+/* CARDS */
+
+.panel {
+    background: #091f45;
+    border: 1px solid #173d70;
+    border-radius: 16px;
+    padding: 25px;
+}
+
+.panel-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid #183968;
+    padding-bottom: 17px;
+    margin-bottom: 20px;
+}
+
+.panel-header h2 {
+    margin: 0;
+    font-size: 20px;
+}
+
+.view-link {
+    color: #3288ff;
+    text-decoration: none;
+    font-size: 14px;
+}
+
+/* EMPTY APPOINTMENTS */
+
+.empty {
+    text-align: center;
+    padding: 60px 20px;
+}
+
+.empty-icon {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: #102f61;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 18px;
+    color: #3288ff;
+    font-size: 25px;
+}
+
+.empty h3 {
+    margin: 0 0 8px;
+}
+
+.empty p {
+    color: #91a6c6;
+    margin: 0;
+}
+
+/* BUSINESS INFO */
+
+.business-name {
+    font-size: 22px;
+    font-weight: 700;
+    margin-bottom: 8px;
+}
+
+.business-type {
+    display: inline-block;
+    background: #1269e8;
+    padding: 7px 12px;
+    border-radius: 20px;
+    font-size: 13px;
+    margin-bottom: 20px;
+}
+
+.info-row {
+    padding: 13px 0;
+    border-bottom: 1px solid #183968;
+    color: #aebfda;
+}
+
+.info-row:last-child {
+    border-bottom: none;
+}
+
+.info-label {
+    font-size: 12px;
+    color: #6f88ad;
+    margin-bottom: 5px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.info-value {
+    color: white;
+}
+
+/* QUICK ACTIONS */
+
+.quick-actions {
+    margin-top: 22px;
+}
+
+.action-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 14px;
+}
+
+.action {
+    text-decoration: none;
+    color: white;
+    background: #0b2856;
+    border: 1px solid #1c4b86;
+    border-radius: 13px;
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    transition: 0.2s;
+}
+
+.action:hover {
+    border-color: #3288ff;
+    transform: translateY(-2px);
+}
+
+.action-title {
+    font-weight: 700;
+}
+
+.action-description {
+    color: #8fa7c8;
+    font-size: 13px;
+    margin-top: 5px;
+}
+
+.action-arrow {
+    color: #3288ff;
+    font-size: 22px;
+}
+
+/* ERROR */
+
+.error {
+    display: none;
+    background: rgba(231,76,60,0.15);
+    border: 1px solid #e74c3c;
+    color: #ffaaa3;
+    border-radius: 10px;
+    padding: 15px;
+    margin-bottom: 20px;
+}
+
+/* MOBILE */
+
+@media (max-width: 950px) {
+
+    .sidebar {
+        width: 190px;
+    }
+
+    .stats {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .content-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 700px) {
+
+    header {
+        height: 70px;
+        padding: 0 20px;
+    }
+
+    .logo {
+        font-size: 25px;
+    }
+
+    .account {
+        display: none;
+    }
+
+    .layout {
+        display: block;
+    }
+
+    .sidebar {
+        width: 100%;
+        padding: 10px;
+        border-right: none;
+        border-bottom: 1px solid #183968;
+    }
+
+    .nav {
+        flex-direction: row;
+        overflow-x: auto;
+    }
+
+    .nav a {
+        white-space: nowrap;
+        font-size: 14px;
+        padding: 11px 13px;
+    }
+
+    main {
+        padding: 20px;
+    }
+
+    .welcome {
+        padding: 25px;
+    }
+
+    .welcome h1 {
+        font-size: 31px;
+    }
+
+    .stats {
+        grid-template-columns: 1fr;
+    }
+
+    .action-grid {
+        grid-template-columns: 1fr;
+    }
+}
+</style>
 </head>
 
 <body>
 
-
-<!-- =========================
-     DESKTOP SIDEBAR
-========================= -->
-
-<aside class="sidebar">
+<header>
 
     <div class="logo">
         Appointment<span>OS</span>
     </div>
 
-    <div class="business-label">
-        Business
+    <div class="account">
+        Business Account
     </div>
 
-    <nav class="nav">
-
-        <a href="dashboard.html" class="active">
-            Dashboard
-        </a>
-
-        <a href="#appointments">
-            Appointments
-        </a>
-
-        <a href="services.html">
-            Services
-        </a>
-
-        <a href="#customers">
-            Customers
-        </a>
-
-        <a href="#business">
-            Business Profile
-        </a>
-
-    </nav>
-
-    <div class="sidebar-bottom">
-
-        <a href="index.html" class="home-link">
-            ← Back to AppointmentOS
-        </a>
-
-    </div>
-
-</aside>
+</header>
 
 
-<!-- =========================
-     MOBILE HEADER
-========================= -->
+<div class="layout">
 
-<div class="mobile-header">
+    <!-- SIDEBAR -->
 
-    <div class="logo">
-        Appointment<span>OS</span>
-    </div>
+    <aside class="sidebar">
 
-</div>
+        <nav class="nav">
+
+            <a href="dashboard.html" class="active">
+                Dashboard
+            </a>
+
+            <a href="appointments.html">
+                Appointments
+            </a>
+
+            <a href="customers.html">
+                Customers
+            </a>
+
+            <a href="service.html">
+                Services
+            </a>
+
+            <a href="business.html">
+                Business Profile
+            </a>
+
+            <a href="settings.html">
+                Settings
+            </a>
+
+        </nav>
+
+    </aside>
 
 
-<!-- =========================
-     MAIN
-========================= -->
+    <!-- MAIN -->
 
-<div class="main">
-
-
-    <div class="topbar">
-
-        <h2>Business Dashboard</h2>
-
-        <div class="business-status">
-            <span class="online"></span>
-            Dashboard active
-        </div>
-
-    </div>
-
-
-    <div class="content">
-
+    <main>
 
         <div id="errorMessage" class="error"></div>
 
@@ -548,33 +468,31 @@
 
         <section class="welcome">
 
+            <div class="welcome-small">
+                WELCOME BACK
+            </div>
+
             <h1>
-                Welcome back, <span id="welcomeBusiness">Business</span>
+                <span id="businessNameTitle">
+                    Your Business
+                </span>
             </h1>
 
             <p>
-                Here's what's happening with your appointments today.
+                Here's what's happening with your business today.
             </p>
 
         </section>
 
 
-        <!-- STATS -->
+        <!-- STATISTICS -->
 
         <section class="stats">
 
-            <div class="stat-card">
+            <div class="stat">
 
-                <div class="stat-top">
-
-                    <div class="stat-title">
-                        Total Appointments
-                    </div>
-
-                    <div class="stat-icon">
-                        A
-                    </div>
-
+                <div class="stat-title">
+                    Total Appointments
                 </div>
 
                 <div
@@ -584,45 +502,20 @@
                     0
                 </div>
 
-            </div>
-
-
-            <div class="stat-card">
-
-                <div class="stat-top">
-
-                    <div class="stat-title">
-                        Upcoming
-                    </div>
-
-                    <div class="stat-icon">
-                        ↑
-                    </div>
-
-                </div>
-
-                <div
-                    id="upcomingAppointments"
-                    class="stat-number"
+                <a
+                    href="appointments.html"
+                    class="stat-link"
                 >
-                    0
-                </div>
+                    Manage appointments →
+                </a>
 
             </div>
 
 
-            <div class="stat-card">
+            <div class="stat">
 
-                <div class="stat-top">
-
-                    <div class="stat-title">
-                        Customers
-                    </div>
-
-                    <div class="stat-icon">
-                        C
-                    </div>
-
+                <div class="stat-title">
+                    Customers
                 </div>
 
                 <div
@@ -632,21 +525,20 @@
                     0
                 </div>
 
+                <a
+                    href="customers.html"
+                    class="stat-link"
+                >
+                    View customers →
+                </a>
+
             </div>
 
 
-            <div class="stat-card">
+            <div class="stat">
 
-                <div class="stat-top">
-
-                    <div class="stat-title">
-                        Services
-                    </div>
-
-                    <div class="stat-icon">
-                        S
-                    </div>
-
+                <div class="stat-title">
+                    Services
                 </div>
 
                 <div
@@ -656,89 +548,56 @@
                     0
                 </div>
 
+                <a
+                    href="service.html"
+                    class="stat-link"
+                >
+                    Manage services →
+                </a>
+
+            </div>
+
+
+            <div class="stat">
+
+                <div class="stat-title">
+                    Revenue
+                </div>
+
+                <div
+                    id="totalRevenue"
+                    class="stat-number"
+                >
+                    R0.00
+                </div>
+
+                <div class="stat-link">
+                    This month
+                </div>
+
             </div>
 
         </section>
 
 
-        <!-- QUICK ACTIONS -->
+        <!-- MAIN CONTENT -->
 
-        <section class="quick-actions">
-
-            <a href="services.html" class="action">
-
-                <div class="action-icon">
-                    +
-                </div>
-
-                <h3>
-                    Manage Services
-                </h3>
-
-                <p>
-                    Add your services, prices and durations.
-                </p>
-
-            </a>
-
-
-            <a href="#appointments" class="action">
-
-                <div class="action-icon">
-                    ✓
-                </div>
-
-                <h3>
-                    View Appointments
-                </h3>
-
-                <p>
-                    See your upcoming customer bookings.
-                </p>
-
-            </a>
-
-
-            <a href="#business" class="action">
-
-                <div class="action-icon">
-                    ⚙
-                </div>
-
-                <h3>
-                    Business Profile
-                </h3>
-
-                <p>
-                    View your business information.
-                </p>
-
-            </a>
-
-        </section>
-
-
-        <!-- DASHBOARD GRID -->
-
-        <div class="dashboard-grid">
+        <div class="content-grid">
 
 
             <!-- APPOINTMENTS -->
 
-            <section
-                class="panel"
-                id="appointments"
-            >
+            <section class="panel">
 
                 <div class="panel-header">
 
                     <h2>
-                        Recent Appointments
+                        Upcoming Appointments
                     </h2>
 
                     <a
-                        href="#appointments"
-                        class="panel-link"
+                        href="appointments.html"
+                        class="view-link"
                     >
                         View all
                     </a>
@@ -746,66 +605,62 @@
                 </div>
 
 
-                <div id="appointmentsList">
+                <div class="empty">
 
-                    <div class="empty">
-                        Loading appointments...
+                    <div class="empty-icon">
+                        □
                     </div>
+
+                    <h3>
+                        No upcoming appointments
+                    </h3>
+
+                    <p>
+                        Your calendar is clear for now.
+                    </p>
 
                 </div>
 
             </section>
 
 
-            <!-- BUSINESS -->
+            <!-- BUSINESS INFORMATION -->
 
-            <section
-                class="panel"
-                id="business"
-            >
+            <section class="panel">
 
                 <div class="panel-header">
 
                     <h2>
-                        Business Profile
+                        Business Information
                     </h2>
 
-                </div>
-
-
-                <div class="info-item">
-
-                    <div class="info-label">
-                        Business Name
-                    </div>
-
-                    <div
-                        id="businessName"
-                        class="info-value"
+                    <a
+                        href="business.html"
+                        class="view-link"
                     >
-                        Loading...
-                    </div>
+                        Edit
+                    </a>
 
                 </div>
 
 
-                <div class="info-item">
-
-                    <div class="info-label">
-                        Business Type
-                    </div>
-
-                    <div
-                        id="businessType"
-                        class="info-value"
-                    >
-                        Loading...
-                    </div>
-
+                <div
+                    id="businessName"
+                    class="business-name"
+                >
+                    Loading...
                 </div>
 
 
-                <div class="info-item">
+                <div
+                    id="businessType"
+                    class="business-type"
+                >
+                    Loading...
+                </div>
+
+
+                <div class="info-row">
 
                     <div class="info-label">
                         Phone
@@ -821,7 +676,7 @@
                 </div>
 
 
-                <div class="info-item">
+                <div class="info-row">
 
                     <div class="info-label">
                         Email
@@ -837,7 +692,7 @@
                 </div>
 
 
-                <div class="info-item">
+                <div class="info-row">
 
                     <div class="info-label">
                         Address
@@ -852,442 +707,272 @@
 
                 </div>
 
-
-                <div class="info-item">
-
-                    <div class="info-label">
-                        Description
-                    </div>
-
-                    <div
-                        id="businessDescription"
-                        class="info-value"
-                    >
-                        Loading...
-                    </div>
-
-                </div>
-
             </section>
-
 
         </div>
 
-    </div>
+
+        <!-- QUICK ACTIONS -->
+
+        <section class="panel quick-actions">
+
+            <div class="panel-header">
+
+                <h2>
+                    Quick Actions
+                </h2>
+
+            </div>
+
+
+            <div class="action-grid">
+
+
+                <a
+                    href="appointments.html"
+                    class="action"
+                >
+
+                    <div>
+
+                        <div class="action-title">
+                            Manage Appointments
+                        </div>
+
+                        <div class="action-description">
+                            View and manage bookings
+                        </div>
+
+                    </div>
+
+                    <div class="action-arrow">
+                        →
+                    </div>
+
+                </a>
+
+
+                <a
+                    href="customers.html"
+                    class="action"
+                >
+
+                    <div>
+
+                        <div class="action-title">
+                            View Customers
+                        </div>
+
+                        <div class="action-description">
+                            See your customer list
+                        </div>
+
+                    </div>
+
+                    <div class="action-arrow">
+                        →
+                    </div>
+
+                </a>
+
+
+                <a
+                    href="service.html"
+                    class="action"
+                >
+
+                    <div>
+
+                        <div class="action-title">
+                            Manage Services
+                        </div>
+
+                        <div class="action-description">
+                            Add or edit your services
+                        </div>
+
+                    </div>
+
+                    <div class="action-arrow">
+                        →
+                    </div>
+
+                </a>
+
+
+                <a
+                    href="business.html"
+                    class="action"
+                >
+
+                    <div>
+
+                        <div class="action-title">
+                            Edit Business Info
+                        </div>
+
+                        <div class="action-description">
+                            Update your business profile
+                        </div>
+
+                    </div>
+
+                    <div class="action-arrow">
+                        →
+                    </div>
+
+                </a>
+
+
+            </div>
+
+        </section>
+
+    </main>
 
 </div>
 
 
 <script>
 
-    // ==============================
-    // SUPABASE
-    // ==============================
+/* SUPABASE */
 
-    const SUPABASE_URL =
-        "https://jnkfzfmijjdmtebrzrux.supabase.co";
+const SUPABASE_URL =
+    "https://jnkfzfmijjdmtebrzrux.supabase.co";
 
-    const SUPABASE_KEY =
-        "sb_publishable_8hpsNfMPCgeP34IPnjhhrg_BVHKyHET";
+const SUPABASE_KEY =
+    "sb_publishable_8hpsNfMPCgeP34IPnjhhrg_BVHKyHET";
 
-    const { createClient } = supabase;
+const { createClient } = supabase;
 
-    const db = createClient(
-        SUPABASE_URL,
-        SUPABASE_KEY
-    );
+const db = createClient(
+    SUPABASE_URL,
+    SUPABASE_KEY
+);
 
 
-    // ==============================
-    // VARIABLES
-    // ==============================
+/* LOAD BUSINESS */
 
-    let currentBusiness = null;
+async function loadBusiness() {
 
-
-    // ==============================
-    // ERROR
-    // ==============================
-
-    function showError(message) {
-
-        const box =
-            document.getElementById("errorMessage");
-
-        box.textContent = message;
-
-        box.style.display = "block";
-    }
+    const { data, error } = await db
+        .from("businesses")
+        .select("*")
+        .order("created_at", {
+            ascending: false
+        })
+        .limit(1);
 
 
-    // ==============================
-    // LOAD BUSINESS
-    // ==============================
+    if (error) {
 
-    async function loadBusiness() {
-
-        const { data, error } = await db
-            .from("businesses")
-            .select("*")
-            .order("created_at", {
-                ascending: false
-            })
-            .limit(1);
-
-
-        if (error) {
-
-            console.error(error);
-
-            showError(
-                "Could not load business: " +
-                error.message
-            );
-
-            return;
-        }
-
-
-        if (!data || data.length === 0) {
-
-            showError(
-                "No business has been created yet."
-            );
-
-            return;
-        }
-
-
-        currentBusiness = data[0];
-
-
-        document.getElementById(
-            "welcomeBusiness"
-        ).textContent =
-            currentBusiness.name ||
-            "Business";
-
-
-        document.getElementById(
-            "businessName"
-        ).textContent =
-            currentBusiness.name ||
-            "Not provided";
-
-
-        document.getElementById(
-            "businessType"
-        ).textContent =
-            currentBusiness.business_type ||
-            "Not provided";
-
-
-        document.getElementById(
-            "businessPhone"
-        ).textContent =
-            currentBusiness.phone ||
-            "Not provided";
-
-
-        document.getElementById(
-            "businessEmail"
-        ).textContent =
-            currentBusiness.email ||
-            "Not provided";
-
-
-        document.getElementById(
-            "businessAddress"
-        ).textContent =
-            currentBusiness.address ||
-            "Not provided";
-
-
-        document.getElementById(
-            "businessDescription"
-        ).textContent =
-            currentBusiness.description ||
-            "Not provided";
-
-
-        await loadAppointments();
-
-        await loadServices();
-
-    }
-
-
-    // ==============================
-    // LOAD APPOINTMENTS
-    // ==============================
-
-    async function loadAppointments() {
-
-        const { data, error } = await db
-            .from("appointments")
-            .select("*")
-            .eq(
-                "business_id",
-                currentBusiness.id
-            )
-            .order(
-                "appointment_date",
-                {
-                    ascending: true
-                }
-            )
-            .order(
-                "appointment_time",
-                {
-                    ascending: true
-                }
-            );
-
-
-        if (error) {
-
-            console.error(error);
-
-            showError(
-                "Could not load appointments: " +
-                error.message
-            );
-
-            return;
-        }
-
-
-        const appointments =
-            data || [];
-
-
-        document.getElementById(
-            "totalAppointments"
-        ).textContent =
-            appointments.length;
-
-
-        // Upcoming appointments
-
-        const today =
-            new Date();
-
-        today.setHours(
-            0,
-            0,
-            0,
-            0
+        showError(
+            "Could not load business: " +
+            error.message
         );
 
-
-        const upcoming =
-            appointments.filter(
-                function(appointment) {
-
-                    if (!appointment.appointment_date) {
-                        return false;
-                    }
-
-                    const appointmentDate =
-                        new Date(
-                            appointment.appointment_date +
-                            "T00:00:00"
-                        );
-
-                    return appointmentDate >= today;
-
-                }
-            );
-
-
-        document.getElementById(
-            "upcomingAppointments"
-        ).textContent =
-            upcoming.length;
-
-
-        // Customers
-
-        const customers =
-            new Set(
-                appointments.map(
-                    function(a) {
-                        return a.customer;
-                    }
-                ).filter(Boolean)
-            );
-
-
-        document.getElementById(
-            "totalCustomers"
-        ).textContent =
-            customers.size;
-
-
-        // Appointment list
-
-        const list =
-            document.getElementById(
-                "appointmentsList"
-            );
-
-
-        if (appointments.length === 0) {
-
-            list.innerHTML = `
-                <div class="empty">
-                    No appointments yet.
-                </div>
-            `;
-
-            return;
-        }
-
-
-        list.innerHTML =
-            appointments
-                .slice(0, 8)
-                .map(
-                    function(appointment) {
-
-                        const customer =
-                            appointment.customer ||
-                            "Customer";
-
-
-                        const service =
-                            appointment.service ||
-                            "Appointment";
-
-
-                        const date =
-                            appointment.appointment_date ||
-                            appointment.date ||
-                            "No date";
-
-
-                        const time =
-                            appointment.appointment_time ||
-                            appointment.time ||
-                            "";
-
-
-                        const status =
-                            appointment.status ||
-                            "pending";
-
-
-                        return `
-
-                            <div class="appointment">
-
-                                <div>
-
-                                    <div class="appointment-name">
-                                        ${escapeHTML(customer)}
-                                    </div>
-
-                                    <div class="appointment-service">
-                                        ${escapeHTML(service)}
-                                    </div>
-
-                                    <span class="appointment-status">
-                                        ${escapeHTML(status)}
-                                    </span>
-
-                                </div>
-
-                                <div class="appointment-date">
-
-                                    ${escapeHTML(date)}
-
-                                    <br>
-
-                                    ${escapeHTML(time)}
-
-                                </div>
-
-                            </div>
-
-                        `;
-
-                    }
-                )
-                .join("");
-
+        return;
     }
 
 
-    // ==============================
-    // LOAD SERVICES
-    // ==============================
+    if (!data || data.length === 0) {
 
-    async function loadServices() {
+        showError(
+            "No business has been created yet."
+        );
 
-        const { data, error } = await db
-            .from("services")
-            .select("id")
-            .eq(
-                "business_id",
-                currentBusiness.id
-            );
+        return;
+    }
 
 
-        if (error) {
-
-            console.error(
-                "Services error:",
-                error
-            );
-
-            return;
-        }
+    const business = data[0];
 
 
+    document.getElementById(
+        "businessNameTitle"
+    ).textContent =
+        business.name || "Your Business";
+
+
+    document.getElementById(
+        "businessName"
+    ).textContent =
+        business.name || "Not provided";
+
+
+    document.getElementById(
+        "businessType"
+    ).textContent =
+        business.business_type || "Not provided";
+
+
+    document.getElementById(
+        "businessPhone"
+    ).textContent =
+        business.phone || "Not provided";
+
+
+    document.getElementById(
+        "businessEmail"
+    ).textContent =
+        business.email || "Not provided";
+
+
+    document.getElementById(
+        "businessAddress"
+    ).textContent =
+        business.address || "Not provided";
+
+
+    loadServices(business.id);
+
+}
+
+
+/* LOAD SERVICES */
+
+async function loadServices(businessId) {
+
+    const { data, error } = await db
+        .from("services")
+        .select("*")
+        .eq("business_id", businessId);
+
+
+    if (error) {
+
+        console.error(error);
+
+        return;
+    }
+
+
+    document.getElementById(
+        "totalServices"
+    ).textContent =
+        data ? data.length : 0;
+
+}
+
+
+/* ERROR */
+
+function showError(text) {
+
+    const box =
         document.getElementById(
-            "totalServices"
-        ).textContent =
-            data ? data.length : 0;
+            "errorMessage"
+        );
 
-    }
+    box.textContent = text;
 
-
-    // ==============================
-    // SECURITY
-    // ==============================
-
-    function escapeHTML(value) {
-
-        return String(value)
-            .replace(
-                /&/g,
-                "&amp;"
-            )
-            .replace(
-                /</g,
-                "&lt;"
-            )
-            .replace(
-                />/g,
-                "&gt;"
-            )
-            .replace(
-                /"/g,
-                "&quot;"
-            )
-            .replace(
-                /'/g,
-                "&#039;"
-            );
-
-    }
+    box.style.display = "block";
+}
 
 
-    // ==============================
-    // START
-    // ==============================
+/* START */
 
-    loadBusiness();
+loadBusiness();
 
 </script>
 
