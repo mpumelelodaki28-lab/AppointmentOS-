@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Business Login | AppointmentOS</title>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            background: #f5f7fb;
+            color: #0b1838;
+        }
+
+        header {
+            height: 80px;
+            background: #06183d;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 6%;
+        }
+
+        .logo {
+            color: white;
+            font-size: 30px;
+            font-weight: 800;
+        }
+
+        .logo span {
+            color: #3288ff;
+        }
+
+        .home {
+            color: white;
+            text-decoration: none;
+            font-size: 16px;
+        }
+
+        main {
+            min-height: calc(100vh - 80px);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 50px 20px;
+        }
+
+        .login-card {
+            width: 100%;
+            max-width: 460px;
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(10, 35, 75, 0.12);
+        }
+
+        .login-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .login-header h1 {
+            font-size: 32px;
+            margin-bottom: 10px;
+        }
+
+        .login-header p {
+            color: #68738a;
+            line-height: 1.5;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            font-weight: bold;
+            font-size: 14px;
+            margin-bottom: 8px;
+        }
+
+        input {
+            width: 100%;
+            padding: 14px;
+            border: 1px solid #d8e0ed;
+            border-radius: 9px;
+            font-size: 16px;
+            outline: none;
+        }
+
+        input:focus {
+            border-color: #2784f7;
+        }
+
+        button {
+            width: 100%;
+            padding: 15px;
+            border: none;
+            border-radius: 9px;
+            background: #2784f7;
+            color: white;
+            font-size: 17px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #116fdc;
+        }
+
+        button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .message {
+            display: none;
+            padding: 13px;
+            border-radius: 9px;
+            margin-bottom: 20px;
+            font-size: 14px;
+        }
+
+        .error {
+            background: #fff0f0;
+            color: #b42318;
+        }
+
+        .success {
+            background: #ecfdf3;
+            color: #027a48;
+        }
+
+        .register {
+            text-align: center;
+            margin-top: 25px;
+            color: #68738a;
+            font-size: 14px;
+        }
+
+        .register a {
+            color: #2784f7;
+            font-weight: bold;
+            text-decoration: none;
+        }
+
+        @media (max-width: 520px) {
+
+            header {
+                height: 70px;
+                padding: 0 20px;
+            }
+
+            .logo {
+                font-size: 24px;
+            }
+
+            main {
+                padding: 30px 18px;
+            }
+
+            .login-card {
+                padding: 30px 22px;
+            }
+
+            .login-header h1 {
+                font-size: 28px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+
+    <div class="logo">
+        Appointment<span>OS</span>
+    </div>
+
+    <a href="index.html" class="home">
+        ← Home
+    </a>
+
+</header>
+
+
+<main>
+
+    <div class="login-card">
+
+        <div class="login-header">
+
+            <h1>Business Login</h1>
+
+            <p>
+                Sign in to manage your appointments,
+                customers and services.
+            </p>
+
+        </div>
+
+
+        <div id="errorMessage" class="message error"></div>
+
+        <div id="successMessage" class="message success"></div>
+
+
+        <form id="loginForm">
+
+            <div class="form-group">
+
+                <label for="email">
+                    Business Email
+                </label>
+
+                <input
+                    type="email"
+                    id="email"
+                    placeholder="business@example.com"
+                    required
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label for="password">
+                    Password
+                </label>
+
+                <input
+                    type="password"
+                    id="password"
+                    placeholder="Enter your password"
+                    required
+                >
+
+            </div>
+
+
+            <button
+                type="submit"
+                id="loginButton"
+            >
+                Log In
+            </button>
+
+        </form>
+
+
+        <div class="register">
+
+            Don't have a business account?
+
+            <a href="business.html">
+                Create a Business
+            </a>
+
+        </div>
+
+    </div>
+
+</main>
+
+
+<script>
+
+    // ==============================
+    // SUPABASE
+    // ==============================
+
+    const SUPABASE_URL =
+        "https://jnkfzfmijjdmtebrzrux.supabase.co";
+
+    const SUPABASE_KEY =
+        "sb_publishable_8hpsNfMPCgeP34IPnjhhrg_BVHKyHET";
+
+    const { createClient } = supabase;
+
+    const db = createClient(
+        SUPABASE_URL,
+        SUPABASE_KEY
+    );
+
+
+    // ==============================
+    // ELEMENTS
+    // ==============================
+
+    const loginForm =
+        document.getElementById("loginForm");
+
+    const loginButton =
+        document.getElementById("loginButton");
+
+    const errorMessage =
+        document.getElementById("errorMessage");
+
+    const successMessage =
+        document.getElementById("successMessage");
+
+
+    // ==============================
+    // SHOW ERROR
+    // ==============================
+
+    function showError(message) {
+
+        errorMessage.textContent = message;
+
+        errorMessage.style.display = "block";
+
+        successMessage.style.display = "none";
+    }
+
+
+    // ==============================
+    // LOGIN
+    // ==============================
+
+    loginForm.addEventListener(
+        "submit",
+        async function(event) {
+
+            event.preventDefault();
+
+            errorMessage.style.display = "none";
+
+            successMessage.style.display = "none";
+
+            loginButton.disabled = true;
+
+            loginButton.textContent =
+                "Logging in...";
+
+
+            const email =
+                document.getElementById(
+                    "email"
+                ).value.trim();
+
+            const password =
+                document.getElementById(
+                    "password"
+                ).value;
+
+
+            const { data, error } =
+                await db.auth.signInWithPassword({
+
+                    email: email,
+
+                    password: password
+
+                });
+
+
+            if (error) {
+
+                console.error(
+                    "Login error:",
+                    error
+                );
+
+                showError(
+                    "Login failed. Please check your email and password."
+                );
+
+                loginButton.disabled = false;
+
+                loginButton.textContent =
+                    "Log In";
+
+                return;
+            }
+
+
+            if (!data.user) {
+
+                showError(
+                    "We could not sign you in."
+                );
+
+                loginButton.disabled = false;
+
+                loginButton.textContent =
+                    "Log In";
+
+                return;
+            }
+
+
+            successMessage.textContent =
+                "Login successful. Opening your dashboard...";
+
+            successMessage.style.display =
+                "block";
+
+
+            setTimeout(function() {
+
+                window.location.href =
+                    "dashboard.html";
+
+            }, 800);
+
+        }
+    );
+
+</script>
+
+</body>
+</html>
