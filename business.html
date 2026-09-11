@@ -918,16 +918,30 @@
                 currentBusinessId = data.id;
 
 
-                message.textContent =
-                    "Business created successfully! Now add your services.";
+                message.innerHTML = `
+    <strong>Business created successfully!</strong>
+    <br>
+    Your business is now on AppointmentOS.
+    <br><br>
+    <a href="dashboard.html"
+       style="
+           display:inline-block;
+           background:#2583f7;
+           color:white;
+           padding:12px 20px;
+           border-radius:9px;
+           text-decoration:none;
+           font-weight:bold;
+       ">
+        Go to Dashboard →
+    </a>
+`;
 
-                message.className = "success";
+message.className = "success";
 
+businessForm.style.display = "none";
 
-                businessForm.style.display = "none";
-
-
-                servicesSection.style.display = "block";
+servicesSection.style.display = "block";
 
 
             }
