@@ -1,0 +1,679 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Create Account | AppointmentOS</title>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            min-height: 100vh;
+            background: #03183d;
+            color: #0b1838;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 25px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 500px;
+        }
+
+        .logo {
+            text-align: center;
+            color: white;
+            font-size: 32px;
+            font-weight: 800;
+            margin-bottom: 30px;
+        }
+
+        .logo span {
+            color: #3288ff;
+        }
+
+        .card {
+            background: white;
+            border-radius: 20px;
+            padding: 35px;
+            box-shadow: 0 25px 70px rgba(0,0,0,0.25);
+        }
+
+        h1 {
+            font-size: 30px;
+            margin-bottom: 8px;
+        }
+
+        .subtitle {
+            color: #718096;
+            line-height: 1.5;
+            margin-bottom: 28px;
+        }
+
+        .account-types {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 28px;
+        }
+
+        .account-type {
+            border: 2px solid #d8e0ed;
+            border-radius: 14px;
+            padding: 20px;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .account-type:hover {
+            border-color: #3288ff;
+        }
+
+        .account-type.selected {
+            border-color: #2784f7;
+            background: #f0f6ff;
+        }
+
+        .account-type-title {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 7px;
+        }
+
+        .account-type-description {
+            color: #718096;
+            font-size: 13px;
+            line-height: 1.4;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+
+        input {
+            width: 100%;
+            padding: 14px;
+            border: 1px solid #d8e0ed;
+            border-radius: 10px;
+            font-size: 16px;
+            outline: none;
+        }
+
+        input:focus {
+            border-color: #3288ff;
+        }
+
+        button {
+            width: 100%;
+            border: none;
+            border-radius: 10px;
+            padding: 16px;
+            background: #2784f7;
+            color: white;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #116fdc;
+        }
+
+        button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .message {
+            display: none;
+            padding: 14px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            line-height: 1.4;
+        }
+
+        .error {
+            background: #fff0f0;
+            color: #b42318;
+        }
+
+        .success {
+            background: #e7f8ed;
+            color: #166534;
+        }
+
+        .login {
+            text-align: center;
+            margin-top: 25px;
+            color: #718096;
+        }
+
+        .login a {
+            color: #2784f7;
+            font-weight: bold;
+            text-decoration: none;
+        }
+
+        .back {
+            display: block;
+            text-align: center;
+            margin-top: 20px;
+            color: #aebfdd;
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        @media (max-width: 500px) {
+
+            body {
+                padding: 18px;
+            }
+
+            .card {
+                padding: 25px 20px;
+            }
+
+            .account-types {
+                grid-template-columns: 1fr;
+            }
+
+            h1 {
+                font-size: 26px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<div class="container">
+
+
+    <div class="logo">
+        Appointment<span>OS</span>
+    </div>
+
+
+    <div class="card">
+
+
+        <h1>
+            Create your account
+        </h1>
+
+
+        <p class="subtitle">
+            Choose how you want to use AppointmentOS.
+        </p>
+
+
+        <div
+            id="errorMessage"
+            class="message error"
+        ></div>
+
+
+        <div
+            id="successMessage"
+            class="message success"
+        ></div>
+
+
+        <!-- ACCOUNT TYPE -->
+
+        <div class="account-types">
+
+
+            <div
+                id="customerOption"
+                class="account-type"
+                onclick="selectAccountType('customer')"
+            >
+
+                <div class="account-type-title">
+                    Customer
+                </div>
+
+                <div class="account-type-description">
+                    Book and manage appointments
+                    with businesses.
+                </div>
+
+            </div>
+
+
+            <div
+                id="businessOption"
+                class="account-type"
+                onclick="selectAccountType('business')"
+            >
+
+                <div class="account-type-title">
+                    Business
+                </div>
+
+                <div class="account-type-description">
+                    Manage your business,
+                    services and appointments.
+                </div>
+
+            </div>
+
+
+        </div>
+
+
+        <form id="signupForm">
+
+
+            <div class="form-group">
+
+                <label for="email">
+                    Email
+                </label>
+
+                <input
+                    id="email"
+                    type="email"
+                    placeholder="you@example.com"
+                    required
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label for="password">
+                    Password
+                </label>
+
+                <input
+                    id="password"
+                    type="password"
+                    placeholder="At least 6 characters"
+                    minlength="6"
+                    required
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label for="confirmPassword">
+                    Confirm Password
+                </label>
+
+                <input
+                    id="confirmPassword"
+                    type="password"
+                    placeholder="Enter your password again"
+                    minlength="6"
+                    required
+                >
+
+            </div>
+
+
+            <button
+                id="signupButton"
+                type="submit"
+            >
+                Create Account
+            </button>
+
+
+        </form>
+
+
+        <div class="login">
+
+            Already have an account?
+
+            <a href="login.html">
+                Log in
+            </a>
+
+        </div>
+
+
+    </div>
+
+
+    <a
+        href="index.html"
+        class="back"
+    >
+        ← Back to AppointmentOS
+    </a>
+
+
+</div>
+
+
+
+<script>
+
+
+    // ==========================================
+    // SUPABASE
+    // ==========================================
+
+    const SUPABASE_URL =
+        "https://jnkfzfmijjdmtebrzrux.supabase.co";
+
+
+    const SUPABASE_KEY =
+        "sb_publishable_8hpsNfMPCgeP34IPnjhhrg_BVHKyHET";
+
+
+    const { createClient } =
+        supabase;
+
+
+    const db =
+        createClient(
+            SUPABASE_URL,
+            SUPABASE_KEY
+        );
+
+
+    // ==========================================
+    // VARIABLES
+    // ==========================================
+
+    let accountType = null;
+
+
+    const signupForm =
+        document.getElementById(
+            "signupForm"
+        );
+
+
+    const signupButton =
+        document.getElementById(
+            "signupButton"
+        );
+
+
+    const errorMessage =
+        document.getElementById(
+            "errorMessage"
+        );
+
+
+    const successMessage =
+        document.getElementById(
+            "successMessage"
+        );
+
+
+    // ==========================================
+    // ACCOUNT TYPE
+    // ==========================================
+
+    function selectAccountType(type) {
+
+        accountType = type;
+
+
+        document
+            .getElementById("customerOption")
+            .classList.remove("selected");
+
+
+        document
+            .getElementById("businessOption")
+            .classList.remove("selected");
+
+
+        if (type === "customer") {
+
+            document
+                .getElementById("customerOption")
+                .classList.add("selected");
+
+        }
+
+
+        if (type === "business") {
+
+            document
+                .getElementById("businessOption")
+                .classList.add("selected");
+
+        }
+
+    }
+
+
+    // ==========================================
+    // MESSAGES
+    // ==========================================
+
+    function showError(message) {
+
+        successMessage.style.display =
+            "none";
+
+        errorMessage.textContent =
+            message;
+
+        errorMessage.style.display =
+            "block";
+
+    }
+
+
+    function showSuccess(message) {
+
+        errorMessage.style.display =
+            "none";
+
+        successMessage.textContent =
+            message;
+
+        successMessage.style.display =
+            "block";
+
+    }
+
+
+    // ==========================================
+    // CREATE ACCOUNT
+    // ==========================================
+
+    signupForm.addEventListener(
+        "submit",
+        async function(event) {
+
+            event.preventDefault();
+
+
+            if (!accountType) {
+
+                showError(
+                    "Please choose Customer or Business."
+                );
+
+                return;
+
+            }
+
+
+            const email =
+                document.getElementById(
+                    "email"
+                ).value.trim();
+
+
+            const password =
+                document.getElementById(
+                    "password"
+                ).value;
+
+
+            const confirmPassword =
+                document.getElementById(
+                    "confirmPassword"
+                ).value;
+
+
+            if (password !== confirmPassword) {
+
+                showError(
+                    "The passwords do not match."
+                );
+
+                return;
+
+            }
+
+
+            signupButton.disabled =
+                true;
+
+
+            signupButton.textContent =
+                "Creating Account...";
+
+
+            try {
+
+
+                const { data, error } =
+                    await db.auth.signUp({
+
+                        email: email,
+
+                        password: password,
+
+                        options: {
+
+                            data: {
+
+                                account_type:
+                                    accountType
+
+                            }
+
+                        }
+
+                    });
+
+
+                if (error) {
+
+                    throw error;
+
+                }
+
+
+                if (!data.user) {
+
+                    throw new Error(
+                        "Account could not be created."
+                    );
+
+                }
+
+
+                showSuccess(
+                    "Account created successfully."
+                );
+
+
+                /*
+                 * We are NOT inserting into
+                 * customers or businesses yet.
+                 *
+                 * Supabase Auth creates the
+                 * account first.
+                 *
+                 * We will connect the profile
+                 * to the account in the next step.
+                 */
+
+
+                setTimeout(function() {
+
+                    if (
+                        accountType ===
+                        "business"
+                    ) {
+
+                        window.location.href =
+                            "business.html";
+
+                    } else {
+
+                        window.location.href =
+                            "index.html";
+
+                    }
+
+                }, 1200);
+
+
+            }
+
+            catch (error) {
+
+                console.error(error);
+
+
+                showError(
+                    error.message
+                );
+
+
+                signupButton.disabled =
+                    false;
+
+
+                signupButton.textContent =
+                    "Create Account";
+
+            }
+
+        }
+    );
+
+</script>
+
+
+</body>
+
+</html>
