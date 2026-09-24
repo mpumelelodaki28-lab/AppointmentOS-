@@ -1486,295 +1486,300 @@
         "time"
     ).addEventListener(
         "change",
-        updateSummary
-    );
+
+// ==========================================
+// BOOK APPOINTMENT
+// ==========================================
+
+document.getElementById(
+    "bookButton"
+).addEventListener(
+    "click",
+    async function() {
+
+        if (!selectedService) {
+
+            alert(
+                "Please choose a service."
+            );
+
+            return;
+        }
 
 
-
-    // ==========================================
-    // BOOK APPOINTMENT
-    // ==========================================
-
-    document.getElementById(
-        "bookButton"
-    ).addEventListener(
-        "click",
-        async function() {
-
-            if (!selectedService) {
-
-                alert(
-                    "Please choose a service."
-                );
-
-                return;
-            }
+        const name =
+            document.getElementById(
+                "customerName"
+            ).value.trim();
 
 
-            const name =
-                document.getElementById(
-                    "customerName"
-                ).value.trim();
+        const phone =
+            document.getElementById(
+                "phone"
+            ).value.trim();
 
 
-            const phone =
-                document.getElementById(
-                    "phone"
-                ).value.trim();
+        const email =
+            document.getElementById(
+                "email"
+            ).value.trim();
 
 
-            const email =
-                document.getElementById(
-                    "email"
-                ).value.trim();
+        const date =
+            document.getElementById(
+                "date"
+            ).value;
 
 
-            const date =
-                document.getElementById(
-                    "date"
-                ).value;
+        const time =
+            document.getElementById(
+                "time"
+            ).value;
 
 
-            const time =
-                document.getElementById(
-                    "time"
-                ).value;
+        const notes =
+            document.getElementById(
+                "notes"
+            ).value.trim();
 
 
-            const notes =
-                document.getElementById(
-                    "notes"
-                ).value.trim();
+        if (!name) {
+
+            alert(
+                "Please enter your name."
+            );
+
+            return;
+        }
 
 
-            if (!name) {
+        if (!phone) {
 
-                alert(
-                    "Please enter your name."
-                );
+            alert(
+                "Please enter your phone number."
+            );
 
-                return;
-            }
-
-
-            if (!phone) {
-
-                alert(
-                    "Please enter your phone number."
-                );
-
-                return;
-            }
+            return;
+        }
 
 
-            if (!date) {
+        if (!date) {
 
-                alert(
-                    "Please choose an appointment date."
-                );
+            alert(
+                "Please choose an appointment date."
+            );
 
-                return;
-            }
-
-
-            if (!time) {
-
-                alert(
-                    "Please choose an appointment time."
-                );
-
-                return;
-            }
+            return;
+        }
 
 
-            const button =
-                document.getElementById(
-                    "bookButton"
-                );
+        if (!time) {
+
+            alert(
+                "Please choose an appointment time."
+            );
+
+            return;
+        }
 
 
-            button.disabled = true;
+        const button =
+            document.getElementById(
+                "bookButton"
+            );
+
+
+        button.disabled = true;
+
+        button.textContent =
+            "Booking...";
+
+
+        // ==========================================
+        // FIND EXISTING CUSTOMER
+        // ==========================================
+
+        let customerId = null;
+
+
+        const {
+            data: existingCustomer,
+            error: customerSearchError
+        } = await db
+            .from("customers")
+            .select("id")
+            .eq("phone", phone)
+            .maybeSingle();
+
+
+        if (customerSearchError) {
+
+            console.error(
+                "Customer search error:",
+                customerSearchError
+            );
+
+            alert(
+                "Could not find customer: " +
+                customerSearchError.message
+            );
+
+            button.disabled = false;
 
             button.textContent =
-                "Booking...";
+                "Confirm Appointment";
+
+            return;
+        }
 
 
-            /*
-             * Save the booking.
-             *
-             * service_id is now saved so
-             * the business knows exactly
-             * which service was booked.
-             */
+        // ==========================================
+        // CUSTOMER EXISTS
+        // ==========================================
 
-            // ==========================================
-// FIND OR CREATE CUSTOMER
-// ==========================================
+        if (existingCustomer) {
 
-let customerId = null;
+            customerId =
+                existingCustomer.id;
 
-// Look for an existing customer using their phone number
-const { data: existingCustomer, error: customerSearchError } =
-    await db
-        .from("customers")
-        .select("id")
-        .eq("phone", phone)
-        .maybeSingle();
-
-if (customerSearchError) {
-
-    console.error(
-        "Customer search error:",
-        customerSearchError
-    );
-
-    alert(
-        "Could not find customer: " +
-        customerSearchError.message
-    );
-
-    button.disabled = false;
-    button.textContent = "Confirm Appointment";
-
-    return;
-}
+        }
 
 
-// ==========================================
-// CUSTOMER ALREADY EXISTS
-// ==========================================
+        // ==========================================
+        // CREATE CUSTOMER
+        // ==========================================
 
-if (existingCustomer) {
+        else {
 
-    customerId = existingCustomer.id;
+            const {
+                data: newCustomer,
+                error: customerCreateError
+            } = await db
+                .from("customers")
+                .insert([{
 
-}
+                    name: name,
+
+                    phone: phone,
+
+                    email: email || null
+
+                }])
+                .select("id")
+                .single();
 
 
-// ==========================================
-// CREATE NEW CUSTOMER
-// ==========================================
+            if (customerCreateError) {
 
-else {
+                console.error(
+                    "Customer creation error:",
+                    customerCreateError
+                );
 
-    const { data: newCustomer, error: customerCreateError } =
-        await db
-            .from("customers")
+                alert(
+                    "Could not create customer: " +
+                    customerCreateError.message
+                );
+
+                button.disabled = false;
+
+                button.textContent =
+                    "Confirm Appointment";
+
+                return;
+            }
+
+
+            customerId =
+                newCustomer.id;
+
+        }
+
+
+        // ==========================================
+        // CREATE APPOINTMENT
+        // ==========================================
+
+        const {
+            error: appointmentError
+        } = await db
+            .from("appointments")
             .insert([{
 
-                name: name,
+                business_id:
+                    currentBusiness.id,
 
-                phone: phone,
+                customer_id:
+                    customerId,
 
-                email: email || null
+                service_id:
+                    selectedService.id,
 
-            }])
-            .select("id")
-            .single();
+                customer:
+                    name,
+
+                phone:
+                    phone,
+
+                email:
+                    email || null,
+
+                service:
+                    selectedService.name,
+
+                appointment_date:
+                    date,
+
+                appointment_time:
+                    time,
+
+                date:
+                    date,
+
+                time:
+                    time,
+
+                notes:
+                    notes || null,
+
+                status:
+                    "pending"
+
+            }]);
 
 
-    if (customerCreateError) {
+        if (appointmentError) {
 
-        console.error(
-            "Customer creation error:",
-            customerCreateError
+            console.error(
+                "Appointment error:",
+                appointmentError
+            );
+
+            alert(
+                "Something went wrong: " +
+                appointmentError.message
+            );
+
+            button.disabled = false;
+
+            button.textContent =
+                "Confirm Appointment";
+
+            return;
+        }
+
+
+        // ==========================================
+        // SUCCESS
+        // ==========================================
+
+        showSuccess(
+            name,
+            date,
+            time
         );
 
-        alert(
-            "Could not create customer: " +
-            customerCreateError.message
-        );
-
-        button.disabled = false;
-        button.textContent = "Confirm Appointment";
-
-        return;
     }
-
-
-    customerId = newCustomer.id;
-
-}
-
-
-// ==========================================
-// CREATE APPOINTMENT
-// ==========================================
-
-const { error: appointmentError } =
-    await db
-        .from("appointments")
-        .insert([{
-
-            business_id:
-                currentBusiness.id,
-
-            customer_id:
-                customerId,
-
-            service_id:
-                selectedService.id,
-
-            customer:
-                name,
-
-            phone:
-                phone,
-
-            email:
-                email || null,
-
-            service:
-                selectedService.name,
-
-            appointment_date:
-                date,
-
-            appointment_time:
-                time,
-
-            date:
-                date,
-
-            time:
-                time,
-
-            notes:
-                notes || null,
-
-            status:
-                "pending"
-
-        }]);
-
-
-if (appointmentError) {
-
-    console.error(
-        "Appointment error:",
-        appointmentError
-    );
-
-    alert(
-        "Something went wrong: " +
-        appointmentError.message
-    );
-
-    button.disabled = false;
-    button.textContent = "Confirm Appointment";
-
-    return;
-}
-
-
-// ==========================================
-// SUCCESS
-// ==========================================
-
-showSuccess(
-    name,
-    date,
-    time
 );
 
 
