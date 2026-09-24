@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Find a Business | AppointmentOS</title>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #03183d;
+            color: white;
+            min-height: 100vh;
+        }
+
+        header {
+            background: #061b43;
+            padding: 22px 40px;
+            border-bottom: 1px solid #17376b;
+        }
+
+        .logo {
+            font-size: 25px;
+            font-weight: bold;
+            color: white;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1100px;
+            margin: 50px auto;
+        }
+
+        .hero {
+            text-align: center;
+            margin-bottom: 35px;
+        }
+
+        .hero h1 {
+            font-size: 38px;
+            margin-bottom: 12px;
+        }
+
+        .hero p {
+            color: #b9c7df;
+            font-size: 17px;
+        }
+
+        .search-box {
+            max-width: 700px;
+            margin: 0 auto 40px;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 17px 20px;
+            border-radius: 10px;
+            border: 1px solid #31578e;
+            background: #102852;
+            color: white;
+            font-size: 16px;
+            outline: none;
+        }
+
+        .search-box input::placeholder {
+            color: #9eacc5;
+        }
+
+        .business-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 22px;
+        }
+
+        .business-card {
+            background: #102852;
+            border: 1px solid #1d3c6d;
+            border-radius: 14px;
+            padding: 25px;
+            transition: 0.2s;
+        }
+
+        .business-card:hover {
+            transform: translateY(-3px);
+            border-color: #3288ff;
+        }
+
+        .business-card h2 {
+            font-size: 21px;
+            margin-bottom: 10px;
+        }
+
+        .business-type {
+            color: #3288ff;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+
+        .business-info {
+            color: #c2cee2;
+            line-height: 1.7;
+            font-size: 14px;
+            margin-bottom: 20px;
+        }
+
+        .book-btn {
+            width: 100%;
+            padding: 13px;
+            border: none;
+            border-radius: 8px;
+            background: #3288ff;
+            color: white;
+            font-size: 15px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .book-btn:hover {
+            background: #2475e0;
+        }
+
+        .message {
+            text-align: center;
+            color: #b9c7df;
+            padding: 30px;
+            font-size: 16px;
+        }
+
+        .error {
+            color: #ff9c9c;
+        }
+
+        @media (max-width: 850px) {
+            .business-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 600px) {
+            header {
+                padding: 20px;
+            }
+
+            .container {
+                width: 92%;
+                margin: 35px auto;
+            }
+
+            .hero h1 {
+                font-size: 30px;
+            }
+
+            .business-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <div class="logo">AppointmentOS</div>
+</header>
+
+<div class="container">
+
+    <div class="hero">
+        <h1>Find a Business</h1>
+        <p>Search for a business and book your appointment.</p>
+    </div>
+
+    <div class="search-box">
+        <input
+            type="text"
+            id="searchInput"
+            placeholder="Search by business name or type..."
+            oninput="filterBusinesses()"
+        >
+    </div>
+
+    <div id="businessGrid" class="business-grid">
+        <div class="message">Loading businesses...</div>
+    </div>
+
+</div>
+
+<script>
+
+    // Supabase connection
+    const SUPABASE_URL = "https://jnkfzfmijjdmtebrzrux.supabase.co";
+
+    const SUPABASE_ANON_KEY = "PASTE_YOUR_EXISTING_SUPABASE_ANON_KEY_HERE";
+
+    const supabaseClient = supabase.createClient(
+        SUPABASE_URL,
+        SUPABASE_ANON_KEY
+    );
+
+    let businesses = [];
+
+    // Load businesses
+    async function loadBusinesses() {
+
+        const businessGrid = document.getElementById("businessGrid");
+
+        const { data, error } = await supabaseClient
+            .from("businesses")
+            .select("*")
+            .order("id", { ascending: false });
+
+        if (error) {
+            console.error(error);
+
+            businessGrid.innerHTML = `
+                <div class="message error">
+                    Unable to load businesses.
+                </div>
+            `;
+
+            return;
+        }
+
+        businesses = data || [];
+
+        displayBusinesses(businesses);
+    }
+
+    // Display businesses
+    function displayBusinesses(list) {
+
+        const businessGrid = document.getElementById("businessGrid");
+
+        if (list.length === 0) {
+
+            businessGrid.innerHTML = `
+                <div class="message">
+                    No businesses found.
+                </div>
+            `;
+
+            return;
+        }
+
+        businessGrid.innerHTML = list.map(business => `
+
+            <div class="business-card">
+
+                <h2>${escapeHTML(business.name || "Unnamed Business")}</h2>
+
+                <div class="business-type">
+                    ${escapeHTML(business.business_type || "Business")}
+                </div>
+
+                <div class="business-info">
+
+                    ${business.address
+                        ? `Address: ${escapeHTML(business.address)}<br>`
+                        : ""
+                    }
+
+                    ${business.phone
+                        ? `Phone: ${escapeHTML(business.phone)}<br>`
+                        : ""
+                    }
+
+                    ${business.email
+                        ? `Email: ${escapeHTML(business.email)}`
+                        : ""
+                    }
+
+                </div>
+
+                <button
+                    class="book-btn"
+                    onclick="selectBusiness('${business.id}')"
+                >
+                    View & Book
+                </button>
+
+            </div>
+
+        `).join("");
+    }
+
+    // Search businesses
+    function filterBusinesses() {
+
+        const search =
+            document.getElementById("searchInput")
+            .value
+            .toLowerCase()
+            .trim();
+
+        const filtered = businesses.filter(business => {
+
+            const name =
+                (business.name || "").toLowerCase();
+
+            const type =
+                (business.business_type || "").toLowerCase();
+
+            return name.includes(search) ||
+                   type.includes(search);
+        });
+
+        displayBusinesses(filtered);
+    }
+
+    // Select business
+    function selectBusiness(id) {
+
+        const business = businesses.find(
+            item => String(item.id) === String(id)
+        );
+
+        if (!business) {
+            alert("Business could not be found.");
+            return;
+        }
+
+        // Save selected business temporarily
+        localStorage.setItem(
+            "selectedBusiness",
+            JSON.stringify(business)
+        );
+
+        // Open booking page
+        window.location.href =
+            "booking.html?business_id=" + encodeURIComponent(id);
+    }
+
+    // Basic HTML protection
+    function escapeHTML(value) {
+
+        return String(value)
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;")
+            .replace(/'/g, "&#039;");
+    }
+
+    // Start
+    loadBusinesses();
+
+</script>
+
+</body>
+</html>
