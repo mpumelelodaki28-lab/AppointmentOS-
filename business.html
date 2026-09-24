@@ -844,6 +844,33 @@
         document.getElementById("serviceList");
 
 
+    /* CHECK LOGIN */
+
+    async function checkLogin() {
+
+        const {
+            data: { user },
+            error
+        } = await db.auth.getUser();
+
+        if (error || !user) {
+
+            alert("Please log in before creating a business.");
+
+            window.location.href = "login.html";
+
+            return null;
+        }
+
+        return user;
+    }
+
+
+    /* CHECK USER WHEN PAGE LOADS */
+
+    checkLogin();
+
+
     /* CREATE BUSINESS */
 
     businessForm.addEventListener(
@@ -857,53 +884,86 @@
             message.textContent = "";
 
             createButton.disabled = true;
-            createButton.textContent = "Creating Business...";
-
-
-            const business = {
-
-                name:
-                    document
-                    .getElementById("name")
-                    .value
-                    .trim(),
-
-                business_type:
-                    document
-                    .getElementById("business_type")
-                    .value,
-
-                phone:
-                    document
-                    .getElementById("phone")
-                    .value
-                    .trim() || null,
-
-                email:
-                    document
-                    .getElementById("email")
-                    .value
-                    .trim() || null,
-
-                address:
-                    document
-                    .getElementById("address")
-                    .value
-                    .trim() || null,
-
-                description:
-                    document
-                    .getElementById("description")
-                    .value
-                    .trim() || null
-
-            };
+            createButton.textContent =
+                "Creating Business...";
 
 
             try {
 
-                const { data, error } =
-                    await db
+                /* GET CURRENT USER */
+
+                const {
+                    data: { user },
+                    error: userError
+                } = await db.auth.getUser();
+
+
+                if (userError) {
+                    throw userError;
+                }
+
+
+                if (!user) {
+
+                    window.location.href =
+                        "login.html";
+
+                    return;
+
+                }
+
+
+                /* GET FORM DATA */
+
+                const business = {
+
+                    name:
+                        document
+                        .getElementById("name")
+                        .value
+                        .trim(),
+
+                    business_type:
+                        document
+                        .getElementById("business_type")
+                        .value,
+
+                    phone:
+                        document
+                        .getElementById("phone")
+                        .value
+                        .trim() || null,
+
+                    email:
+                        document
+                        .getElementById("email")
+                        .value
+                        .trim() || null,
+
+                    address:
+                        document
+                        .getElementById("address")
+                        .value
+                        .trim() || null,
+
+                    description:
+                        document
+                        .getElementById("description")
+                        .value
+                        .trim() || null,
+
+                    owner_id:
+                        user.id
+
+                };
+
+
+                /* CREATE BUSINESS */
+
+                const {
+                    data,
+                    error
+                } = await db
                     .from("businesses")
                     .insert([business])
                     .select("id")
@@ -915,34 +975,49 @@
                 }
 
 
-                currentBusinessId = data.id;
+                currentBusinessId =
+                    data.id;
 
+
+                /* SUCCESS MESSAGE */
 
                 message.innerHTML = `
-    <strong>Business created successfully!</strong>
-    <br>
-    Your business is now on AppointmentOS.
-    <br><br>
-    <a href="dashboard.html"
-       style="
-           display:inline-block;
-           background:#2583f7;
-           color:white;
-           padding:12px 20px;
-           border-radius:9px;
-           text-decoration:none;
-           font-weight:bold;
-       ">
-        Go to Dashboard →
-    </a>
-`;
+                    <strong>
+                        Business created successfully!
+                    </strong>
 
-message.className = "success";
+                    <br>
 
-businessForm.style.display = "none";
+                    Your business is now connected
+                    to your AppointmentOS account.
 
-servicesSection.style.display = "block";
+                    <br><br>
 
+                    <a
+                        href="dashboard.html"
+                        style="
+                            display:inline-block;
+                            background:#2583f7;
+                            color:white;
+                            padding:12px 20px;
+                            border-radius:9px;
+                            text-decoration:none;
+                            font-weight:bold;
+                        "
+                    >
+                        Go to Dashboard →
+                    </a>
+                `;
+
+                message.className = "success";
+
+
+                businessForm.style.display =
+                    "none";
+
+
+                servicesSection.style.display =
+                    "block";
 
             }
 
@@ -954,13 +1029,16 @@ servicesSection.style.display = "block";
                     "Something went wrong: " +
                     error.message;
 
-                message.className = "error";
+                message.className =
+                    "error";
 
             }
 
             finally {
 
-                createButton.disabled = false;
+                createButton.disabled =
+                    false;
+
                 createButton.textContent =
                     "Create Business";
 
@@ -986,7 +1064,8 @@ servicesSection.style.display = "block";
                 serviceMessage.textContent =
                     "Please create your business first.";
 
-                serviceMessage.className = "error";
+                serviceMessage.className =
+                    "error";
 
                 return;
 
@@ -1015,14 +1094,17 @@ servicesSection.style.display = "block";
                 serviceMessage.textContent =
                     "Please complete all service fields.";
 
-                serviceMessage.className = "error";
+                serviceMessage.className =
+                    "error";
 
                 return;
 
             }
 
 
-            addServiceButton.disabled = true;
+            addServiceButton.disabled =
+                true;
+
             addServiceButton.textContent =
                 "Adding Service...";
 
@@ -1046,8 +1128,10 @@ servicesSection.style.display = "block";
                 };
 
 
-                const { data, error } =
-                    await db
+                const {
+                    data,
+                    error
+                } = await db
                     .from("services")
                     .insert([service])
                     .select()
@@ -1098,7 +1182,9 @@ servicesSection.style.display = "block";
 
             finally {
 
-                addServiceButton.disabled = false;
+                addServiceButton.disabled =
+                    false;
+
                 addServiceButton.textContent =
                     "Add Service";
 
@@ -1115,7 +1201,8 @@ servicesSection.style.display = "block";
         const item =
             document.createElement("div");
 
-        item.className = "service-item";
+        item.className =
+            "service-item";
 
         item.id =
             "service-" + service.id;
@@ -1132,7 +1219,8 @@ servicesSection.style.display = "block";
                 <span>
                     R${Number(service.price).toFixed(2)}
                     •
-                    ${service.duration_minutes} minutes
+                    ${service.duration_minutes}
+                    minutes
                 </span>
 
             </div>
@@ -1164,12 +1252,16 @@ servicesSection.style.display = "block";
 
         try {
 
-            const { error } =
-                await db
+            const {
+                error
+            } = await db
                 .from("services")
                 .delete()
                 .eq("id", serviceId)
-                .eq("business_id", currentBusinessId);
+                .eq(
+                    "business_id",
+                    currentBusinessId
+                );
 
 
             if (error) {
@@ -1186,7 +1278,6 @@ servicesSection.style.display = "block";
             if (item) {
                 item.remove();
             }
-
 
         }
 
